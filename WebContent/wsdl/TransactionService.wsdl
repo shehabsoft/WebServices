@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://com" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://com" xmlns:intf="http://com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="helloName">
+    <complexType>
+     <sequence>
+      <element name="name" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="helloNameResponse">
+    <complexType>
+     <sequence>
+      <element name="helloNameReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="createTransaction">
+    <complexType>
+     <sequence>
+      <element name="xmlSata" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="createTransactionResponse">
+    <complexType>
+     <sequence>
+      <element name="createTransactionReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="createTransactionRequest">
+
+      <wsdl:part element="impl:createTransaction" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="createTransactionResponse">
+
+      <wsdl:part element="impl:createTransactionResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="helloNameResponse">
+
+      <wsdl:part element="impl:helloNameResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="helloNameRequest">
+
+      <wsdl:part element="impl:helloName" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="TransactionService">
+
+      <wsdl:operation name="helloName">
+
+         <wsdl:input message="impl:helloNameRequest" name="helloNameRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:helloNameResponse" name="helloNameResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="createTransaction">
+
+         <wsdl:input message="impl:createTransactionRequest" name="createTransactionRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:createTransactionResponse" name="createTransactionResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="TransactionServiceSoapBinding" type="impl:TransactionService">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="helloName">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="helloNameRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="helloNameResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="createTransaction">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="createTransactionRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="createTransactionResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="TransactionServiceService">
+
+      <wsdl:port binding="impl:TransactionServiceSoapBinding" name="TransactionService">
+
+         <wsdlsoap:address location="http://localhost:8080/WebServices/services/TransactionService"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>
