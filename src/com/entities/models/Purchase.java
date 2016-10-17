@@ -2,14 +2,13 @@ package com.entities.models;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.List;
+import java.util.Date;
 
 
 /**
  * The persistent class for the purchase database table.
  * 
  */
-
 @Entity
 @NamedQuery(name="findAllPurchases", query="SELECT p FROM Purchase p")
 public class Purchase implements Serializable {
@@ -17,11 +16,15 @@ public class Purchase implements Serializable {
 
 	@Id
 	@SequenceGenerator(name="PURCHASE_ID_GENERATOR", sequenceName="SEQ")
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PURCHASE_ID_GENERATOR")
 	private int id;
 
 	@Column(name="arabic_description")
 	private String arabicDescription;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="creation_date")
+	private Date creationDate;
 
 	private String details;
 
@@ -30,13 +33,13 @@ public class Purchase implements Serializable {
 
 	private double price;
 
-	//bi-directional many-to-one association to Location
-	
-	@ManyToOne
-	private Location location;
 	//bi-directional many-to-one association to Category
 	@ManyToOne
 	private Category category;
+
+	//bi-directional many-to-one association to Location
+	@ManyToOne
+	private Location location;
 
 	public Purchase() {
 	}
@@ -55,6 +58,14 @@ public class Purchase implements Serializable {
 
 	public void setArabicDescription(String arabicDescription) {
 		this.arabicDescription = arabicDescription;
+	}
+
+	public Date getCreationDate() {
+		return this.creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
 	}
 
 	public String getDetails() {
@@ -81,23 +92,20 @@ public class Purchase implements Serializable {
 		this.price = price;
 	}
 
-
-
-	public Location getLocation() {
-		return location;
-	}
-
-	public void setLocation(Location location) {
-		this.location = location;
-	}
-
-
 	public Category getCategory() {
 		return this.category;
 	}
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	public Location getLocation() {
+		return this.location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 
 }

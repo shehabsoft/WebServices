@@ -1,5 +1,6 @@
 package com.dataObject;
 
+import java.util.Date;
 
 public class PurchaseVO {
 	
@@ -11,7 +12,7 @@ public class PurchaseVO {
 	private String details;
     private String categoryName;
 	private String  locationName;
-
+	private String creationDate;
 
 	public String getLocationName() {
 		return locationName;
@@ -48,7 +49,12 @@ public class PurchaseVO {
 	public int getLocationId() {
 		return locationId;
 	}
-
+	public String getCreationDate() {
+		return creationDate;
+	}
+	public void setCreationDate(String creationDate) {
+		this.creationDate = creationDate;
+	}
 	public void setLocationId(int locationId) {
 		this.locationId = locationId;
 	}
