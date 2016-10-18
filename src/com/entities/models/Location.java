@@ -1,9 +1,8 @@
 package com.entities.models;
 
 import java.io.Serializable;
-import java.util.List;
-
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -26,11 +25,10 @@ public class Location implements Serializable {
 	@Column(name="english_name")
 	private String englishName;
 
-	
-
+	//bi-directional many-to-one association to Purchase
 	@OneToMany(mappedBy="location")
 	private List<Purchase> purchases;
-	
+
 	public Location() {
 	}
 
@@ -59,13 +57,25 @@ public class Location implements Serializable {
 	}
 
 	public List<Purchase> getPurchases() {
-		return purchases;
+		return this.purchases;
 	}
 
 	public void setPurchases(List<Purchase> purchases) {
 		this.purchases = purchases;
 	}
 
+	public Purchase addPurchas(Purchase purchas) {
+		getPurchases().add(purchas);
+		purchas.setLocation(this);
 
+		return purchas;
+	}
+
+	public Purchase removePurchas(Purchase purchas) {
+		getPurchases().remove(purchas);
+		purchas.setLocation(null);
+
+		return purchas;
+	}
 
 }

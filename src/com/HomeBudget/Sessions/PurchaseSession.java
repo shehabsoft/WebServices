@@ -1,6 +1,8 @@
 package com.HomeBudget.Sessions;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -80,6 +82,7 @@ public class PurchaseSession {
 					{
 						purchase.setDetails(purchaseVO.getDetails());
 					}
+					purchase.setCreationDate(new Date());
 					category.setActualValue(category.getActualValue()+purchaseVO.getPrice());
 				    entitymanager.getTransaction().begin();
 					purchase.setCategory(category);
@@ -144,6 +147,12 @@ public class PurchaseSession {
 			purchaseVO.setLocationId(purchase.getLocation().getId());
 			purchaseVO.setLocationName(purchase.getLocation().getEnglishName());
 			purchaseVO.setCategoryName(purchase.getCategory().getEnglishDescription());
+			
+			if(purchase.getCreationDate()!=null)
+				{
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					purchaseVO.setCreationDate(sdf.format( purchase.getCreationDate()));
+				}
 			purchases.add(purchaseVO);
 		}
 

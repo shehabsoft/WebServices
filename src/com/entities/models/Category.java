@@ -36,9 +36,9 @@ public class Category implements Serializable {
 	@Column(name="CATEGORY_STATUS")
 	private int categoryStatus;
 
-    @Version
 	@Column(name="category_type_id")
 	private int categoryTypeId;
+
 	@Column(name="english_description")
 	private String englishDescription;
 
@@ -50,9 +50,10 @@ public class Category implements Serializable {
 
 	@Column(name="planed_value")
 	private double planedValue;
-	
 
-
+	//bi-directional many-to-many association to MonthlyBudget
+	@ManyToMany(mappedBy="categories")
+	private List<MonthlyBudget> monthlyBudgets;
 
 	//bi-directional many-to-one association to Purchase
 	@OneToMany(mappedBy="category")
@@ -85,7 +86,21 @@ public class Category implements Serializable {
 		this.arabicDescription = arabicDescription;
 	}
 
+	public int getCategoryStatus() {
+		return this.categoryStatus;
+	}
 
+	public void setCategoryStatus(int categoryStatus) {
+		this.categoryStatus = categoryStatus;
+	}
+
+	public int getCategoryTypeId() {
+		return this.categoryTypeId;
+	}
+
+	public void setCategoryTypeId(int categoryTypeId) {
+		this.categoryTypeId = categoryTypeId;
+	}
 
 	public String getEnglishDescription() {
 		return this.englishDescription;
@@ -103,26 +118,8 @@ public class Category implements Serializable {
 		this.limitValue = limitValue;
 	}
 
-
-
-	public int getCategoryStatus() {
-		return categoryStatus;
-	}
-
-	public void setCategoryStatus(int categoryStatus) {
-		this.categoryStatus = categoryStatus;
-	}
-
-	public int getCategoryTypeId() {
-		return categoryTypeId;
-	}
-
-	public void setCategoryTypeId(int categoryTypeId) {
-		this.categoryTypeId = categoryTypeId;
-	}
-
 	public int getParentCategoryId() {
-		return parentCategoryId;
+		return this.parentCategoryId;
 	}
 
 	public void setParentCategoryId(int parentCategoryId) {
@@ -135,6 +132,14 @@ public class Category implements Serializable {
 
 	public void setPlanedValue(double planedValue) {
 		this.planedValue = planedValue;
+	}
+
+	public List<MonthlyBudget> getMonthlyBudgets() {
+		return this.monthlyBudgets;
+	}
+
+	public void setMonthlyBudgets(List<MonthlyBudget> monthlyBudgets) {
+		this.monthlyBudgets = monthlyBudgets;
 	}
 
 	public List<Purchase> getPurchases() {
