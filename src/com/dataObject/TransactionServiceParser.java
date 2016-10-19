@@ -3,6 +3,8 @@ package com.dataObject;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -80,6 +82,9 @@ public  class TransactionServiceParser {
         }else if(serviceCode==3)
         {
         	 trsVO = getLocationInfo(root);
+        }else if(serviceCode==4)
+        {
+        	trsVO=getMonthlyBudgetInfo(root);
         }
         return trsVO;
     }
@@ -149,6 +154,28 @@ public  class TransactionServiceParser {
         locationVO.setArabicName(arabicDescription);
         locationVO.setEnglishName(englishDescription);
         trsVO.setLocationVO(locationVO);
+        
+        return  trsVO;
+    	
+    	
+    }
+    public TransactionVO getMonthlyBudgetInfo(Node root)
+    {
+   	 // Create transaction VO
+        TransactionVO trsVO = null;
+         MonthlyBudgetVO monthlyBudgetVO=new MonthlyBudgetVO();
+        Integer serviceCode = new Integer(getNodeValue(root, "serviceCode", true, true));
+        String startDate = getNodeValue(root, "startDate", true, true);
+        String incomeCategoriesId = getNodeValue(root, "incomeCategoriesId", true, true);
+        String expenseCategoriesId = getNodeValue(root, "expenseCategoriesId", true, true);
+        trsVO=new TransactionVO();
+        trsVO.setServiceCode(serviceCode);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        Date d=new Date(startDate);
+        monthlyBudgetVO.setStartDate(d);
+        monthlyBudgetVO.setExpenseCategoriesId(expenseCategoriesId);
+        monthlyBudgetVO.setIncomeCategoriesId(incomeCategoriesId);
+        trsVO.setMonthlyBudgetVO(monthlyBudgetVO);
         
         return  trsVO;
     	

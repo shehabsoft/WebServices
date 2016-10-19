@@ -3,6 +3,7 @@ package com;
 import com.HomeBudget.Entities.HibernateMain;
 import com.HomeBudget.Sessions.CategorySession;
 import com.HomeBudget.Sessions.LocationSession;
+import com.HomeBudget.Sessions.MonthlyBudgetSession;
 import com.HomeBudget.Sessions.PurchaseSession;
 import com.dataObject.ResponseBuilder;
 import com.dataObject.TransactionServiceParser;
@@ -33,6 +34,11 @@ public class TransactionService {
         {
         	LocationSession locationSession=new LocationSession();
         	locationSession.addLocation(transactionVO.getLocationVO());
+        }else if(transactionVO.getServiceCode()==4)
+        {
+        	MonthlyBudgetSession monthlyBudgetSession=new MonthlyBudgetSession();
+        	monthlyBudgetSession.addMonthlyBudget(transactionVO.getMonthlyBudgetVO());
+        	
         }
 		return ResponseBuilder.getCreateTransactionResponse(transactionVO);
 		}catch(Exception e)
