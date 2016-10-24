@@ -12,7 +12,7 @@ import java.util.Date;
 @Entity
 @Table(name="users")
 @NamedQueries({@NamedQuery(name="User.findAll", query="SELECT u FROM User u"),
-		      @NamedQuery(name="User.checkMail", query="SELECT u FROM User u where u.email =:email")}
+		      @NamedQuery(name="User.checkMail", query="SELECT u.id FROM User u where u.email =:email")}
 		
 		
 		)
