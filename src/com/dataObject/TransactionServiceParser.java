@@ -85,6 +85,9 @@ public  class TransactionServiceParser {
         }else if(serviceCode==4)
         {
         	trsVO=getMonthlyBudgetInfo(root);
+        }else if(serviceCode==5)
+        {
+        	trsVO=getUserInfo(root);
         }
         return trsVO;
     }
@@ -111,6 +114,38 @@ public  class TransactionServiceParser {
         categoryVO.setActualValue(Double.parseDouble(actualValue));
         categoryVO.setCategoryTypeId(Integer.parseInt(categoryType));
         trsVO.setCategoryVO(categoryVO);
+        
+        return  trsVO;
+        
+    }
+    public TransactionVO getUserInfo(Node root)
+    {
+    	 // Create transaction VO
+        TransactionVO trsVO = null;
+        UserVO userVo=new UserVO();
+        Integer serviceCode = new Integer(getNodeValue(root, "serviceCode", true, true));
+        String name = getNodeValue(root, "name", true, true);
+        String email = getNodeValue(root, "email", true, true);
+        String mobileNumber = getNodeValue(root, "mobileNumber", true, true);
+        String countryId = getNodeValue(root, "countryId", true, true);
+        String currencyId = getNodeValue(root, "currencyId", true, true);
+        String genderId = getNodeValue(root, "genderId", true, true);
+        String password = getNodeValue(root, "password", true, true);
+        String statusId = getNodeValue(root, "statusId", true, true);
+        String address = getNodeValue(root, "address", true, true);
+        trsVO=new TransactionVO();
+        trsVO.setServiceCode(serviceCode);
+        userVo.setName(name);
+        userVo.setEmail(email);
+        userVo.setAddress(address);
+        userVo.setPassword(password);
+        userVo.setStatusId(Integer.parseInt(statusId));
+        userVo.setCurrencyId(Integer.parseInt(currencyId));
+        userVo.setCountryId(Integer.parseInt(countryId));
+        userVo.setMobileNumebr(mobileNumber);
+        userVo.setGenderId(Integer.parseInt(genderId));
+        
+        trsVO.setUserVO(userVo);
         
         return  trsVO;
         

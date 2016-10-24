@@ -1,20 +1,17 @@
 package com.HomeBudget.Sessions;
 
+
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 
-
-
-import com.entities.models.*;
 import com.dataObject.CategoryVO;
+import com.entities.models.Category;
 
 
 public class CategorySession {

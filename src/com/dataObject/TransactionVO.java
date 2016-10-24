@@ -406,9 +406,18 @@ public class TransactionVO {
     private PurchaseVO purchaseVO;
     private LocationVO locationVO;
    private MonthlyBudgetVO monthlyBudgetVO;
+   private UserVO userVO;
     
     
-    public MonthlyBudgetVO getMonthlyBudgetVO() {
+    public UserVO getUserVO() {
+	return userVO;
+}
+
+public void setUserVO(UserVO userVO) {
+	this.userVO = userVO;
+}
+
+	public MonthlyBudgetVO getMonthlyBudgetVO() {
 	return monthlyBudgetVO;
 }
 

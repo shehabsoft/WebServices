@@ -22,11 +22,17 @@ import javax.annotation.Resource;
 import org.apache.log4j.Logger;
 
 import com.HomeBudget.Sessions.CategorySession;
+import com.HomeBudget.Sessions.CountrySession;
+import com.HomeBudget.Sessions.CurrencySession;
 import com.HomeBudget.Sessions.LocationSession;
 import com.HomeBudget.Sessions.PurchaseSession;
+import com.HomeBudget.Sessions.UserSession;
 import com.dataObject.CategoryVO;
+import com.dataObject.CountryVO;
+import com.dataObject.CurrencyVO;
 import com.dataObject.LocationVO;
 import com.dataObject.PurchaseVO;
+import com.dataObject.StatusVO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.jersey.core.util.Base64;
@@ -40,6 +46,9 @@ public class Lookups {
     CategorySession categorySession=null;
     PurchaseSession purchaseSession=null;
     LocationSession locationSession=null;
+    CurrencySession currencySession=null;
+    CountrySession countrySession=null;
+	UserSession userSession=null;
 
 
 
@@ -110,6 +119,49 @@ public class Lookups {
 	   
 		return "{CategoryVO:" + feeds + "}";
 	}
+	@GET
+	@Path("/GetAllCurrencies")
+	@Produces("application/json")
+	public String GetAllCurrencies(@Context HttpHeaders headers) throws Exception 
+	{
+		currencySession=new CurrencySession();
+		ArrayList<CurrencyVO> categoryVOList=currencySession.getAllCurrencies();
+		Gson gson = new Gson();
+	    String feeds = gson.toJson(categoryVOList);
+	   
+		return "{CurrencyVO:" + feeds + "}";
+	}
+	@GET
+	@Path("/getAllCountries")
+	@Produces("application/json")
+	public String getAllCountries(@Context HttpHeaders headers) throws Exception 
+	{
+		countrySession=new CountrySession();
+		ArrayList<CountryVO> categoryVOList=countrySession.getAllCountries();
+		Gson gson = new Gson();
+	    String feeds = gson.toJson(categoryVOList);
+	   
+		return "{CountryVO:" + feeds + "}";
+	}
+	@POST
+	@Path("/checkEmail")
+	@Produces("application/json")
+	public String checkEmail(@Context HttpHeaders headers,String content) throws Exception 
+	{
+		
+		int index = content.lastIndexOf("=");
+		String mail =content.substring(index + 1);
+	    userSession=new UserSession();
+		
+	    boolean validMail=userSession.checkMail(mail);
+	    StatusVO statusVO=new StatusVO();
+	    statusVO.setFlage(validMail);
+		Gson gson = new Gson();
+	    String feeds = gson.toJson(statusVO);
+	   
+		return "{StatusVO:" + feeds + "}";
+	}
+	
 	
 
 	}

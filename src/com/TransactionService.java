@@ -5,6 +5,7 @@ import com.HomeBudget.Sessions.CategorySession;
 import com.HomeBudget.Sessions.LocationSession;
 import com.HomeBudget.Sessions.MonthlyBudgetSession;
 import com.HomeBudget.Sessions.PurchaseSession;
+import com.HomeBudget.Sessions.UserSession;
 import com.dataObject.ResponseBuilder;
 import com.dataObject.TransactionServiceParser;
 import com.dataObject.TransactionVO;
@@ -39,6 +40,11 @@ public class TransactionService {
         	MonthlyBudgetSession monthlyBudgetSession=new MonthlyBudgetSession();
         	monthlyBudgetSession.addMonthlyBudget(transactionVO.getMonthlyBudgetVO());
         	
+        }
+        else if(transactionVO.getServiceCode()==5)
+        {
+        	UserSession   userSession=new UserSession();
+        	userSession.addUser(transactionVO.getUserVO());
         }
 		return ResponseBuilder.getCreateTransactionResponse(transactionVO);
 		}catch(Exception e)
