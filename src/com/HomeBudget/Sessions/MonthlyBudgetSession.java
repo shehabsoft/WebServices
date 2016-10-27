@@ -1,6 +1,7 @@
 package com.HomeBudget.Sessions;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -67,30 +68,56 @@ public class MonthlyBudgetSession {
 		String []incomeCategories =incomeCategoryList.split(",");
 		String expenseCategoriesList=monthlyBudgetVO.getExpenseCategoriesId().replace("[","").replace("]", "");
 		String [] expenseCategories =expenseCategoriesList.split(",");
-		int[] numbers = new int[incomeCategories.length];
+		double totalIncome=0;
+		double totalExpenese=0;
 		for(int i=0;i<incomeCategories.length;i++)
 		{
 			 Category category=entitymanager.find(Category.class, Integer.parseInt(incomeCategories[i].trim()));
 		     categories.add(category);
+		     totalIncome+=category.getActualValue();
+		   
+		     
 		}
 		for(int i=0;i<expenseCategories.length;i++)
 		{
 			 Category category=entitymanager.find(Category.class, Integer.parseInt(expenseCategories[i].trim()));
 		     categories.add(category);
+		     
+		    
+		     
 		}
-		
-		
-		  
-		 /*for(String id : expenseCategories) {
-		     Category category=entitymanager.find(Category.class, id);
-		     categories.add(category);
-			  }*/
-		monthlyBudget.setCategories(categories);
+		User user=entitymanager.find(User.class, 37);
+		monthlyBudget.setUser(user);
+		monthlyBudget.setTotalIncome(totalIncome);
+		monthlyBudget.setTotalExpenses(totalExpenese);
+		monthlyBudget.setEndDate(monthlyBudgetVO.getEndDate());
 		entitymanager.getTransaction().begin();
+		deActivePreviousMonthlyBudget(37);
+		monthlyBudget.setStatus(2);
+		monthlyBudget.setCreationDate(new Date());
+		monthlyBudget.setCategories(categories);
 		entitymanager.persist(monthlyBudget);
 		entitymanager.getTransaction().commit();
+		int monthlyBudgetId=(int) (getNextKey()-1);
+		entitymanager.getTransaction().begin();
+		//copy (planed limit actual) Values From Category to MonthlyBudgetCategory Table
+		Query query = (Query) entitymanager.createNamedQuery("getAllbyMonthlyBudget").setParameter("id", monthlyBudgetId);
+		List<MonthlyBudgetCategory>budgetCategories=query.getResultList();
+		for(MonthlyBudgetCategory budgetCategory:budgetCategories)
+		{
+			 Category category=entitymanager.find(Category.class,budgetCategory.getCategory().getId());
+			 budgetCategory.setPlanedValue(category.getPlanedValue());
+			 budgetCategory.setLimitValue(category.getLimitValue());
+			 budgetCategory.setActualValue(category.getActualValue());
+			 entitymanager.persist(budgetCategory);
+		
+		}
+		
+		entitymanager.getTransaction().commit();
+		
 	}catch(Exception e)
 	{
+	
 		throw new Exception(e.toString());
 	}
 	}
@@ -183,6 +210,19 @@ public class MonthlyBudgetSession {
 		category.setId(categoryVO.getId());
 		return category; 
 	}
-	
-
+	public boolean deActivePreviousMonthlyBudget(int userId)
+	{
+		Query query = (Query) entitymanager.createNamedQuery("deActivePreviosMonthlyBudget");
+		query.setParameter("id", userId);
+		int num=query.executeUpdate();
+		if(num>0)
+		return true;
+			else
+		return false;
+	}
+	public Long getNextKey()
+	{
+		Query q = entitymanager.createNativeQuery("SELECT Auto_increment FROM information_schema.tables WHERE table_name='monthly_budget'");
+		return (Long)q.getSingleResult();
+	}
 }

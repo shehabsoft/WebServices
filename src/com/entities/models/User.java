@@ -3,6 +3,7 @@ package com.entities.models;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -44,6 +45,10 @@ public class User implements Serializable {
 
 	@Column(name="status_id")
 	private int statusId;
+
+	//bi-directional many-to-one association to MonthlyBudget
+	@OneToMany(mappedBy="user")
+	private List<MonthlyBudget> monthlyBudgets;
 
 	//bi-directional many-to-one association to Country
 	@ManyToOne
@@ -126,6 +131,28 @@ public class User implements Serializable {
 
 	public void setStatusId(int statusId) {
 		this.statusId = statusId;
+	}
+
+	public List<MonthlyBudget> getMonthlyBudgets() {
+		return this.monthlyBudgets;
+	}
+
+	public void setMonthlyBudgets(List<MonthlyBudget> monthlyBudgets) {
+		this.monthlyBudgets = monthlyBudgets;
+	}
+
+	public MonthlyBudget addMonthlyBudget(MonthlyBudget monthlyBudget) {
+		getMonthlyBudgets().add(monthlyBudget);
+		monthlyBudget.setUser(this);
+
+		return monthlyBudget;
+	}
+
+	public MonthlyBudget removeMonthlyBudget(MonthlyBudget monthlyBudget) {
+		getMonthlyBudgets().remove(monthlyBudget);
+		monthlyBudget.setUser(null);
+
+		return monthlyBudget;
 	}
 
 	public Country getCountry() {

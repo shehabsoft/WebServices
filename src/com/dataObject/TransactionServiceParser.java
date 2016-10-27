@@ -84,10 +84,10 @@ public  class TransactionServiceParser {
         	 trsVO = getLocationInfo(root);
         }else if(serviceCode==4)
         {
-        	trsVO=getMonthlyBudgetInfo(root);
+        	trsVO=getUserInfo(root);
         }else if(serviceCode==5)
         {
-        	trsVO=getUserInfo(root);
+        	trsVO=getMonthlyBudgetInfo(root);
         }
         return trsVO;
     }
@@ -155,6 +155,7 @@ public  class TransactionServiceParser {
    	 // Create transaction VO
         TransactionVO trsVO = null;
         PurchaseVO purchaseVO=new PurchaseVO();
+        Integer userId = new Integer(getNodeValue(root, "userId", true, true));
         Integer serviceCode = new Integer(getNodeValue(root, "serviceCode", true, true));
         String arabicDescription = getNodeValue(root, "arabicDescription", true, true);
         String englishDescription = getNodeValue(root, "englishDescription", true, true);
@@ -164,6 +165,7 @@ public  class TransactionServiceParser {
         String locationId = getNodeValue(root, "locationId", true, true);
         trsVO=new TransactionVO();
         trsVO.setServiceCode(serviceCode);
+        purchaseVO.setUserId(userId);
         purchaseVO.setArabicDescription(arabicDescription);
         purchaseVO.setEnglishDescription(englishDescription);
         purchaseVO.setPrice(Double.parseDouble(price));
@@ -201,13 +203,16 @@ public  class TransactionServiceParser {
          MonthlyBudgetVO monthlyBudgetVO=new MonthlyBudgetVO();
         Integer serviceCode = new Integer(getNodeValue(root, "serviceCode", true, true));
         String startDate = getNodeValue(root, "startDate", true, true);
+        String endDate = getNodeValue(root, "endDate", true, true);
         String incomeCategoriesId = getNodeValue(root, "incomeCategoriesId", true, true);
         String expenseCategoriesId = getNodeValue(root, "expenseCategoriesId", true, true);
         trsVO=new TransactionVO();
         trsVO.setServiceCode(serviceCode);
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        Date d=new Date(startDate);
-        monthlyBudgetVO.setStartDate(d);
+        Date startTime=new Date(startDate);
+        Date endTime=new Date(endDate);
+        monthlyBudgetVO.setStartDate(startTime);
+        monthlyBudgetVO.setEndDate(endTime);
         monthlyBudgetVO.setExpenseCategoriesId(expenseCategoriesId);
         monthlyBudgetVO.setIncomeCategoriesId(incomeCategoriesId);
         trsVO.setMonthlyBudgetVO(monthlyBudgetVO);

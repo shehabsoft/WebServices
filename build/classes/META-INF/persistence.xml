@@ -2,12 +2,14 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="WebServices" transaction-type="RESOURCE_LOCAL">
 		<class>com.entities.models.Category</class>
+		<class>com.entities.models.Country</class>
+		<class>com.entities.models.Currency</class>
 		<class>com.entities.models.Location</class>
 		<class>com.entities.models.MonthlyBudget</class>
 		<class>com.entities.models.Purchase</class>
-		<class>com.entities.models.Country</class>
-		<class>com.entities.models.Currency</class>
 		<class>com.entities.models.User</class>
+		<class>com.entities.models.MonthlyBudgetCategory</class>
+		<class>com.entities.models.MonthlyBudgetCategoryPK</class>
 		<properties>
 			<property name="javax.persistence.schema-generation.scripts.action" value="none"/>
 			<property name="javax.persistence.schema-generation.database.action" value="none"/>

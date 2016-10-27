@@ -1,6 +1,6 @@
 package com;
 
-import com.HomeBudget.Entities.HibernateMain;
+
 import com.HomeBudget.Sessions.CategorySession;
 import com.HomeBudget.Sessions.LocationSession;
 import com.HomeBudget.Sessions.MonthlyBudgetSession;
@@ -37,14 +37,15 @@ public class TransactionService {
         	locationSession.addLocation(transactionVO.getLocationVO());
         }else if(transactionVO.getServiceCode()==4)
         {
-        	MonthlyBudgetSession monthlyBudgetSession=new MonthlyBudgetSession();
-        	monthlyBudgetSession.addMonthlyBudget(transactionVO.getMonthlyBudgetVO());
+        	UserSession   userSession=new UserSession();
+        	userSession.addUser(transactionVO.getUserVO());
         	
         }
         else if(transactionVO.getServiceCode()==5)
         {
-        	UserSession   userSession=new UserSession();
-        	userSession.addUser(transactionVO.getUserVO());
+         	MonthlyBudgetSession monthlyBudgetSession=new MonthlyBudgetSession();
+        	monthlyBudgetSession.addMonthlyBudget(transactionVO.getMonthlyBudgetVO());
+        
         }
 		return ResponseBuilder.getCreateTransactionResponse(transactionVO);
 		}catch(Exception e)

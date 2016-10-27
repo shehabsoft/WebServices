@@ -10,6 +10,7 @@ public class MonthlyBudgetVO {
 	private int Id;
 	
 	private Date startDate;
+	private Date endDate;
 	private String incomeCategoriesId;
 	private String expenseCategoriesId;
 	public String getIncomeCategoriesId() {
@@ -29,6 +30,16 @@ public class MonthlyBudgetVO {
 
 	public void setExpenseCategoriesId(String expenseCategoriesId) {
 		this.expenseCategoriesId = expenseCategoriesId;
+	}
+
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 
 

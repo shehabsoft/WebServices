@@ -40,6 +40,7 @@ public class PurchaseSession {
 		 Purchase purchase =new Purchase();
 		try
 		{
+			
 	    Category category=entitymanager.find(Category.class, purchaseVO.getCategoryId());
 	    purchase.setCategory(category);
 	   
@@ -71,26 +72,38 @@ public class PurchaseSession {
 						throw new Exception("Purchase English Description Should not be Null");
 					}
 					
-					if((purchaseVO.getPrice()+category.getActualValue())<=category.getLimitValue())
+					if(purchaseVO.getPrice()>0)
 					{
 						purchase.setPrice(purchaseVO.getPrice());
 					}else
 					{
-						throw new Exception("Purchase Price  Value Should  be Less Than Limit Value");
+						throw new Exception("Purchase Price  Should be Greater than 0");
 					}
 					if(purchaseVO.getDetails()!=null)
 					{
 						purchase.setDetails(purchaseVO.getDetails());
 					}
 					purchase.setCreationDate(new Date());
-					category.setActualValue(category.getActualValue()+purchaseVO.getPrice());
+				//	category.setActualValue(category.getActualValue()+purchaseVO.getPrice());
 				    entitymanager.getTransaction().begin();
 					purchase.setCategory(category);
+					Query query = (Query) entitymanager.createNamedQuery("getActiveMonthlyBudgetByUserId");
+					query.setParameter("id", purchaseVO.getUserId());
+					MonthlyBudget monthlyBudget=  (MonthlyBudget) query.getSingleResult();
+					monthlyBudget.setTotalExpenses(monthlyBudget.getTotalExpenses()+purchaseVO.getPrice());
+					entitymanager.persist(monthlyBudget);
 					entitymanager.persist(purchase);
+					int monthlyBudgetId=monthlyBudget.getId();
+					Query query2 = (Query) entitymanager.createNamedQuery("getMonthlyBudgetCategoryByMonthlyBudgetIdAndCategoryId");
+					query2.setParameter("id", monthlyBudgetId);
+					query2.setParameter("categoryId", category.getId());
+					MonthlyBudgetCategory monthlyBudgetCategory=(MonthlyBudgetCategory) query2.getSingleResult();
+					monthlyBudgetCategory.setActualValue(monthlyBudgetCategory.getActualValue()+purchaseVO.getPrice());
+					entitymanager.persist(monthlyBudgetCategory);
 			/*	//	categorySession.updateCategory(categoryVO);
 			*/		entitymanager.getTransaction().commit();
 	    }
-		}catch(Exception e)
+		}catch(Exception e) 
 		{
 			throw new Exception(e);
 			

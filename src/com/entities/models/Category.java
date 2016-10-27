@@ -11,12 +11,12 @@ import java.util.List;
  */
 @Entity
 @NamedQueries({@NamedQuery(name="findAllCategories", query="SELECT c FROM Category c"),
-	           @NamedQuery(name="findCategotyById", query="SELECT c FROM Category c where c.id=:id"),
-	           @NamedQuery(name="findExpensesCategories", query="SELECT c FROM Category c where c.categoryTypeId=2"),
-	           @NamedQuery(name="findBudgetCategories", query="SELECT c FROM Category c where c.categoryTypeId=1")
-	           
-	           
-	          
+    @NamedQuery(name="findCategotyById", query="SELECT c FROM Category c where c.id=:id"),
+    @NamedQuery(name="findExpensesCategories", query="SELECT c FROM Category c where c.categoryTypeId=2"),
+    @NamedQuery(name="findBudgetCategories", query="SELECT c FROM Category c where c.categoryTypeId=1")
+    
+    
+   
 
 })
 public class Category implements Serializable {
@@ -54,6 +54,10 @@ public class Category implements Serializable {
 	//bi-directional many-to-many association to MonthlyBudget
 	@ManyToMany(mappedBy="categories")
 	private List<MonthlyBudget> monthlyBudgets;
+
+	//bi-directional many-to-one association to MonthlyBudgetCategory
+	@OneToMany(mappedBy="category")
+	private List<MonthlyBudgetCategory> monthlyBudgetCategories;
 
 	//bi-directional many-to-one association to Purchase
 	@OneToMany(mappedBy="category")
@@ -140,6 +144,28 @@ public class Category implements Serializable {
 
 	public void setMonthlyBudgets(List<MonthlyBudget> monthlyBudgets) {
 		this.monthlyBudgets = monthlyBudgets;
+	}
+
+	public List<MonthlyBudgetCategory> getMonthlyBudgetCategories() {
+		return this.monthlyBudgetCategories;
+	}
+
+	public void setMonthlyBudgetCategories(List<MonthlyBudgetCategory> monthlyBudgetCategories) {
+		this.monthlyBudgetCategories = monthlyBudgetCategories;
+	}
+
+	public MonthlyBudgetCategory addMonthlyBudgetCategory(MonthlyBudgetCategory monthlyBudgetCategory) {
+		getMonthlyBudgetCategories().add(monthlyBudgetCategory);
+		monthlyBudgetCategory.setCategory(this);
+
+		return monthlyBudgetCategory;
+	}
+
+	public MonthlyBudgetCategory removeMonthlyBudgetCategory(MonthlyBudgetCategory monthlyBudgetCategory) {
+		getMonthlyBudgetCategories().remove(monthlyBudgetCategory);
+		monthlyBudgetCategory.setCategory(null);
+
+		return monthlyBudgetCategory;
 	}
 
 	public List<Purchase> getPurchases() {

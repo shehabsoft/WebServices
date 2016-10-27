@@ -13,7 +13,7 @@ public class PurchaseVO {
     private String categoryName;
 	private String  locationName;
 	private String creationDate;
-
+    private int userId;
 	public String getLocationName() {
 		return locationName;
 	}
@@ -30,6 +30,12 @@ public class PurchaseVO {
 	
 	
 
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 	public int getId() {
 		return Id;
 	}
