@@ -10,14 +10,6 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="monthly_budget_category")
-@NamedQueries({@NamedQuery(name="MonthlyBudgetCategory.findAll", query="SELECT m FROM MonthlyBudgetCategory m"),
-               @NamedQuery(name="getAllbyMonthlyBudget",query="select m from MonthlyBudgetCategory m where m.monthlyBudget.id=:id"),
-               @NamedQuery(name="getMonthlyBudgetCategoryByMonthlyBudgetIdAndCategoryId",query="select m from MonthlyBudgetCategory m where m.monthlyBudget.id=:id and m.category.id=:categoryId")
-               
-
-
-})
-
 public class MonthlyBudgetCategory implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -25,6 +25,7 @@ import com.HomeBudget.Sessions.CategorySession;
 import com.HomeBudget.Sessions.CountrySession;
 import com.HomeBudget.Sessions.CurrencySession;
 import com.HomeBudget.Sessions.LocationSession;
+import com.HomeBudget.Sessions.MonthlyBudgetSession;
 import com.HomeBudget.Sessions.PurchaseSession;
 import com.HomeBudget.Sessions.UserSession;
 import com.dataObject.CategoryVO;
@@ -49,6 +50,7 @@ public class Lookups {
     CurrencySession currencySession=null;
     CountrySession countrySession=null;
 	UserSession userSession=null;
+	MonthlyBudgetSession monthlyBudgetSession=null;
 
 
 
@@ -58,37 +60,34 @@ public class Lookups {
 	
 
 
-//	@GET
-//	@Path("/GetCategoryByEnglishName")
-//	@Produces("application/json")
-//	public String getCategoryByEnglishName(@Context HttpHeaders headers) 
-//	{
-//		categorySession=new CategorySession();
-//		String englishcategoryName = headers.getRequestHeader("objectName").get(0);
-//		CategoryVO categoryVO=categorySession.getCategoryByEnglishName(englishcategoryName);
-//		Gson gson = new Gson();
-//	    String feeds = gson.toJson(categoryVO);
-//		return feeds;
-//	}
-	@GET
+
+	@POST
 	@Path("/GetExpensesCategories")
 	@Produces("application/json")
-	public String getExpensesCategories(@Context HttpHeaders headers) 
+	public String getExpensesCategories(@Context HttpHeaders headers,String content) 
 	{
+		int index = content.lastIndexOf("=");
+		int userId =Integer.parseInt(content.substring(index + 1));
+		monthlyBudgetSession=new MonthlyBudgetSession();
+		int monthlyBudgetId	=monthlyBudgetSession.getActiveMonthlyBudgetIdByUserId(userId);
 		categorySession=new CategorySession();
-		ArrayList<CategoryVO> categoryVOList=categorySession.getExpensesCategories();
+		ArrayList<CategoryVO> categoryVOList=categorySession.getExpensesCategories(monthlyBudgetId,userId);
 		Gson gson = new Gson();
 	    String feeds = gson.toJson(categoryVOList);
 	   
 		return "{CategoryVO:" + feeds + "}";
 	}
-	@GET
+	@POST
 	@Path("/GetAllPurchases")
 	@Produces("application/json")
-	public String GetAllPurchases(@Context HttpHeaders headers) throws Exception 
+	public String GetAllPurchases(@Context HttpHeaders headers,String content) throws Exception 
 	{
+		monthlyBudgetSession=new MonthlyBudgetSession();
+		int index = content.lastIndexOf("=");
+		int userId =Integer.parseInt(content.substring(index + 1));
+		int monthlyBudgetId	=monthlyBudgetSession.getActiveMonthlyBudgetIdByUserId(userId);
 		purchaseSession=new PurchaseSession();
-		ArrayList<PurchaseVO> categoryVOList=purchaseSession.getAllPurchases();
+		ArrayList<PurchaseVO> categoryVOList=purchaseSession.getAllPurchases(monthlyBudgetId);
 		Gson gson = new Gson();
 	    String feeds = gson.toJson(categoryVOList);
 	   
@@ -107,13 +106,17 @@ public class Lookups {
 		return "{LocationVO:" + feeds + "}";
 	}
 	
-	@GET
+	@POST
 	@Path("/GetBudgetCategories")
 	@Produces("application/json")
-	public String GetBudgetCategories(@Context HttpHeaders headers) throws Exception 
+	public String GetBudgetCategories(@Context HttpHeaders headers,String content) throws Exception 
 	{
 		categorySession=new CategorySession();
-		ArrayList<CategoryVO> categoryVOList=categorySession.GetBudgetCategories();
+		monthlyBudgetSession=new MonthlyBudgetSession();
+		int index = content.lastIndexOf("=");
+		int userId =Integer.parseInt(content.substring(index + 1));
+		int monthlyBudgetId	=monthlyBudgetSession.getActiveMonthlyBudgetIdByUserId(userId);
+		ArrayList<CategoryVO> categoryVOList=categorySession.GetBudgetCategories(monthlyBudgetId,userId);
 		Gson gson = new Gson();
 	    String feeds = gson.toJson(categoryVOList);
 	   

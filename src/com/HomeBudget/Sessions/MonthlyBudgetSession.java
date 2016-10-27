@@ -15,6 +15,7 @@ import javax.persistence.TypedQuery;
 
 
 import com.entities.models.*;
+import com.dataObject.BusinessException;
 import com.dataObject.CategoryVO;
 import com.dataObject.MonthlyBudgetVO;
 
@@ -195,7 +196,7 @@ public class MonthlyBudgetSession {
 	}catch(Exception e)
 		{
 		System.out.println(e);
-		return null;
+		throw new BusinessException(e.toString());
 		}
 	}
 	public Category copyCategoryFromVO(CategoryVO categoryVO)
@@ -219,6 +220,21 @@ public class MonthlyBudgetSession {
 		return true;
 			else
 		return false;
+	}
+	
+	public int getActiveMonthlyBudgetIdByUserId(int userId)
+	{
+		try
+		{
+			Query query = (Query) entitymanager.createNamedQuery("getActiveMonthlyBudgetByUserId");
+			query.setParameter("id", userId);
+			MonthlyBudget monthlyBudget=(MonthlyBudget) query.getSingleResult();
+			return monthlyBudget.getId();
+			
+		}catch(Exception e)
+		{
+			throw new BusinessException(e.toString());
+		}
 	}
 	public Long getNextKey()
 	{

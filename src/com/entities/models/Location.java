@@ -10,7 +10,6 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name="findAllLocations", query="SELECT l FROM Location l")
 public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
 

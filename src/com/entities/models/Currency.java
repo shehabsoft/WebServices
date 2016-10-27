@@ -10,7 +10,6 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name="findAllCurrencies", query="SELECT c FROM Currency c")
 public class Currency implements Serializable {
 	private static final long serialVersionUID = 1L;
 

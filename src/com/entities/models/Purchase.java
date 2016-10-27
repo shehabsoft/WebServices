@@ -10,7 +10,6 @@ import java.util.Date;
  * 
  */
 @Entity
-@NamedQuery(name="findAllPurchases", query="SELECT p FROM Purchase p")
 public class Purchase implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -40,6 +39,9 @@ public class Purchase implements Serializable {
 	//bi-directional many-to-one association to Location
 	@ManyToOne
 	private Location location;
+	
+	@ManyToOne
+	private MonthlyBudget monthlyBudget;
 
 	public Purchase() {
 	}
@@ -106,6 +108,14 @@ public class Purchase implements Serializable {
 
 	public void setLocation(Location location) {
 		this.location = location;
+	}
+
+	public MonthlyBudget getMonthlyBudget() {
+		return monthlyBudget;
+	}
+
+	public void setMonthlyBudget(MonthlyBudget monthlyBudget) {
+		this.monthlyBudget = monthlyBudget;
 	}
 
 }

@@ -12,9 +12,6 @@ import java.util.List;
  */
 @Entity
 @Table(name="monthly_budget")
-@NamedQueries({@NamedQuery(name="getActiveMonthlyBudgetByUserId", query="SELECT m FROM MonthlyBudget m where m.user.id=:id and m.status=2"),
-	@NamedQuery(name="deActivePreviosMonthlyBudget",query="update  MonthlyBudget m set m.status=1  where m.user.id=:id")})
-
 public class MonthlyBudget implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -62,6 +59,12 @@ public class MonthlyBudget implements Serializable {
 	@OneToMany(mappedBy="monthlyBudget")
 	private List<MonthlyBudgetCategory> monthlyBudgetCategories;
 
+	
+	//bi-directional many-to-one association to Purchase
+	@OneToMany(mappedBy="monthlyBudget")
+	private List<Purchase> purchases;
+	
+	
 	public MonthlyBudget() {
 	}
 
@@ -135,6 +138,14 @@ public class MonthlyBudget implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public List<Purchase> getPurchases() {
+		return purchases;
+	}
+
+	public void setPurchases(List<Purchase> purchases) {
+		this.purchases = purchases;
 	}
 
 	public List<MonthlyBudgetCategory> getMonthlyBudgetCategories() {

@@ -91,6 +91,7 @@ public class PurchaseSession {
 					query.setParameter("id", purchaseVO.getUserId());
 					MonthlyBudget monthlyBudget=  (MonthlyBudget) query.getSingleResult();
 					monthlyBudget.setTotalExpenses(monthlyBudget.getTotalExpenses()+purchaseVO.getPrice());
+					purchase.setMonthlyBudget(monthlyBudget);
 					entitymanager.persist(monthlyBudget);
 					entitymanager.persist(purchase);
 					int monthlyBudgetId=monthlyBudget.getId();
@@ -141,12 +142,13 @@ public class PurchaseSession {
 //		}
 		return null;
 	}
-	public ArrayList<PurchaseVO> getAllPurchases() throws Exception
+	public ArrayList<PurchaseVO> getAllPurchases(int monthlyBudgetId) throws Exception
 	{
 		try
 		{
 		ArrayList<PurchaseVO>purchases=new ArrayList<PurchaseVO>();
 		Query query = (Query) entitymanager.createNamedQuery("findAllPurchases");
+		query.setParameter("id", monthlyBudgetId);
 	    List<Purchase> purchaseList =  query.getResultList();
 		for (Purchase purchase : purchaseList) {
 			PurchaseVO purchaseVO=new PurchaseVO();

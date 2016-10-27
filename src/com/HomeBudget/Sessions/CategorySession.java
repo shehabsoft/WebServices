@@ -10,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import com.dataObject.BusinessException;
 import com.dataObject.CategoryVO;
 import com.entities.models.Category;
 
@@ -138,15 +139,17 @@ public class CategorySession {
 	}catch(Exception e)
 		{
 		System.out.println(e);
-		return null;
+		throw new BusinessException(e.toString());
 		}
 	}
-	public ArrayList<CategoryVO> getExpensesCategories()
+	public ArrayList<CategoryVO> getExpensesCategories(int monthlyBudgetId,int userId)
 	{
 		try
 		{
 		ArrayList<CategoryVO>categoryVOs=new ArrayList<CategoryVO>();
 		Query query = (Query) entitymanager.createNamedQuery("findExpensesCategories");
+		query.setParameter("id", monthlyBudgetId);
+		query.setParameter("userId", userId);
 	    List<Category> categoryList =  query.getResultList();
 		for (Category category : categoryList) {
 			CategoryVO categoryVO=new CategoryVO();
@@ -165,15 +168,17 @@ public class CategorySession {
 	}catch(Exception e)
 		{
 		System.out.println(e);
-		return null;
+		throw new BusinessException(e.toString());
 		}
 	}
-	public ArrayList<CategoryVO> GetBudgetCategories()
+	public ArrayList<CategoryVO> GetBudgetCategories(int monthlyBudgetId,int userId)
 	{
 		try
 		{
 		ArrayList<CategoryVO>categoryVOs=new ArrayList<CategoryVO>();
 		Query query = (Query) entitymanager.createNamedQuery("findBudgetCategories");
+		query.setParameter("id", monthlyBudgetId);
+		query.setParameter("userId", userId);
 	    List<Category> categoryList =  query.getResultList();
 		for (Category category : categoryList) {
 			CategoryVO categoryVO=new CategoryVO();
@@ -192,7 +197,7 @@ public class CategorySession {
 	}catch(Exception e)
 		{
 		System.out.println(e);
-		return null;
+		throw new BusinessException(e.toString());
 		}
 	}
 	public Category copyCategoryFromVO(CategoryVO categoryVO)

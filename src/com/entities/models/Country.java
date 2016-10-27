@@ -10,7 +10,6 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name="findAllCountries", query="SELECT c FROM Country c")
 public class Country implements Serializable {
 	private static final long serialVersionUID = 1L;
 
