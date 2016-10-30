@@ -147,6 +147,16 @@ public class Lookups {
 	   
 		return "{CountryVO:" + feeds + "}";
 	}
+	@GET
+	@Path("/test")
+	@Produces("application/json")
+	public String test(@Context HttpHeaders headers) throws Exception 
+	{
+	 Collections feeds=new Collections();
+	 feeds.initialize();
+	   
+		return "{CountryVO:" + feeds + "}";
+	}
 	@POST
 	@Path("/getActiveMonthlyBudgetByUserId")
 	@Produces("application/json")
@@ -161,6 +171,8 @@ public class Lookups {
 	   
 		return "{MonthlyBudgetVO:" + feeds + "}";
 	}
+	
+	
 	@POST
 	@Path("/checkEmail")
 	@Produces("application/json")
