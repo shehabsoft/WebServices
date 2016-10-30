@@ -32,6 +32,7 @@ import com.dataObject.CategoryVO;
 import com.dataObject.CountryVO;
 import com.dataObject.CurrencyVO;
 import com.dataObject.LocationVO;
+import com.dataObject.MonthlyBudgetVO;
 import com.dataObject.PurchaseVO;
 import com.dataObject.StatusVO;
 import com.google.gson.Gson;
@@ -145,6 +146,20 @@ public class Lookups {
 	    String feeds = gson.toJson(categoryVOList);
 	   
 		return "{CountryVO:" + feeds + "}";
+	}
+	@POST
+	@Path("/getActiveMonthlyBudgetByUserId")
+	@Produces("application/json")
+	public String getActiveMonthlyBudgetByUserId(@Context HttpHeaders headers,String content) throws Exception 
+	{
+		int index = content.lastIndexOf("=");
+		int userId =Integer.parseInt(content.substring(index + 1));
+		monthlyBudgetSession=new MonthlyBudgetSession();
+	    MonthlyBudgetVO monthlyBudgetVO=monthlyBudgetSession.getActiveMonthlyBudgetByUserId(userId);
+		Gson gson = new Gson();
+	    String feeds = gson.toJson(monthlyBudgetVO);
+	   
+		return "{MonthlyBudgetVO:" + feeds + "}";
 	}
 	@POST
 	@Path("/checkEmail")

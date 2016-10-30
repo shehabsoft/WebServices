@@ -28,7 +28,7 @@
 		<query>SELECT u.id FROM User u where u.email =:email</query>
 	</named-query>
 	<named-query name="findExpensesCategories">
-		<query>SELECT c FROM Category c  join c.monthlyBudgetCategories mbc on c.id=mbc.category.id  join mbc.monthlyBudget mob on mob.id=mbc.monthlyBudget.id where c.categoryTypeId=2  and mob.id=:id and mob.user.id=:userId </query>
+		<query>SELECT c.id,c.arabicDescription,c.englishDescription,c.categoryTypeId,c.categoryStatus,mbc.actualValue,mbc.limitValue,mbc.planedValue FROM Category c  join c.monthlyBudgetCategories mbc on c.id=mbc.category.id  join mbc.monthlyBudget mob on mob.id=mbc.monthlyBudget.id where c.categoryTypeId=2  and mob.id=:id and mob.user.id=:userId </query>
 	</named-query>
 	<named-query name="User.findAll">
 		<query>SELECT u FROM User u</query>

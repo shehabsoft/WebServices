@@ -19,17 +19,13 @@ import com.dataObject.LocationVO;
 import com.dataObject.PurchaseVO;
 
 
-public class LocationSession {
-//	
-//	   @PersistenceContext(unitName="WebServices",type = PersistenceContextType.EXTENDED) 
-//	   EntityManager entitymanager; 
-	private EntityManagerFactory emfactory ;
-	private EntityManager entitymanager;
+public class LocationSession extends SessionFactory{
+
+
 	CategorySession categorySession;
 	public LocationSession()
 	{
-		emfactory = Persistence.createEntityManagerFactory("WebServices");
-		entitymanager = emfactory.createEntityManager();
+		super();
 	}
 	
 	
@@ -55,12 +51,10 @@ public class LocationSession {
 					{
 						throw new Exception("Purchase English Description Should not be Null");
 					}
-					
-					
-				    entitymanager.getTransaction().begin();
-					
-					entitymanager.persist(location);
-					entitymanager.getTransaction().commit();
+			
+				getEntitymanager().getTransaction().begin();
+				getEntitymanager().persist(location);
+				getEntitymanager().getTransaction().commit();
 	    
 		}catch(Exception e)
 		{
@@ -77,7 +71,7 @@ public class LocationSession {
 		try
 		{
 		ArrayList<LocationVO>purchases=new ArrayList<LocationVO>();
-		Query query = (Query) entitymanager.createNamedQuery("findAllLocations");
+		Query query = (Query) getEntitymanager().createNamedQuery("findAllLocations");
 	    List<Location> purchaseList =  query.getResultList();
 		for (Location purchase : purchaseList) {
 			LocationVO purchaseVO=new LocationVO();

@@ -3,6 +3,7 @@ package com.HomeBudget.Sessions;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -15,22 +16,14 @@ import com.dataObject.CategoryVO;
 import com.entities.models.Category;
 
 
-public class CategorySession {
-//	
-//	   @PersistenceContext(unitName="WebServices",type = PersistenceContextType.EXTENDED) 
-//	   EntityManager entitymanager; 
-	private EntityManagerFactory emfactory;
-	private EntityManager entitymanager ;
+
+public class CategorySession extends SessionFactory{
+
 	public CategorySession()
 	{
-		 emfactory = Persistence.createEntityManagerFactory("WebServices");
-		 entitymanager = emfactory.createEntityManager();
+		super();
 	}
-	public CategorySession(EntityManagerFactory emfactory,EntityManager entitymanager)
-	{
-		this.emfactory=emfactory;
-		this.entitymanager=entitymanager;
-	}
+
 	public void updateCategory(CategoryVO categoryVO)throws Exception
 	{
 		try
@@ -42,12 +35,12 @@ public class CategorySession {
 	    category.setPlanedValue(categoryVO.getPlanedValue());
 		category.setActualValue(categoryVO.getActualValue());
 		category.setParentCategoryId(categoryVO.getParentCategoryId());
-		category.setLimitValue(categoryVO.getLimit_value());
+		category.setLimitValue(categoryVO.getLimitValue());
 		/*//entitymanager.persist(category);
 		//entitymanager.getTransaction().commit();
 */		}catch(Exception e)
 		{
-			entitymanager.getTransaction().rollback();
+			getEntitymanager().getTransaction().rollback();
 			throw new Exception(e);
 		}
 		
@@ -80,9 +73,9 @@ public class CategorySession {
 		{
 			throw new Exception("Planed Value Should not be Enter");
 		}
-		if(categoryVO.getLimit_value()>=categoryVO.getPlanedValue())
+		if(categoryVO.getLimitValue()>=categoryVO.getPlanedValue())
 		{
-		category.setLimitValue(categoryVO.getLimit_value());
+		category.setLimitValue(categoryVO.getLimitValue());
 		}else
 		{
 			if(categoryVO.getCategoryTypeId()==2)
@@ -90,7 +83,7 @@ public class CategorySession {
 			throw new Exception("Planed Value Should  be Less Than Limit Value");
 			}else
 			{
-				category.setLimitValue(categoryVO.getLimit_value());
+				category.setLimitValue(categoryVO.getLimitValue());
 			}
 		}
 		if(categoryVO.getActualValue()<categoryVO.getPlanedValue())
@@ -115,23 +108,23 @@ public class CategorySession {
 		{
 		category.setParentCategoryId(categoryVO.getParentCategoryId());
 		}
-		entitymanager.getTransaction().begin();
-		entitymanager.persist(category);
-		entitymanager.getTransaction().commit();
+		getEntitymanager().getTransaction().begin();
+		getEntitymanager().persist(category);
+		getEntitymanager().getTransaction().commit();
 	}
 	public CategoryVO getCategoryById(int id)
 	{
 		try
 		{
 		
-		entitymanager.getTransaction().begin();
-		Query query = (Query) entitymanager.createNamedQuery("findCategotyById").setParameter("id", id);
+			getEntitymanager().getTransaction().begin();
+		Query query = (Query) getEntitymanager().createNamedQuery("findCategotyById").setParameter("id", id);
 		Category category=(Category)query.getSingleResult();
 		CategoryVO categoryVO=new CategoryVO();
 		categoryVO.setActualValue(category.getActualValue());
 		categoryVO.setArabicDescription(category.getArabicDescription());
 		categoryVO.setCategoryStatus(category.getCategoryStatus());
-		categoryVO.setLimit_value(category.getLimitValue());
+		categoryVO.setLimitValue(category.getLimitValue());
 		categoryVO.setPlanedValue(category.getPlanedValue());
 		categoryVO.setEnglisDescription(category.getEnglishDescription());
 		categoryVO.setId(category.getId());
@@ -147,21 +140,33 @@ public class CategorySession {
 		try
 		{
 		ArrayList<CategoryVO>categoryVOs=new ArrayList<CategoryVO>();
-		Query query = (Query) entitymanager.createNamedQuery("findExpensesCategories");
+		Query query = (Query) getEntitymanager().createNamedQuery("findExpensesCategories");
 		query.setParameter("id", monthlyBudgetId);
 		query.setParameter("userId", userId);
 	    List<Category> categoryList =  query.getResultList();
-		for (Category category : categoryList) {
-			CategoryVO categoryVO=new CategoryVO();
-			categoryVO.setActualValue(category.getActualValue());
-			categoryVO.setArabicDescription(category.getArabicDescription());
-			categoryVO.setCategoryStatus(category.getCategoryStatus());
-			categoryVO.setLimit_value(category.getLimitValue());
-			categoryVO.setPlanedValue(category.getPlanedValue());
-			categoryVO.setEnglisDescription(category.getEnglishDescription());
-			categoryVO.setId(category.getId());
-			categoryVOs.add(categoryVO);
-		}
+	    List<Object> result = query.getResultList();
+	    Iterator itr = result.iterator();
+	    while(itr.hasNext()){
+	        CategoryVO categoryVO=new CategoryVO();
+	        Object[] obj = (Object[]) itr.next();
+	   
+	    	categoryVO.setArabicDescription(String.valueOf(obj[1]));
+	    	categoryVO.setEnglisDescription(String.valueOf(obj[2]));
+	    	categoryVO.setCategoryTypeId(Integer.parseInt(String.valueOf(obj[3])));
+		    categoryVO.setActualValue(Double.parseDouble(String.valueOf(obj[5])));
+		    categoryVO.setLimitValue(Double.parseDouble(String.valueOf(obj[6])));
+		    categoryVO.setPlanedValue(Double.parseDouble(String.valueOf(obj[7])));
+		    categoryVO.setId(Integer.parseInt(String.valueOf(obj[0])));
+		    if(categoryVO.getActualValue()<=categoryVO.getLimitValue())
+			{
+				categoryVO.setCategoryStatus(2);
+			}else
+			{
+				categoryVO.setCategoryStatus(1);
+			}
+		    categoryVOs.add(categoryVO);
+	   
+	    }
 
 	
 		return categoryVOs;
@@ -176,7 +181,7 @@ public class CategorySession {
 		try
 		{
 		ArrayList<CategoryVO>categoryVOs=new ArrayList<CategoryVO>();
-		Query query = (Query) entitymanager.createNamedQuery("findBudgetCategories");
+		Query query = (Query) getEntitymanager().createNamedQuery("findBudgetCategories");
 		query.setParameter("id", monthlyBudgetId);
 		query.setParameter("userId", userId);
 	    List<Category> categoryList =  query.getResultList();
@@ -185,7 +190,7 @@ public class CategorySession {
 			categoryVO.setActualValue(category.getActualValue());
 			categoryVO.setArabicDescription(category.getArabicDescription());
 			categoryVO.setCategoryStatus(category.getCategoryStatus());
-			categoryVO.setLimit_value(category.getLimitValue());
+			categoryVO.setLimitValue(category.getLimitValue());
 			categoryVO.setPlanedValue(category.getPlanedValue());
 			categoryVO.setEnglisDescription(category.getEnglishDescription());
 			categoryVO.setId(category.getId());
@@ -206,7 +211,7 @@ public class CategorySession {
 		category.setActualValue(categoryVO.getActualValue());
 		category.setArabicDescription(categoryVO.getArabicDescription());
 		category.setCategoryStatus(categoryVO.getCategoryStatus());
-		category.setLimitValue(categoryVO.getLimit_value());
+		category.setLimitValue(categoryVO.getLimitValue());
 		category.setPlanedValue(categoryVO.getPlanedValue());
 		category.setEnglishDescription(categoryVO.getEnglishDescription());
 		category.setId(categoryVO.getId());

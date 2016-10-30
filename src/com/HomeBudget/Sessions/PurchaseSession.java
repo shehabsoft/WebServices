@@ -20,17 +20,12 @@ import com.dataObject.CategoryVO;
 import com.dataObject.PurchaseVO;
 
 
-public class PurchaseSession {
-//	
-//	   @PersistenceContext(unitName="WebServices",type = PersistenceContextType.EXTENDED) 
-//	   EntityManager entitymanager; 
-	private EntityManagerFactory emfactory ;
-	private EntityManager entitymanager;
+public class PurchaseSession extends SessionFactory{
+ 
 	CategorySession categorySession;
 	public PurchaseSession()
 	{
-		emfactory = Persistence.createEntityManagerFactory("WebServices");
-		entitymanager = emfactory.createEntityManager();
+		 super();
 	}
 	
 	
@@ -41,7 +36,7 @@ public class PurchaseSession {
 		try
 		{
 			
-	    Category category=entitymanager.find(Category.class, purchaseVO.getCategoryId());
+	    Category category=getEntitymanager().find(Category.class, purchaseVO.getCategoryId());
 	    purchase.setCategory(category);
 	   
 	    if(category==null)
@@ -58,7 +53,7 @@ public class PurchaseSession {
 					}
 					if(purchaseVO.getLocationId()!=0)
 					{
-					  Location location=entitymanager.find(Location.class, purchaseVO.getLocationId());
+					  Location location=getEntitymanager().find(Location.class, purchaseVO.getLocationId());
 					  purchase.setLocation(location);;
 					}else
 					{
@@ -85,24 +80,24 @@ public class PurchaseSession {
 					}
 					purchase.setCreationDate(new Date());
 				//	category.setActualValue(category.getActualValue()+purchaseVO.getPrice());
-				    entitymanager.getTransaction().begin();
+					getEntitymanager().getTransaction().begin();
 					purchase.setCategory(category);
-					Query query = (Query) entitymanager.createNamedQuery("getActiveMonthlyBudgetByUserId");
+					Query query = (Query) getEntitymanager().createNamedQuery("getActiveMonthlyBudgetByUserId");
 					query.setParameter("id", purchaseVO.getUserId());
 					MonthlyBudget monthlyBudget=  (MonthlyBudget) query.getSingleResult();
 					monthlyBudget.setTotalExpenses(monthlyBudget.getTotalExpenses()+purchaseVO.getPrice());
 					purchase.setMonthlyBudget(monthlyBudget);
-					entitymanager.persist(monthlyBudget);
-					entitymanager.persist(purchase);
+					getEntitymanager().persist(monthlyBudget);
+					getEntitymanager().persist(purchase);
 					int monthlyBudgetId=monthlyBudget.getId();
-					Query query2 = (Query) entitymanager.createNamedQuery("getMonthlyBudgetCategoryByMonthlyBudgetIdAndCategoryId");
+					Query query2 = (Query) getEntitymanager().createNamedQuery("getMonthlyBudgetCategoryByMonthlyBudgetIdAndCategoryId");
 					query2.setParameter("id", monthlyBudgetId);
 					query2.setParameter("categoryId", category.getId());
 					MonthlyBudgetCategory monthlyBudgetCategory=(MonthlyBudgetCategory) query2.getSingleResult();
 					monthlyBudgetCategory.setActualValue(monthlyBudgetCategory.getActualValue()+purchaseVO.getPrice());
-					entitymanager.persist(monthlyBudgetCategory);
+					getEntitymanager().persist(monthlyBudgetCategory);
 			/*	//	categorySession.updateCategory(categoryVO);
-			*/		entitymanager.getTransaction().commit();
+			*/		getEntitymanager().getTransaction().commit();
 	    }
 		}catch(Exception e) 
 		{
@@ -110,44 +105,16 @@ public class PurchaseSession {
 			
 		}
 		
-		/*/
-*/		
+
+	
 	}
-	public PurchaseVO getPurchaseByEnglishName(String englishName)
-	{
-//		try
-//		{
-//		Configuration configuration=new Configuration();
-//		configuration.configure();
-//		ServiceRegistry sr= new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();
-//		SessionFactory sf=configuration.buildSessionFactory(sr);
-//		Session open_session=sf.openSession();
-//		open_session.beginTransaction();
-//		Query query = open_session.getNamedQuery("findCategoryByEnglishDescription")
-//				.setString("english_description", englishName);
-//		Category category=(Category)query.uniqueResult();
-//		purchase purchase=new purchase();
-//		purchase.setActualValue(category.getActualValue());
-//		purchase.setArabicDescription(category.getArabicDescription());
-//		purchase.setCategoryStatus(category.getCategory_Status());
-//		purchase.setLimit_value(category.getLimitValue());
-//		purchase.setPlanedValue(category.getPlanedValue());
-//		purchase.setEnglisDescription(category.getEnglishDescription());
-//		purchase.setId(category.getId());
-//		return purchase;
-//	}catch(Exception e)
-//		{
-//		System.out.println(e);
-//		return null;
-//		}
-		return null;
-	}
+	
 	public ArrayList<PurchaseVO> getAllPurchases(int monthlyBudgetId) throws Exception
 	{
 		try
 		{
 		ArrayList<PurchaseVO>purchases=new ArrayList<PurchaseVO>();
-		Query query = (Query) entitymanager.createNamedQuery("findAllPurchases");
+		Query query = (Query) getEntitymanager().createNamedQuery("findAllPurchases");
 		query.setParameter("id", monthlyBudgetId);
 	    List<Purchase> purchaseList =  query.getResultList();
 		for (Purchase purchase : purchaseList) {

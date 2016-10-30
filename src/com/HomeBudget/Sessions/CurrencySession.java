@@ -19,22 +19,14 @@ import com.dataObject.CountryVO;
 import com.dataObject.CurrencyVO;
 
 
-public class CurrencySession {
+public class CurrencySession extends SessionFactory{
 //	
-
-	private EntityManagerFactory emfactory;
-	private EntityManager entitymanager ;
+ 
 	public CurrencySession()
 	{
-		 emfactory = Persistence.createEntityManagerFactory("WebServices");
-		 entitymanager = emfactory.createEntityManager();
+		super();
 	}
-	public CurrencySession(EntityManagerFactory emfactory,EntityManager entitymanager)
-	{
-		this.emfactory=emfactory;
-		this.entitymanager=entitymanager;
-	}
-	
+
 	
 
 	public ArrayList<CurrencyVO> getAllCurrencies()
@@ -42,7 +34,7 @@ public class CurrencySession {
 		try
 		{
 		ArrayList<CurrencyVO>countriesVOS=new ArrayList<CurrencyVO>();
-		Query query = (Query) entitymanager.createNamedQuery("findAllCurrencies");
+		Query query = (Query) getEntitymanager().createNamedQuery("findAllCurrencies");
 	    List<Currency> currencyList =  query.getResultList();
 		for (Currency currency : currencyList) {
 			CurrencyVO currncyVo=new CurrencyVO();

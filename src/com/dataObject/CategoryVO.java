@@ -28,15 +28,9 @@ public class CategoryVO {
 		this.categoryTypeId = categoryTypeId;
 	}
 
-	public double getPrice() {
-		return price;
-	}
 
-	public void setPrice(double price) {
-		this.price = price;
-	}
 
-	private double price;
+	private double limitValue;
 	
 	private double planedValue;
 	
@@ -74,12 +68,14 @@ public class CategoryVO {
 		this.categoryId = parentCategoryId;
 	}
 
-	public double getLimit_value() {
-		return price;
+
+
+	public double getLimitValue() {
+		return limitValue;
 	}
 
-	public void setLimit_value(double limit_value) {
-		this.price = limit_value;
+	public void setLimitValue(double limitValue) {
+		this.limitValue = limitValue;
 	}
 
 	public double getPlanedValue() {

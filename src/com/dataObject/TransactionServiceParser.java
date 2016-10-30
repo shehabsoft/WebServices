@@ -109,7 +109,7 @@ public  class TransactionServiceParser {
         categoryVO.setArabicDescription(arabicDescription);
         categoryVO.setEnglisDescription(englishDescription);
         categoryVO.setPlanedValue(Double.parseDouble(planedValue));
-        categoryVO.setLimit_value(Double.parseDouble(limitValue));
+        categoryVO.setLimitValue(Double.parseDouble(limitValue));
         categoryVO.setCategoryStatus(Integer.parseInt(categoryStatus));
         categoryVO.setActualValue(Double.parseDouble(actualValue));
         categoryVO.setCategoryTypeId(Integer.parseInt(categoryType));
@@ -208,11 +208,10 @@ public  class TransactionServiceParser {
         String expenseCategoriesId = getNodeValue(root, "expenseCategoriesId", true, true);
         trsVO=new TransactionVO();
         trsVO.setServiceCode(serviceCode);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        Date startTime=new Date(startDate);
-        Date endTime=new Date(endDate);
-        monthlyBudgetVO.setStartDate(startTime);
-        monthlyBudgetVO.setEndDate(endTime);
+    
+       
+        monthlyBudgetVO.setStartDate(startDate);
+        monthlyBudgetVO.setEndDate(endDate);
         monthlyBudgetVO.setExpenseCategoriesId(expenseCategoriesId);
         monthlyBudgetVO.setIncomeCategoriesId(incomeCategoriesId);
         trsVO.setMonthlyBudgetVO(monthlyBudgetVO);

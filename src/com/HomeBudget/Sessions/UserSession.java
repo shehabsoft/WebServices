@@ -22,21 +22,15 @@ import com.dataObject.PurchaseVO;
 import com.dataObject.UserVO;
 
 
-public class UserSession {
+public class UserSession extends SessionFactory{
 //	
 
-	private EntityManagerFactory emfactory;
-	private EntityManager entitymanager ;
+
 	public UserSession()
 	{
-		 emfactory = Persistence.createEntityManagerFactory("WebServices");
-		 entitymanager = emfactory.createEntityManager();
+	 super();
 	}
-	public UserSession(EntityManagerFactory emfactory,EntityManager entitymanager)
-	{
-		this.emfactory=emfactory;
-		this.entitymanager=entitymanager;
-	}
+	
 	
 	
 
@@ -45,7 +39,7 @@ public class UserSession {
 		try
 		{
 		ArrayList<UserVO>userVOS=new ArrayList<UserVO>();
-		Query query = (Query) entitymanager.createNamedQuery("User.findAll");
+		Query query = (Query) getEntitymanager().createNamedQuery("User.findAll");
 	    List<UserVO> userList =  query.getResultList();
 		for (UserVO user : userList) {
 			UserVO userVO=new UserVO();
@@ -73,7 +67,7 @@ public class UserSession {
 		 User user =new User();
 		try
 		{
-	    Country country=entitymanager.find(Country.class, userVo.getCountryId());
+	    Country country=getEntitymanager().find(Country.class, userVo.getCountryId());
 	    user.setCountry(country);
 	    user.setStatusId(userVo.getStatusId());
 	    user.setGenderId(userVo.getGenderId());
@@ -92,7 +86,7 @@ public class UserSession {
 					}
 					if(userVo.getCurrencyId()!=0)
 					{
-					  Currency currency=entitymanager.find(Currency.class, userVo.getCurrencyId());
+					  Currency currency=getEntitymanager().find(Currency.class, userVo.getCurrencyId());
 					  user.setCurrency(currency);
 					}else
 					{
@@ -122,10 +116,10 @@ public class UserSession {
 						throw new Exception("Password Should not be Null");
 					}
 					user.setCreationDate(new Date());
-				    entitymanager.getTransaction().begin();
-					entitymanager.persist(user);
+					getEntitymanager().getTransaction().begin();
+					getEntitymanager().persist(user);
 		
-				entitymanager.getTransaction().commit();
+					getEntitymanager().getTransaction().commit();
 	    }
 		}catch(Exception e)
 		{
@@ -137,7 +131,7 @@ public class UserSession {
 		{
 			try
 			{
-				Query query = (Query) entitymanager.createNamedQuery("User.checkMail");
+				Query query = (Query) getEntitymanager().createNamedQuery("User.checkMail");
 				query.setParameter("email", mail);
 				List<User> user=(List<User>)query.getResultList();
 				if(user.size()==0)
