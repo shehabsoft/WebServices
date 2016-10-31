@@ -78,6 +78,22 @@ public class Lookups {
 	   
 		return "{CategoryVO:" + feeds + "}";
 	}
+
+	
+	@POST
+	@Path("/GetAllExpensesCategories")
+	@Produces("application/json")
+	public String getAllExpensesCategories(@Context HttpHeaders headers,String content) 
+	{
+		int index = content.lastIndexOf("=");
+		int userId =Integer.parseInt(content.substring(index + 1));
+		categorySession=new CategorySession();
+		ArrayList<CategoryVO> categoryVOList=categorySession.getAllExpensesCategories(userId);
+		Gson gson = new Gson();
+	    String feeds = gson.toJson(categoryVOList);
+	   
+		return "{CategoryVO:" + feeds + "}";
+	}
 	@POST
 	@Path("/GetAllPurchases")
 	@Produces("application/json")
@@ -118,6 +134,21 @@ public class Lookups {
 		int userId =Integer.parseInt(content.substring(index + 1));
 		int monthlyBudgetId	=monthlyBudgetSession.getActiveMonthlyBudgetIdByUserId(userId);
 		ArrayList<CategoryVO> categoryVOList=categorySession.GetBudgetCategories(monthlyBudgetId,userId);
+		Gson gson = new Gson();
+	    String feeds = gson.toJson(categoryVOList);
+	   
+		return "{CategoryVO:" + feeds + "}";
+	}
+	@POST
+	@Path("/GetAllBudgetCategories")
+	@Produces("application/json")
+	public String GetAllBudgetCategories(@Context HttpHeaders headers,String content) throws Exception 
+	{
+		categorySession=new CategorySession();
+		monthlyBudgetSession=new MonthlyBudgetSession();
+		int index = content.lastIndexOf("=");
+		int userId =Integer.parseInt(content.substring(index + 1));
+		ArrayList<CategoryVO> categoryVOList=categorySession.GetAllBudgetCategories(userId);
 		Gson gson = new Gson();
 	    String feeds = gson.toJson(categoryVOList);
 	   
