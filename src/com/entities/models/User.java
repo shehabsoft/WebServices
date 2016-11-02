@@ -41,9 +41,13 @@ public class User implements Serializable {
 	@Column(name="status_id")
 	private int statusId;
 
+		//bi-directional many-to-one association to Category
+	@OneToMany(mappedBy="user")
+	private List<Category> categories;
 	//bi-directional many-to-one association to MonthlyBudget
 	@OneToMany(mappedBy="user")
 	private List<MonthlyBudget> monthlyBudgets;
+
 
 	//bi-directional many-to-one association to Country
 	@ManyToOne
@@ -165,5 +169,11 @@ public class User implements Serializable {
 	public void setCurrency(Currency currency) {
 		this.currency = currency;
 	}
+public List<Category> getCategories() {
+		return this.categories;
+	}
 
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
+	}
 }

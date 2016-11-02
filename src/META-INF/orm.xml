@@ -4,12 +4,14 @@
 		<query>SELECT p FROM Purchase  p join p.monthlyBudget mob on p.monthlyBudget.id=mob.id where mob.id=:id</query>
 	</named-query>
 	
-	
+	<named-query name="findAllExpensesCategories">
+		<query>SELECT c FROM Category c  where c.user.id=:userId and c.categoryTypeId=2 </query>
+	</named-query>
 	<named-query name="findAllBudgetCategories">
-		<query>SELECT c FROM Category c  join c.monthlyBudgetCategories mbc on c.id=mbc.category.id  join mbc.monthlyBudget mob on mob.id=mbc.monthlyBudget.id where c.categoryTypeId=1   and mob.user.id=:userId</query>
+		<query>SELECT c FROM Category c  where c.user.id=:userId and c.categoryTypeId=1 </query>
 	</named-query>
 	<named-query name="findBudgetCategories">
-		<query>SELECT c FROM Category c  join c.monthlyBudgetCategories mbc on c.id=mbc.category.id  join mbc.monthlyBudget mob on mob.id=mbc.monthlyBudget.id where c.categoryTypeId=1  and mob.id=:id and mob.user.id=:userId</query>
+		<query>SELECT c.id,c.arabicDescription,c.englishDescription,c.categoryTypeId,c.categoryStatus,mbc.actualValue,mbc.limitValue,mbc.planedValue FROM Category c  join c.monthlyBudgetCategories mbc on c.id=mbc.category.id  join mbc.monthlyBudget mob on mob.id=mbc.monthlyBudget.id where c.categoryTypeId=1  and mob.id=:id and mob.user.id=:userId</query>
 	</named-query>
 	<named-query name="MonthlyBudgetCategory.findAll">
 		<query>SELECT m FROM MonthlyBudgetCategory m</query>

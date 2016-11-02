@@ -8,6 +8,16 @@ public class CategoryVO {
 	private String arabicDescription;
 	
 	private String englishDescription;
+    private int userId;
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+
 
 	private int categoryId;
 	private int categoryTypeId;

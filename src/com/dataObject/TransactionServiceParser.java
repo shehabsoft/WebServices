@@ -74,18 +74,18 @@ public  class TransactionServiceParser {
         TransactionVO trsVO = null;
      
     	Integer serviceCode = new Integer(getNodeValue(root, "serviceCode", true, true));
-        if (serviceCode==1) {
+        if (serviceCode==Constants.ADD_CATEGORY_SERVICE) {
             trsVO = getCategoryInfo(root);
-        }else if(serviceCode==2)
+        }else if(serviceCode==Constants.ADD_PURCHASE_SERVICE)
         {
         	  trsVO = getPurchaseInfo(root);
-        }else if(serviceCode==3)
+        }else if(serviceCode==Constants.ADD_LOCATION_SERVICE)
         {
         	 trsVO = getLocationInfo(root);
-        }else if(serviceCode==4)
+        }else if(serviceCode==Constants.ADD_USER_SERVICE)
         {
         	trsVO=getUserInfo(root);
-        }else if(serviceCode==5)
+        }else if(serviceCode==Constants.ADD_BUDGET_SERVICE)
         {
         	trsVO=getMonthlyBudgetInfo(root);
         }
@@ -100,6 +100,7 @@ public  class TransactionServiceParser {
         String arabicDescription = getNodeValue(root, "arabicDescription", true, true);
         String englishDescription = getNodeValue(root, "englishDescription", true, true);
         String limitValue = getNodeValue(root, "limitValue", true, true);
+        String userId = getNodeValue(root, "userId", true, true);
         String planedValue = getNodeValue(root, "planedValue", true, true);
         String categoryStatus = getNodeValue(root, "categoryStatus", true, true);
         String categoryType = getNodeValue(root, "categoryType", true, true);
@@ -113,6 +114,7 @@ public  class TransactionServiceParser {
         categoryVO.setCategoryStatus(Integer.parseInt(categoryStatus));
         categoryVO.setActualValue(Double.parseDouble(actualValue));
         categoryVO.setCategoryTypeId(Integer.parseInt(categoryType));
+        categoryVO.setUserId(Integer.parseInt(userId));
         trsVO.setCategoryVO(categoryVO);
         
         return  trsVO;

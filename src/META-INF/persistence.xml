@@ -7,10 +7,10 @@
 		<class>com.entities.models.Currency</class>
 		<class>com.entities.models.Location</class>
 		<class>com.entities.models.MonthlyBudget</class>
-		<class>com.entities.models.Purchase</class>
-		<class>com.entities.models.User</class>
 		<class>com.entities.models.MonthlyBudgetCategory</class>
 		<class>com.entities.models.MonthlyBudgetCategoryPK</class>
+		<class>com.entities.models.Purchase</class>
+		<class>com.entities.models.User</class>
 		<properties>
 			<property name="javax.persistence.schema-generation.scripts.action" value="none"/>
 			<property name="javax.persistence.schema-generation.database.action" value="none"/>

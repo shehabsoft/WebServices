@@ -14,6 +14,7 @@ import javax.persistence.Query;
 import com.dataObject.BusinessException;
 import com.dataObject.CategoryVO;
 import com.entities.models.Category;
+import com.entities.models.User;
 
 
 
@@ -52,6 +53,15 @@ public class CategorySession extends SessionFactory{
 		Category category=new Category();
 		category.setCategoryStatus(categoryVO.getCategoryStatus());
 		category.setCategoryTypeId(categoryVO.getCategoryTypeId());
+		int userId=categoryVO.getUserId();
+		if(userId!=0)
+		{
+			User user=getEntitymanager().find(User.class, userId);
+			category.setUser(user);
+		}else
+		{
+			throw new Exception("User  Should not be Null");
+		}
 		if(categoryVO.getArabicDescription()!=null)
 		{
 		category.setArabicDescription(categoryVO.getArabicDescription());
@@ -93,7 +103,7 @@ public class CategorySession extends SessionFactory{
 		{
 			if(categoryVO.getCategoryTypeId()==2)
 			{
-			throw new Exception("Planed Value Should  be Less Than Limit Value");
+			throw new Exception("Actual Value Should  be Less Than PLaned Value");
 			}
 			else
 			{
@@ -149,8 +159,7 @@ public class CategorySession extends SessionFactory{
 	    while(itr.hasNext()){
 	        CategoryVO categoryVO=new CategoryVO();
 	        Object[] obj = (Object[]) itr.next();
-	   
-	    	categoryVO.setArabicDescription(String.valueOf(obj[1]));
+		    	 	categoryVO.setArabicDescription(String.valueOf(obj[1]));
 	    	categoryVO.setEnglisDescription(String.valueOf(obj[2]));
 	    	categoryVO.setCategoryTypeId(Integer.parseInt(String.valueOf(obj[3])));
 		    categoryVO.setActualValue(Double.parseDouble(String.valueOf(obj[5])));
@@ -164,9 +173,9 @@ public class CategorySession extends SessionFactory{
 			{
 				categoryVO.setCategoryStatus(1);
 			}
-		    categoryVOs.add(categoryVO);
-	   
-	    }
+			    categoryVOs.add(categoryVO);
+		   
+		    }
 
 	
 		return categoryVOs;
@@ -184,19 +193,16 @@ public class CategorySession extends SessionFactory{
 		Query query = (Query) getEntitymanager().createNamedQuery("findAllExpensesCategories");
 		query.setParameter("userId", userId);
 	    List<Category> categoryList =  query.getResultList();
-	    List<Object> result = query.getResultList();
-	    Iterator itr = result.iterator();
-	    while(itr.hasNext()){
+	   for(Category category:categoryList)
+	   {
 	        CategoryVO categoryVO=new CategoryVO();
-	        Object[] obj = (Object[]) itr.next();
-	   
-	    	categoryVO.setArabicDescription(String.valueOf(obj[1]));
-	    	categoryVO.setEnglisDescription(String.valueOf(obj[2]));
-	    	categoryVO.setCategoryTypeId(Integer.parseInt(String.valueOf(obj[3])));
-		    categoryVO.setActualValue(Double.parseDouble(String.valueOf(obj[5])));
-		    categoryVO.setLimitValue(Double.parseDouble(String.valueOf(obj[6])));
-		    categoryVO.setPlanedValue(Double.parseDouble(String.valueOf(obj[7])));
-		    categoryVO.setId(Integer.parseInt(String.valueOf(obj[0])));
+	    	categoryVO.setArabicDescription(category.getArabicDescription());
+	    	categoryVO.setEnglisDescription(category.getEnglishDescription());
+	    	categoryVO.setCategoryTypeId(category.getCategoryTypeId());
+		    categoryVO.setActualValue(category.getActualValue());
+		    categoryVO.setLimitValue(category.getLimitValue());
+		    categoryVO.setPlanedValue(category.getPlanedValue());
+		    categoryVO.setId(category.getId());
 		    if(categoryVO.getActualValue()<=categoryVO.getLimitValue())
 			{
 				categoryVO.setCategoryStatus(2);
@@ -224,18 +230,21 @@ public class CategorySession extends SessionFactory{
 		Query query = (Query) getEntitymanager().createNamedQuery("findBudgetCategories");
 		query.setParameter("id", monthlyBudgetId);
 		query.setParameter("userId", userId);
-	    List<Category> categoryList =  query.getResultList();
-		for (Category category : categoryList) {
-			CategoryVO categoryVO=new CategoryVO();
-			categoryVO.setActualValue(category.getActualValue());
-			categoryVO.setArabicDescription(category.getArabicDescription());
-			categoryVO.setCategoryStatus(category.getCategoryStatus());
-			categoryVO.setLimitValue(category.getLimitValue());
-			categoryVO.setPlanedValue(category.getPlanedValue());
-			categoryVO.setEnglisDescription(category.getEnglishDescription());
-			categoryVO.setId(category.getId());
-			categoryVOs.add(categoryVO);
-		}
+	    List<Object> result = query.getResultList();
+	    Iterator itr = result.iterator();
+	    while(itr.hasNext()){
+	        CategoryVO categoryVO=new CategoryVO();
+	        Object[] obj = (Object[]) itr.next();
+		    categoryVO.setArabicDescription(String.valueOf(obj[1]));
+	    	categoryVO.setEnglisDescription(String.valueOf(obj[2]));
+	    	categoryVO.setCategoryTypeId(Integer.parseInt(String.valueOf(obj[3])));
+		    categoryVO.setActualValue(Double.parseDouble(String.valueOf(obj[5])));
+		    categoryVO.setLimitValue(Double.parseDouble(String.valueOf(obj[6])));
+		    categoryVO.setPlanedValue(Double.parseDouble(String.valueOf(obj[7])));
+		    categoryVO.setId(Integer.parseInt(String.valueOf(obj[0])));
+			    categoryVOs.add(categoryVO);
+		   
+		    }
 
 	
 		return categoryVOs;
