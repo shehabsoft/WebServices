@@ -48,6 +48,12 @@ public class TransactionService {
         	monthlyBudgetSession.addMonthlyBudget(transactionVO.getMonthlyBudgetVO());
         
         }
+        else if(transactionVO.getServiceCode()==Constants.EDIT_PURCHASE_SERVICE)
+        {
+        	PurchaseSession purchaseSession=new PurchaseSession();
+        	purchaseSession.updatePurchase(transactionVO.getPurchaseVO());
+        
+        }
 		return ResponseBuilder.getCreateTransactionResponse(transactionVO);
 		}catch(Exception e)
 		{

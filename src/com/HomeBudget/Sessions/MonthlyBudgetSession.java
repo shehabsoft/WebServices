@@ -19,6 +19,7 @@ import com.entities.models.*;
 import com.dataObject.BusinessException;
 import com.dataObject.CategoryVO;
 import com.dataObject.MonthlyBudgetVO;
+import com.dataObject.PurchaseVO;
 
 
 public class MonthlyBudgetSession extends SessionFactory {
@@ -108,6 +109,23 @@ public class MonthlyBudgetSession extends SessionFactory {
 			else
 		return false;
 	}
+	public boolean updateMonthlyBudgetByPurchase(PurchaseVO purchaseVO) throws Exception
+	{
+		try
+		{
+			getEntitymanager().getTransaction().begin();
+			Query query = (Query) getEntitymanager().createNamedQuery("getActiveMonthlyBudgetByUserId");
+			query.setParameter("id", purchaseVO.getUserId());
+			MonthlyBudget monthlyBudget=  (MonthlyBudget) query.getSingleResult();
+			monthlyBudget.setTotalExpenses(monthlyBudget.getTotalExpenses()+purchaseVO.getUpdatedExpenseValue());
+			getEntitymanager().getTransaction().commit();
+			return true;
+			
+		}catch(Exception e)
+		{
+			throw new Exception(e.toString());
+		}
+	}
 	
 	public MonthlyBudgetVO getActiveMonthlyBudgetByUserId(int userId)
 	{
@@ -115,19 +133,19 @@ public class MonthlyBudgetSession extends SessionFactory {
 		{
 			Query query = (Query) getEntitymanager().createNamedQuery("getActiveMonthlyBudgetByUserId");
 			query.setParameter("id", userId);
-			MonthlyBudgetVO monthlyBudgetVO=null;
-			MonthlyBudget monthlyBudget=(MonthlyBudget) query.getSingleResult();
-			if(monthlyBudget!=null)
+			MonthlyBudgetVO monthlyBudgetVO=new MonthlyBudgetVO();
+			List<MonthlyBudget> monthlyBudget=(List<MonthlyBudget>) query.getResultList();
+			if(monthlyBudget.size()>0)
 			{
 			    monthlyBudgetVO=new MonthlyBudgetVO();
 			    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			    String creationDate=sdf.format( monthlyBudget.getCreationDate());
+			    String creationDate=sdf.format( monthlyBudget.get(0).getCreationDate());
 			    monthlyBudgetVO.setCreationDate(creationDate);
-				monthlyBudgetVO.setStartDate(sdf.format(monthlyBudget.getStartDate()));
-				monthlyBudgetVO.setEndDate(sdf.format(monthlyBudget.getEndDate()));
-				monthlyBudgetVO.setCreationDate(sdf.format(monthlyBudget.getCreationDate()));
-				monthlyBudgetVO.setTotalExpenses(monthlyBudget.getTotalExpenses());
-				monthlyBudgetVO.setTotalIncomes(monthlyBudget.getTotalIncome());
+				monthlyBudgetVO.setStartDate(sdf.format(monthlyBudget.get(0).getStartDate()));
+				monthlyBudgetVO.setEndDate(sdf.format(monthlyBudget.get(0).getEndDate()));
+				monthlyBudgetVO.setCreationDate(sdf.format(monthlyBudget.get(0).getCreationDate()));
+				monthlyBudgetVO.setTotalExpenses(monthlyBudget.get(0).getTotalExpenses());
+				monthlyBudgetVO.setTotalIncomes(monthlyBudget.get(0).getTotalIncome());
 				
 			}
 			return monthlyBudgetVO;
@@ -143,8 +161,14 @@ public class MonthlyBudgetSession extends SessionFactory {
 		{
 			Query query = (Query) getEntitymanager().createNamedQuery("getActiveMonthlyBudgetByUserId");
 			query.setParameter("id", userId);
-			MonthlyBudget monthlyBudget=(MonthlyBudget) query.getSingleResult();
-			return monthlyBudget.getId();
+			List<MonthlyBudget> monthlyBudget=(List<MonthlyBudget>) query.getResultList();
+			if(monthlyBudget.size()>0)
+			{
+			return monthlyBudget.get(0).getId();
+			}else
+			{
+				return 0;
+			}
 			
 		}catch(Exception e)
 		{

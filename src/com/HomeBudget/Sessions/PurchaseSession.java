@@ -108,6 +108,70 @@ public class PurchaseSession extends SessionFactory{
 
 	
 	}
+	public void updatePurchase(PurchaseVO purchaseVO) throws Exception
+	{
+		try
+		{
+			double updateExpenseValue=0;
+			Purchase purchase=getEntitymanager().find(Purchase.class, purchaseVO.getId());
+			if(purchase.getPrice()!=purchaseVO.getPrice())
+			    {
+				updateExpenseValue=purchaseVO.getPrice()-purchase.getPrice();
+			    }
+			purchase.setArabicDescription(purchaseVO.getArabicDescription());
+			purchase.setEnglishDescription(purchaseVO.getEnglishDescription());
+			purchase.setPrice(purchaseVO.getPrice());
+			Category category=getEntitymanager().find(Category.class, purchaseVO.getCategoryId());
+		    Location location=getEntitymanager().find(Location.class, purchaseVO.getLocationId());
+		    purchase.setLocation(location);
+		    Query query = (Query) getEntitymanager().createNamedQuery("getActiveMonthlyBudgetByUserId");
+			query.setParameter("id", purchaseVO.getUserId());
+			MonthlyBudget monthlyBudget=  (MonthlyBudget) query.getSingleResult();
+			monthlyBudget.setTotalExpenses(monthlyBudget.getTotalExpenses()+updateExpenseValue);
+			
+			//update If The Category Changed 
+			List<MonthlyBudgetCategory> monthlyBudgetCategoryList=null;
+			if(purchase.getCategory().getId()!=purchaseVO.getCategoryId())
+			{
+				//reduce value From Old Category in Table Monthly Budget Category 
+				query = (Query) getEntitymanager().createNamedQuery("getAllbyMonthlyBudget");
+				query.setParameter("id", monthlyBudget.getId());
+				 monthlyBudgetCategoryList=  (List<MonthlyBudgetCategory>) query.getResultList();
+				for(MonthlyBudgetCategory monthlyBudgetCategory:monthlyBudgetCategoryList)
+				{
+					if(purchase.getCategory().getId()==monthlyBudgetCategory.getCategory().getId())
+					{
+						monthlyBudgetCategory.setActualValue(monthlyBudgetCategory.getActualValue()-purchaseVO.getPrice());
+						getEntitymanager().persist(monthlyBudgetCategory);
+					}else if(purchaseVO.getCategoryId()==monthlyBudgetCategory.getCategory().getId())
+					{
+						monthlyBudgetCategory.setActualValue(monthlyBudgetCategory.getActualValue()+purchaseVO.getPrice());
+						getEntitymanager().persist(monthlyBudgetCategory);
+					}
+					
+				}
+				
+					
+				
+				
+				
+			}
+		    purchase.setCategory(category);
+		    purchase.setCreationDate(new Date());
+		    purchase.setMonthlyBudget(monthlyBudget);
+		   
+			purchase.setDetails(purchaseVO.getDetails());
+			getEntitymanager().getTransaction().begin();
+			getEntitymanager().persist(purchase);
+			getEntitymanager().getTransaction().commit();
+			
+			
+			
+		}catch(Exception e)
+		{
+			throw new Exception(e);
+		}
+	}
 	
 	public ArrayList<PurchaseVO> getAllPurchases(int monthlyBudgetId) throws Exception
 	{

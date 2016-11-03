@@ -20,7 +20,7 @@ public class PurchaseVO {
 	public void setLocationName(String locationName) {
 		this.locationName = locationName;
 	}
-
+    private double updatedExpenseValue;
 	private int categoryId;
 	private int locationId;
 	
@@ -30,6 +30,12 @@ public class PurchaseVO {
 	
 	
 
+	public double getUpdatedExpenseValue() {
+		return updatedExpenseValue;
+	}
+	public void setUpdatedExpenseValue(double updatedExpenseValue) {
+		this.updatedExpenseValue = updatedExpenseValue;
+	}
 	public int getUserId() {
 		return userId;
 	}

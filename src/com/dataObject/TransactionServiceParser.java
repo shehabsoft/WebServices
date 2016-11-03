@@ -78,7 +78,7 @@ public  class TransactionServiceParser {
             trsVO = getCategoryInfo(root);
         }else if(serviceCode==Constants.ADD_PURCHASE_SERVICE)
         {
-        	  trsVO = getPurchaseInfo(root);
+        	  trsVO = getPurchaseInfo(root,false);
         }else if(serviceCode==Constants.ADD_LOCATION_SERVICE)
         {
         	 trsVO = getLocationInfo(root);
@@ -88,7 +88,10 @@ public  class TransactionServiceParser {
         }else if(serviceCode==Constants.ADD_BUDGET_SERVICE)
         {
         	trsVO=getMonthlyBudgetInfo(root);
-        }
+        }else if(serviceCode==Constants.EDIT_PURCHASE_SERVICE)
+        {
+      	  trsVO = getPurchaseInfo(root,true);
+      }
         return trsVO;
     }
     public TransactionVO getCategoryInfo(Node root)
@@ -152,7 +155,7 @@ public  class TransactionServiceParser {
         return  trsVO;
         
     }
-    public TransactionVO getPurchaseInfo(Node root)
+    public TransactionVO getPurchaseInfo(Node root,boolean edit)
     {
    	 // Create transaction VO
         TransactionVO trsVO = null;
@@ -166,6 +169,12 @@ public  class TransactionServiceParser {
         String categoryId = getNodeValue(root, "categoryId", true, true);
         String locationId = getNodeValue(root, "locationId", true, true);
         trsVO=new TransactionVO();
+        if(edit)
+        {
+        	 String purchaseId = getNodeValue(root, "purchaseId", true, true);
+        	 purchaseVO.setId(Integer.parseInt(purchaseId));
+        }
+        
         trsVO.setServiceCode(serviceCode);
         purchaseVO.setUserId(userId);
         purchaseVO.setArabicDescription(arabicDescription);
@@ -180,6 +189,7 @@ public  class TransactionServiceParser {
     	
     	
     }
+
     public TransactionVO getLocationInfo(Node root)
     {
    	 // Create transaction VO
