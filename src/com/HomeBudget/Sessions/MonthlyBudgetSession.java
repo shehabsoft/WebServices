@@ -146,6 +146,7 @@ public class MonthlyBudgetSession extends SessionFactory {
 				monthlyBudgetVO.setCreationDate(sdf.format(monthlyBudget.get(0).getCreationDate()));
 				monthlyBudgetVO.setTotalExpenses(monthlyBudget.get(0).getTotalExpenses());
 				monthlyBudgetVO.setTotalIncomes(monthlyBudget.get(0).getTotalIncome());
+				monthlyBudgetVO.setId(monthlyBudget.get(0).getId());
 				
 			}
 			return monthlyBudgetVO;

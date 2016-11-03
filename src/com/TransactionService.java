@@ -54,6 +54,13 @@ public class TransactionService {
         	purchaseSession.updatePurchase(transactionVO.getPurchaseVO());
         
         }
+        else if(transactionVO.getServiceCode()==Constants.EDIT_CATEGORY_EXPENSES_SERVICE||transactionVO.getServiceCode()==Constants.EDIT_CATEGORY_REVENUES_SERVICE)
+        {
+        	CategorySession categorySession=new CategorySession();
+        	categorySession.updateCategory(transactionVO.getCategoryVO());
+        
+        }
+        	
 		return ResponseBuilder.getCreateTransactionResponse(transactionVO);
 		}catch(Exception e)
 		{

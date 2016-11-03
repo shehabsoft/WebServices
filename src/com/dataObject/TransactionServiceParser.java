@@ -75,7 +75,7 @@ public  class TransactionServiceParser {
      
     	Integer serviceCode = new Integer(getNodeValue(root, "serviceCode", true, true));
         if (serviceCode==Constants.ADD_CATEGORY_SERVICE) {
-            trsVO = getCategoryInfo(root);
+            trsVO = getCategoryInfo(root,false,Constants.ADD_CATEGORY_SERVICE);
         }else if(serviceCode==Constants.ADD_PURCHASE_SERVICE)
         {
         	  trsVO = getPurchaseInfo(root,false);
@@ -91,14 +91,22 @@ public  class TransactionServiceParser {
         }else if(serviceCode==Constants.EDIT_PURCHASE_SERVICE)
         {
       	  trsVO = getPurchaseInfo(root,true);
-      }
+        }
+        else if(serviceCode==Constants.EDIT_CATEGORY_EXPENSES_SERVICE)
+        {
+      	  trsVO = getCategoryInfo(root,true,Constants.CATEGORY_TYPE_EXPENSES_ID);
+        }else if(serviceCode==Constants.EDIT_CATEGORY_REVENUES_SERVICE)
+        {
+        	trsVO = getCategoryInfo(root,true,Constants.CATEGORY_TYPE_REVENUES_ID);
+        }
         return trsVO;
     }
-    public TransactionVO getCategoryInfo(Node root)
+    public TransactionVO getCategoryInfo(Node root,boolean edit,int serviceCodeType)
     {
     	 // Create transaction VO
         TransactionVO trsVO = null;
         CategoryVO categoryVO=new CategoryVO();
+        trsVO=new TransactionVO();
         Integer serviceCode = new Integer(getNodeValue(root, "serviceCode", true, true));
         String arabicDescription = getNodeValue(root, "arabicDescription", true, true);
         String englishDescription = getNodeValue(root, "englishDescription", true, true);
@@ -106,17 +114,31 @@ public  class TransactionServiceParser {
         String userId = getNodeValue(root, "userId", true, true);
         String planedValue = getNodeValue(root, "planedValue", true, true);
         String categoryStatus = getNodeValue(root, "categoryStatus", true, true);
+        
+        if(!edit)
+        {
         String categoryType = getNodeValue(root, "categoryType", true, true);
         String actualValue = getNodeValue(root, "actualValue", true, true);
-        trsVO=new TransactionVO();
+        categoryVO.setActualValue(Double.parseDouble(actualValue));
+        categoryVO.setCategoryTypeId(Integer.parseInt(categoryType));
+        }else
+        {
+        	if(serviceCodeType==Constants.CATEGORY_TYPE_REVENUES_ID)
+        	{
+        	String actualValue = getNodeValue(root, "actualValue", true, true);	
+        	categoryVO.setActualValue(Double.parseDouble(actualValue));
+        	}
+        	String categoryId = getNodeValue(root, "categoryId", true, true);
+        	categoryVO.setId(Integer.parseInt(categoryId));
+        }
         trsVO.setServiceCode(serviceCode);
         categoryVO.setArabicDescription(arabicDescription);
         categoryVO.setEnglisDescription(englishDescription);
         categoryVO.setPlanedValue(Double.parseDouble(planedValue));
         categoryVO.setLimitValue(Double.parseDouble(limitValue));
         categoryVO.setCategoryStatus(Integer.parseInt(categoryStatus));
-        categoryVO.setActualValue(Double.parseDouble(actualValue));
-        categoryVO.setCategoryTypeId(Integer.parseInt(categoryType));
+        
+       
         categoryVO.setUserId(Integer.parseInt(userId));
         trsVO.setCategoryVO(categoryVO);
         
