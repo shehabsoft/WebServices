@@ -59,6 +59,10 @@ public class TransactionService {
         	CategorySession categorySession=new CategorySession();
         	categorySession.updateCategory(transactionVO.getCategoryVO());
         
+        }else if(transactionVO.getServiceCode()==Constants.EDIT_MONTHLY_BUDGET_SERVICE)
+        {
+        	MonthlyBudgetSession monthlyBudgetSession=new MonthlyBudgetSession();
+        	monthlyBudgetSession.updateMonthlyBudget(transactionVO.getMonthlyBudgetVO());
         }
         	
 		return ResponseBuilder.getCreateTransactionResponse(transactionVO);

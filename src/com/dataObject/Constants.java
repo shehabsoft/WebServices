@@ -12,6 +12,7 @@ public interface  Constants {
 	static int ADD_LOCATION_SERVICE=3;
 	static int ADD_USER_SERVICE=4;
 	static int ADD_BUDGET_SERVICE=5;
+	static int EDIT_MONTHLY_BUDGET_SERVICE=9;
 	
 	
 

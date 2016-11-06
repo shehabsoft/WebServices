@@ -87,7 +87,7 @@ public  class TransactionServiceParser {
         	trsVO=getUserInfo(root);
         }else if(serviceCode==Constants.ADD_BUDGET_SERVICE)
         {
-        	trsVO=getMonthlyBudgetInfo(root);
+        	trsVO=getMonthlyBudgetInfo(root,false);
         }else if(serviceCode==Constants.EDIT_PURCHASE_SERVICE)
         {
       	  trsVO = getPurchaseInfo(root,true);
@@ -98,6 +98,9 @@ public  class TransactionServiceParser {
         }else if(serviceCode==Constants.EDIT_CATEGORY_REVENUES_SERVICE)
         {
         	trsVO = getCategoryInfo(root,true,Constants.CATEGORY_TYPE_REVENUES_ID);
+        }else if(serviceCode==Constants.EDIT_MONTHLY_BUDGET_SERVICE)
+        {
+        	trsVO = getMonthlyBudgetInfo(root,true);
         }
         return trsVO;
     }
@@ -230,7 +233,7 @@ public  class TransactionServiceParser {
     	
     	
     }
-    public TransactionVO getMonthlyBudgetInfo(Node root)
+    public TransactionVO getMonthlyBudgetInfo(Node root,boolean edit)
     {
    	 // Create transaction VO
         TransactionVO trsVO = null;
@@ -240,6 +243,12 @@ public  class TransactionServiceParser {
         String endDate = getNodeValue(root, "endDate", true, true);
         String incomeCategoriesId = getNodeValue(root, "incomeCategoriesId", true, true);
         String expenseCategoriesId = getNodeValue(root, "expenseCategoriesId", true, true);
+        String monthlyBudgetId ="";
+        if(edit)
+        {
+        	  monthlyBudgetId = getNodeValue(root, "monthlyBudgetId", true, true);
+        	  monthlyBudgetVO.setId(Integer.parseInt(monthlyBudgetId));
+        }
         trsVO=new TransactionVO();
         trsVO.setServiceCode(serviceCode);
     

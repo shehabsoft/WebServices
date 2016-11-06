@@ -18,6 +18,7 @@ import javax.persistence.TypedQuery;
 import com.entities.models.*;
 import com.dataObject.BusinessException;
 import com.dataObject.CategoryVO;
+import com.dataObject.Constants;
 import com.dataObject.MonthlyBudgetVO;
 import com.dataObject.PurchaseVO;
 
@@ -97,7 +98,102 @@ public class MonthlyBudgetSession extends SessionFactory {
 		throw new Exception(e.toString());
 	}
 	}
-	
+	public boolean updateMonthlyBudget(MonthlyBudgetVO newmonthlyBudgetVO)
+	{
+		//get old Monthly Budget by Id
+		getEntitymanager().getTransaction().begin();
+		MonthlyBudget oldmonthlyBudget=getEntitymanager().find(MonthlyBudget.class, newmonthlyBudgetVO.getId());
+		//get old Monthly Budget Categories 
+		List<MonthlyBudgetCategory>oldbudgetCategories=oldmonthlyBudget.getMonthlyBudgetCategories();
+		//filter new Monthly Budget Categories
+		String incomeCategoryList=newmonthlyBudgetVO.getIncomeCategoriesId().replace("[","").replace("]", "");
+		String []incomeCategories =incomeCategoryList.split(",");
+		String expenseCategoriesList=newmonthlyBudgetVO.getExpenseCategoriesId().replace("[","").replace("]", "");
+		String [] expenseCategories =expenseCategoriesList.split(",");
+		
+		
+		
+		//filter with income Categories
+		boolean changedInMonthlyBudget=false;
+		boolean changedInMonthlyBudgetCategories=false;
+		int categoryId=0;
+		boolean found=false;
+		for(int i=0;i<incomeCategories.length;i++)
+		{
+			found=false;
+			categoryId=Integer.parseInt(incomeCategories[i].trim());
+			for(MonthlyBudgetCategory monthlyBudgetCategory:oldbudgetCategories)
+			{
+				if(categoryId==monthlyBudgetCategory.getCategory().getId())
+				{
+					found=true;
+					break;
+					
+				}
+			}
+			if(found==false)//add new Monthly Budget Category
+			{
+				MonthlyBudgetCategory newbudgetCategory=new MonthlyBudgetCategory();
+				Category category=getEntitymanager().find(Category.class, categoryId);
+				newbudgetCategory.setCategory(category);
+				newbudgetCategory.setActualValue(category.getActualValue());
+				newbudgetCategory.setMonthlyBudget(oldmonthlyBudget);
+				newbudgetCategory.setPlanedValue(category.getPlanedValue());
+				newbudgetCategory.setLimitValue(category.getLimitValue());
+				newbudgetCategory.setMonthlyBudget(oldmonthlyBudget);
+				if(category.getCategoryTypeId()==Constants.CATEGORY_TYPE_REVENUES_ID)//update monthly budget
+				{
+					oldmonthlyBudget.setTotalIncome(oldmonthlyBudget.getTotalIncome()+category.getActualValue());
+					changedInMonthlyBudget=true;
+				}
+				changedInMonthlyBudgetCategories=true;
+				getEntitymanager().persist(newbudgetCategory);
+			}
+			
+		}
+		//filter with Expenses Categorie
+		for(int i=0;i<expenseCategories.length;i++)
+		{
+			found=false;
+			categoryId=Integer.parseInt(expenseCategories[i].trim());
+			for(MonthlyBudgetCategory monthlyBudgetCategory:oldbudgetCategories)
+			{
+				if(categoryId==monthlyBudgetCategory.getCategory().getId())
+				{
+					found=true;
+					break;
+					
+				}
+			}
+			if(found==false)//add new Monthly Budget Category
+			{
+				Category category=getEntitymanager().find(Category.class, categoryId);
+				MonthlyBudgetCategory newbudgetCategory=new MonthlyBudgetCategory();
+				newbudgetCategory.setCategory(category);
+				newbudgetCategory.setActualValue(category.getActualValue());
+				newbudgetCategory.setMonthlyBudget(oldmonthlyBudget);
+				newbudgetCategory.setPlanedValue(category.getPlanedValue());
+				newbudgetCategory.setLimitValue(category.getLimitValue());
+				getEntitymanager().persist(newbudgetCategory);
+				changedInMonthlyBudgetCategories=true;
+			}
+			
+		}
+		
+		if(changedInMonthlyBudget)
+		{
+		getEntitymanager().persist(oldmonthlyBudget);
+		}
+		if(changedInMonthlyBudgetCategories)
+		{
+		getEntitymanager().getTransaction().commit();
+		}
+		
+		
+		
+		
+		return true;
+	}
 		
 	public boolean deActivePreviousMonthlyBudget(int userId)
 	{
