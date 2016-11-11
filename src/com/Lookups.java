@@ -64,9 +64,10 @@ public class Lookups {
 
 	@POST
 	@Path("/GetExpensesCategories")
-	@Produces("application/json")
+	@Produces("application/json;charset=utf-8;encoding=windows-1256")
 	public String getExpensesCategories(@Context HttpHeaders headers,String content) 
 	{
+		logger.info("Calling GetExpensesCategories.............");
 		int index = content.lastIndexOf("=");
 		int userId =Integer.parseInt(content.substring(index + 1));
 		monthlyBudgetSession=new MonthlyBudgetSession();
@@ -75,6 +76,7 @@ public class Lookups {
 		ArrayList<CategoryVO> categoryVOList=categorySession.getExpensesCategories(monthlyBudgetId,userId);
 		Gson gson = new Gson();
 	    String feeds = gson.toJson(categoryVOList);
+	    logger.info("Output............."+feeds);
 	   
 		return "{CategoryVO:" + feeds + "}";
 	}
@@ -82,7 +84,7 @@ public class Lookups {
 	
 	@POST
 	@Path("/GetAllExpensesCategories")
-	@Produces("application/json")
+	@Produces("application/json;charset=utf-8;encoding=windows-1256")
 	public String getAllExpensesCategories(@Context HttpHeaders headers,String content) 
 	{
 		int index = content.lastIndexOf("=");
@@ -96,7 +98,7 @@ public class Lookups {
 	}
 	@POST
 	@Path("/GetAllPurchases")
-	@Produces("application/json")
+	@Produces("application/json;charset=utf-8")
 	public String GetAllPurchases(@Context HttpHeaders headers,String content) throws Exception 
 	{
 		monthlyBudgetSession=new MonthlyBudgetSession();
@@ -125,7 +127,7 @@ public class Lookups {
 	
 	@POST
 	@Path("/GetBudgetCategories")
-	@Produces("application/json")
+	@Produces("application/json;charset=utf-8")
 	public String GetBudgetCategories(@Context HttpHeaders headers,String content) throws Exception 
 	{
 		categorySession=new CategorySession();
@@ -141,7 +143,7 @@ public class Lookups {
 	}
 	@POST
 	@Path("/GetAllBudgetCategories")
-	@Produces("application/json")
+	@Produces("application/json;charset=utf-8")
 	public String GetAllBudgetCategories(@Context HttpHeaders headers,String content) throws Exception 
 	{
 		categorySession=new CategorySession();

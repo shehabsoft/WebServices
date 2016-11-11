@@ -33,72 +33,80 @@ public class CategorySession extends SessionFactory{
 	{
 		try
 		{
-		Category category=getEntitymanager().find(Category.class, categoryVO.getId());
-		
-		if(categoryVO.getPlanedValue()>categoryVO.getLimitValue())
-		{
-			throw new BusinessException("Planed Value Should Be Less Than Limit Value");
-		}
-		category.setCategoryStatus(categoryVO.getCategoryStatus());
-		category.setEnglishDescription(categoryVO.getEnglishDescription());
-		category.setArabicDescription(categoryVO.getArabicDescription());
-	    category.setPlanedValue(categoryVO.getPlanedValue());
-		category.setLimitValue(categoryVO.getLimitValue());
-		getEntitymanager().getTransaction().begin();
-		getEntitymanager().persist(category);
-		//update Monthly Budget Category
-		MonthlyBudgetSession monthlyBudgetSession=new MonthlyBudgetSession();
-		
-		MonthlyBudgetVO monthlyBudgetVo=monthlyBudgetSession.getActiveMonthlyBudgetByUserId(categoryVO.getUserId());
-		Query query = (Query) getEntitymanager().createNamedQuery("getMonthlyBudgetCategoryByMonthlyBudgetIdAndCategoryId");
-		query.setParameter("id", monthlyBudgetVo.getId());
-		query.setParameter("categoryId", category.getId());
-		if(category.getCategoryTypeId()==Constants.CATEGORY_TYPE_EXPENSES_ID)//Expenses
-		{
-			List<MonthlyBudgetCategory>budgetCategories=query.getResultList();
-			for(MonthlyBudgetCategory budgetCategory:budgetCategories)
+			Category category=getEntitymanager().find(Category.class, categoryVO.getId());
+			category.setEnglishDescription(categoryVO.getEnglishDescription());
+			category.setArabicDescription(categoryVO.getArabicDescription());
+			if(categoryVO.getCategoryStatus()!=Constants.STATUS_ACTIVE)
 			{
-				 budgetCategory.setPlanedValue(category.getPlanedValue());
-				 budgetCategory.setLimitValue(category.getLimitValue());
-				 getEntitymanager().persist(budgetCategory);
-			
-			}
-		}else
-		{
-			List<MonthlyBudgetCategory>budgetCategories=query.getResultList();
-			for(MonthlyBudgetCategory budgetCategory:budgetCategories)
+				category.setCategoryStatus(categoryVO.getCategoryStatus());	
+				getEntitymanager().getTransaction().begin();
+				getEntitymanager().persist(category);
+				getEntitymanager().getTransaction().commit();
+				
+			}else
 			{
-				 budgetCategory.setPlanedValue(categoryVO.getPlanedValue());
-				 budgetCategory.setLimitValue(categoryVO.getLimitValue());
-				 
-				 if(category.getActualValue()!=categoryVO.getActualValue())//update Actual Value in Monthly Budget Table 
-				 {
-					 budgetCategory.setActualValue(categoryVO.getActualValue());
-					 MonthlyBudget monthlyBudget=getEntitymanager().find(MonthlyBudget.class, monthlyBudgetVo.getId());
-					 double difference=categoryVO.getActualValue()-category.getActualValue();
-					 category.setActualValue(categoryVO.getActualValue());
-					 getEntitymanager().persist(category);
-					 monthlyBudget.setTotalIncome(monthlyBudget.getTotalIncome()+difference);
+					if(categoryVO.getPlanedValue()>categoryVO.getLimitValue())
+					{
+						throw new BusinessException("Planed Value Should Be Less Than Limit Value");
+					}
 					
-					 getEntitymanager().persist(monthlyBudget);
-					 
-				 }
-				 getEntitymanager().persist(budgetCategory);
+					
+					getEntitymanager().getTransaction().begin();
+					getEntitymanager().persist(category);
+					//update Monthly Budget Category
+					MonthlyBudgetSession monthlyBudgetSession=new MonthlyBudgetSession();
+					
+					MonthlyBudgetVO monthlyBudgetVo=monthlyBudgetSession.getActiveMonthlyBudgetByUserId(categoryVO.getUserId());
+					Query query = (Query) getEntitymanager().createNamedQuery("getMonthlyBudgetCategoryByMonthlyBudgetIdAndCategoryId");
+					query.setParameter("id", monthlyBudgetVo.getId());
+					query.setParameter("categoryId", category.getId());
+					if(category.getCategoryTypeId()==Constants.CATEGORY_TYPE_EXPENSES_ID)//Expenses
+					{
+						List<MonthlyBudgetCategory>budgetCategories=query.getResultList();
+						for(MonthlyBudgetCategory budgetCategory:budgetCategories)
+						{
+							 budgetCategory.setPlanedValue(category.getPlanedValue());
+							 budgetCategory.setLimitValue(category.getLimitValue());
+							 getEntitymanager().persist(budgetCategory);
+						
+						}
+					}else
+					{
+						List<MonthlyBudgetCategory>budgetCategories=query.getResultList();
+						for(MonthlyBudgetCategory budgetCategory:budgetCategories)
+						{
+							 budgetCategory.setPlanedValue(categoryVO.getPlanedValue());
+							 budgetCategory.setLimitValue(categoryVO.getLimitValue());
+							 
+							 if(category.getActualValue()!=categoryVO.getActualValue())//update Actual Value in Monthly Budget Table 
+							 {
+								 budgetCategory.setActualValue(categoryVO.getActualValue());
+								 MonthlyBudget monthlyBudget=getEntitymanager().find(MonthlyBudget.class, monthlyBudgetVo.getId());
+								 double difference=categoryVO.getActualValue()-category.getActualValue();
+								 category.setActualValue(categoryVO.getActualValue());
+								 getEntitymanager().persist(category);
+								 monthlyBudget.setTotalIncome(monthlyBudget.getTotalIncome()+difference);
+								
+								 getEntitymanager().persist(monthlyBudget);
+								 
+							 }
+							 getEntitymanager().persist(budgetCategory);
+						
+						}
+					}
+					
+					getEntitymanager().getTransaction().commit();
+					
+			}	
 			
-			}
+					}catch(Exception e)
+					{
+						getEntitymanager().getTransaction().rollback();
+						throw new Exception(e);
+					}
 		}
 		
-		getEntitymanager().getTransaction().commit();
-		
-		
-
-		}catch(Exception e)
-		{
-			getEntitymanager().getTransaction().rollback();
-			throw new Exception(e);
-		}
-		
-	}
+	
 	public void addCategory(CategoryVO categoryVO) throws Exception
 	{
 		

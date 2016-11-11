@@ -98,13 +98,22 @@ public class MonthlyBudgetSession extends SessionFactory {
 		throw new Exception(e.toString());
 	}
 	}
+	
+	public List<MonthlyBudgetCategory> getMonthlyBudgetCategoriesById(int monthlyBudgetId)
+	{
+		Query query = (Query) getEntitymanager().createNamedQuery("getAllbyMonthlyBudget").setParameter("id", monthlyBudgetId);
+		List<MonthlyBudgetCategory>budgetCategories=query.getResultList();
+		return budgetCategories;
+		
+		
+	}
 	public boolean updateMonthlyBudget(MonthlyBudgetVO newmonthlyBudgetVO)
 	{
 		//get old Monthly Budget by Id
 		getEntitymanager().getTransaction().begin();
 		MonthlyBudget oldmonthlyBudget=getEntitymanager().find(MonthlyBudget.class, newmonthlyBudgetVO.getId());
 		//get old Monthly Budget Categories 
-		List<MonthlyBudgetCategory>oldbudgetCategories=oldmonthlyBudget.getMonthlyBudgetCategories();
+		List<MonthlyBudgetCategory>oldbudgetCategories=getMonthlyBudgetCategoriesById(oldmonthlyBudget.getId());
 		//filter new Monthly Budget Categories
 		String incomeCategoryList=newmonthlyBudgetVO.getIncomeCategoriesId().replace("[","").replace("]", "");
 		String []incomeCategories =incomeCategoryList.split(",");
@@ -274,7 +283,7 @@ public class MonthlyBudgetSession extends SessionFactory {
 	}
 	public Long getNextKey()
 	{
-		Query q = getEntitymanager().createNativeQuery("SELECT Auto_increment FROM information_schema.tables WHERE table_name='monthly_budget'");
+		Query q = getEntitymanager().createNativeQuery("SELECT Max(Auto_increment) FROM information_schema.tables WHERE table_name='monthly_budget'");
 		return (Long)q.getSingleResult();
 	}
 }

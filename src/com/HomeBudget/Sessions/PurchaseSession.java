@@ -155,6 +155,20 @@ public class PurchaseSession extends SessionFactory{
 				
 				
 				
+			}else //Update Monthly Budget in Case change In Actual Value
+			{
+				query = (Query) getEntitymanager().createNamedQuery("getAllbyMonthlyBudget");
+				query.setParameter("id", monthlyBudget.getId());
+				 monthlyBudgetCategoryList=  (List<MonthlyBudgetCategory>) query.getResultList();
+				for(MonthlyBudgetCategory monthlyBudgetCategory:monthlyBudgetCategoryList)
+				{
+					if(purchase.getCategory().getId()==monthlyBudgetCategory.getCategory().getId())
+					{
+						double actualValue=monthlyBudgetCategory.getActualValue();
+						monthlyBudgetCategory.setActualValue(actualValue+updateExpenseValue);
+						getEntitymanager().persist(monthlyBudgetCategory);
+					}
+				}
 			}
 		    purchase.setCategory(category);
 		    purchase.setCreationDate(new Date());
