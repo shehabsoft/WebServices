@@ -1,4 +1,4 @@
-package com.HomeBudget.Sessions;
+package com.HomeBudget.DAO;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,10 +20,10 @@ import com.dataObject.CategoryVO;
 import com.dataObject.PurchaseVO;
 
 
-public class PurchaseSession extends SessionFactory{
+public class PurchaseDAOImpl extends DataAccessObject implements PurchaseDAO{
  
-	CategorySession categorySession;
-	public PurchaseSession()
+	
+	public PurchaseDAOImpl()
 	{
 		 super();
 	}

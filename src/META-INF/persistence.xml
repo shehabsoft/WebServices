@@ -11,6 +11,7 @@
 		<class>com.entities.models.MonthlyBudgetCategoryPK</class>
 		<class>com.entities.models.Purchase</class>
 		<class>com.entities.models.User</class>
+		<class>com.entities.models.InfoTraceLog</class>
 		<properties>
 			<property name="javax.persistence.schema-generation.scripts.action" value="none"/>
 			<property name="javax.persistence.schema-generation.database.action" value="none"/>
@@ -24,8 +25,8 @@
 		<!-- <property name="eclipselink.drop-ddl-jdbc-file-name" value="dropDDL_ddlGeneration.jdbc"/> -->
 		<property name="eclipselink.ddl-generation.output-mode" value="both"/>
 		<property name="hibernate.connection.useUnicode" value="true" />
-<property name="hibernate.connection.characterEncoding" value="UTF-8" />
- <property name="hibernate.connection.charSet" value="UTF-8"/>
+		<property name="hibernate.connection.characterEncoding" value="UTF-8" />
+		 <property name="hibernate.connection.charSet" value="UTF-8"/>
 		</properties>
 	</persistence-unit>
 </persistence>

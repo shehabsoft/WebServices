@@ -1,11 +1,22 @@
 package com;
 
 
+import java.util.Date;
+
+import org.apache.log4j.Logger;
+
+import com.HomeBudget.Bus.CategoryHandler;
+import com.HomeBudget.Bus.InfoTraceLogHandler;
+import com.HomeBudget.Bus.LocationHandler;
+import com.HomeBudget.Bus.MonthlyBudgetHandler;
+import com.HomeBudget.Bus.PurchaseHandler;
+import com.HomeBudget.Bus.UserHandler;
 import com.HomeBudget.Sessions.CategorySession;
 import com.HomeBudget.Sessions.LocationSession;
 import com.HomeBudget.Sessions.MonthlyBudgetSession;
 import com.HomeBudget.Sessions.PurchaseSession;
 import com.HomeBudget.Sessions.UserSession;
+import com.HomeBudget.dataObject.InfoTraceLogVO;
 import com.dataObject.Constants;
 import com.dataObject.ResponseBuilder;
 import com.dataObject.TransactionServiceParser;
@@ -15,61 +26,88 @@ public class TransactionService {
 	public String helloName(String name){
 		return "Hello there " + name;
 		 } 
-	
-	public String createTransaction(String xmlSata)
+	Logger logger=Logger.getLogger(TransactionService.class);
+	private InfoTraceLogHandler infoTraceLogHandler;
+	public String createTransaction(String xmlSata) 
 	{
+		InfoTraceLogVO infoTraceLogVO=new InfoTraceLogVO();
+		String responseData="";
 		try
 		{
+		logger.info("Calling CreateTransaction................");	
+		infoTraceLogHandler=new InfoTraceLogHandler();
+		logger.info("Transaction Request :"+xmlSata);
 		System.out.println(xmlSata);
 		TransactionServiceParser serviceParser=new TransactionServiceParser();
 	    TransactionVO transactionVO=	serviceParser.parseCreateTransaction(xmlSata);
-
+    
 		if(transactionVO.getServiceCode()==Constants.ADD_CATEGORY_SERVICE)
         {
-        	CategorySession categorySession=new CategorySession();
-        	categorySession.addCategory(transactionVO.getCategoryVO());
+        	CategoryHandler categoryHandler=new CategoryHandler();
+        	categoryHandler.add(transactionVO.getCategoryVO());
         }else if(transactionVO.getServiceCode()==Constants.ADD_PURCHASE_SERVICE)
         {
-        	PurchaseSession purchaseSession=new PurchaseSession();
-        	purchaseSession.addPurchase(transactionVO.getPurchaseVO());
+        	PurchaseHandler purchaseHandler=new PurchaseHandler();
+        	purchaseHandler.add(transactionVO.getPurchaseVO());
         }else if(transactionVO.getServiceCode()==Constants.ADD_LOCATION_SERVICE)
         {
-        	LocationSession locationSession=new LocationSession();
-        	locationSession.addLocation(transactionVO.getLocationVO());
+        	LocationHandler locationHandler=new LocationHandler();
+        	locationHandler.add(transactionVO.getLocationVO());
         }else if(transactionVO.getServiceCode()==Constants.ADD_USER_SERVICE)
         {
-        	UserSession   userSession=new UserSession();
-        	userSession.addUser(transactionVO.getUserVO());
+        	UserHandler   userHandler=new UserHandler();
+        	userHandler.add(transactionVO.getUserVO());
         	
         }
         else if(transactionVO.getServiceCode()==Constants.ADD_BUDGET_SERVICE)
         {
-         	MonthlyBudgetSession monthlyBudgetSession=new MonthlyBudgetSession();
-        	monthlyBudgetSession.addMonthlyBudget(transactionVO.getMonthlyBudgetVO());
+         	MonthlyBudgetHandler monthlyBudgetHandler=new MonthlyBudgetHandler();
+         	monthlyBudgetHandler.add(transactionVO.getMonthlyBudgetVO());
         
         }
         else if(transactionVO.getServiceCode()==Constants.EDIT_PURCHASE_SERVICE)
         {
-        	PurchaseSession purchaseSession=new PurchaseSession();
-        	purchaseSession.updatePurchase(transactionVO.getPurchaseVO());
+        	PurchaseHandler purchaseHandler=new PurchaseHandler();
+        	purchaseHandler.update(transactionVO.getPurchaseVO());
         
         }
         else if(transactionVO.getServiceCode()==Constants.EDIT_CATEGORY_EXPENSES_SERVICE||transactionVO.getServiceCode()==Constants.EDIT_CATEGORY_REVENUES_SERVICE)
         {
-        	CategorySession categorySession=new CategorySession();
-        	categorySession.updateCategory(transactionVO.getCategoryVO());
+        	CategoryHandler categoryHandler=new CategoryHandler();
+        	categoryHandler.update(transactionVO.getCategoryVO());
         
         }else if(transactionVO.getServiceCode()==Constants.EDIT_MONTHLY_BUDGET_SERVICE)
         {
-        	MonthlyBudgetSession monthlyBudgetSession=new MonthlyBudgetSession();
-        	monthlyBudgetSession.updateMonthlyBudget(transactionVO.getMonthlyBudgetVO());
+        	MonthlyBudgetHandler monthlyBudgetHandler=new MonthlyBudgetHandler();
+        	monthlyBudgetHandler.update(transactionVO.getMonthlyBudgetVO());
         }
-        	
-		return ResponseBuilder.getCreateTransactionResponse(transactionVO);
+	
+       
+        infoTraceLogVO.setRequestData(xmlSata);
+        infoTraceLogVO.setRequestDate(new Date());	
+        infoTraceLogVO.setResponseDate(new Date());	
+		responseData=ResponseBuilder.getCreateTransactionResponse(transactionVO);
+		infoTraceLogVO.setResponseData(responseData);
+		infoTraceLogHandler.add(infoTraceLogVO);
+		logger.info("Transaction Response :"+responseData);
+		return responseData;
 		}catch(Exception e)
 		{
+			try {
 			System.out.print(e);
-			return ResponseBuilder.getCreateTransactionResponse(e);
+			responseData=ResponseBuilder.getCreateTransactionResponse(e);
+			infoTraceLogVO.setResponseData(responseData);
+			logger.error(e);
+			infoTraceLogVO.setRequestData(xmlSata);
+	        infoTraceLogVO.setRequestDate(new Date());	
+	        infoTraceLogVO.setResponseDate(new Date());	
+			infoTraceLogHandler.add(infoTraceLogVO);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				logger.error(e1);
+				e1.printStackTrace();
+			}
+			return responseData;
 		}
 	
 	}

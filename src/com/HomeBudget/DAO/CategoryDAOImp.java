@@ -1,4 +1,4 @@
-package com.HomeBudget.Sessions;
+package com.HomeBudget.DAO;
 
 
 
@@ -22,9 +22,9 @@ import com.entities.models.User;
 
 
 
-public class CategorySession extends SessionFactory{
+public class CategoryDAOImp extends DataAccessObject implements CategoryDAO{
 
-	public CategorySession()
+	public CategoryDAOImp()
 	{
 		super();
 	}
@@ -54,7 +54,7 @@ public class CategorySession extends SessionFactory{
 					getEntitymanager().getTransaction().begin();
 					getEntitymanager().persist(category);
 					//update Monthly Budget Category
-					MonthlyBudgetSession monthlyBudgetSession=new MonthlyBudgetSession();
+					MonthlyBudgetDAOImpl monthlyBudgetSession=new MonthlyBudgetDAOImpl();
 					
 					MonthlyBudgetVO monthlyBudgetVo=monthlyBudgetSession.getActiveMonthlyBudgetByUserId(categoryVO.getUserId());
 					Query query = (Query) getEntitymanager().createNamedQuery("getMonthlyBudgetCategoryByMonthlyBudgetIdAndCategoryId");
