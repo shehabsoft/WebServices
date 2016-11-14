@@ -4,6 +4,7 @@
 package com.HomeBudget.Bus;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.HomeBudget.DAO.PurchaseDAO;
 import com.HomeBudget.DAO.PurchaseDAOImpl;
@@ -30,7 +31,7 @@ public class PurchaseHandler {
 	{
 		purchaseDAO.updatePurchase(purchaseVO);
 	}
-	public ArrayList<PurchaseVO> getAll(int monthlyBudgetId) throws Exception
+	public List<PurchaseVO> getAll(int monthlyBudgetId) throws Exception
 	{
 		return purchaseDAO.getAllPurchases(monthlyBudgetId);
 	}

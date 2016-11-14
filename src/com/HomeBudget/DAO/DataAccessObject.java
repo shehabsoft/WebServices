@@ -8,6 +8,11 @@ public class DataAccessObject {
 
 	private EntityManagerFactory emfactory ;
 	private EntityManager entitymanager;
+	public DataAccessObject(EntityManagerFactory entityManagerFactory)
+	{
+		this.emfactory=entityManagerFactory;
+		entitymanager = emfactory.createEntityManager();
+	}
 	public DataAccessObject()
 	{
 		if(emfactory==null)

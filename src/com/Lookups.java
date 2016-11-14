@@ -118,7 +118,7 @@ public class Lookups {
 		int userId =Integer.parseInt(content.substring(index + 1));
 		int monthlyBudgetId	=monthlyBudgetHandler.getActiveMonthlyBudgetIdByUserId(userId);
 		purchaseHandler=new PurchaseHandler();
-		ArrayList<PurchaseVO> categoryVOList=purchaseHandler.getAll(monthlyBudgetId);
+		ArrayList<PurchaseVO> categoryVOList=(ArrayList<PurchaseVO>) purchaseHandler.getAll(monthlyBudgetId);
 		Gson gson = new Gson();
 	    String feeds = gson.toJson(categoryVOList);
 	   

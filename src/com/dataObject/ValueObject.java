@@ -376,7 +376,7 @@ public class ValueObject implements Serializable {
      * @param value
      */
     protected String getBooleanDescAr(Integer value) {
-        return (value != null && value.equals(TRUE)) ? "äÚã" : "áÇ";
+        return (value != null && value.equals(TRUE)) ? "ï¿½ï¿½ï¿½" : "ï¿½ï¿½";
     }
     
     /**

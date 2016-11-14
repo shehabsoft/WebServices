@@ -3,7 +3,9 @@
 	<named-query name="findAllPurchases">
 		<query>SELECT p FROM Purchase  p join p.monthlyBudget mob on p.monthlyBudget.id=mob.id where mob.id=:id</query>
 	</named-query>
-	
+	<named-query name="findPurchaseHistoryByPurchaseId">
+		<query>SELECT p FROM PurchaseHistory p where p.purchase.id=:id</query>
+	</named-query>
 	<named-query name="findAllExpensesCategories">
 		<query>SELECT c FROM Category c  where c.user.id=:userId and c.categoryStatus=2 and c.categoryTypeId=2 </query>
 	</named-query>

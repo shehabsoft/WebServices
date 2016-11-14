@@ -10,16 +10,17 @@ import com.HomeBudget.Bus.InfoTraceLogHandler;
 import com.HomeBudget.Bus.LocationHandler;
 import com.HomeBudget.Bus.MonthlyBudgetHandler;
 import com.HomeBudget.Bus.PurchaseHandler;
+import com.HomeBudget.Bus.PurchaseHistoryHandler;
 import com.HomeBudget.Bus.UserHandler;
 import com.HomeBudget.Sessions.CategorySession;
 import com.HomeBudget.Sessions.LocationSession;
 import com.HomeBudget.Sessions.MonthlyBudgetSession;
 import com.HomeBudget.Sessions.PurchaseSession;
 import com.HomeBudget.Sessions.UserSession;
+import com.HomeBudget.common.TransactionServiceParser;
 import com.HomeBudget.dataObject.InfoTraceLogVO;
 import com.dataObject.Constants;
 import com.dataObject.ResponseBuilder;
-import com.dataObject.TransactionServiceParser;
 import com.dataObject.TransactionVO;
 
 public class TransactionService {
@@ -80,6 +81,10 @@ public class TransactionService {
         {
         	MonthlyBudgetHandler monthlyBudgetHandler=new MonthlyBudgetHandler();
         	monthlyBudgetHandler.update(transactionVO.getMonthlyBudgetVO());
+        }else if(transactionVO.getServiceCode()==Constants.ADD_PURCHASE_HISTORY_SERVICE)
+        {
+        	PurchaseHistoryHandler purchaseHistoryHandler=new PurchaseHistoryHandler();
+        	purchaseHistoryHandler.add(transactionVO.getPurchaseHistoryVO());
         }
 	
        

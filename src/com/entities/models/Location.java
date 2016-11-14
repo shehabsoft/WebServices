@@ -28,6 +28,10 @@ public class Location implements Serializable {
 	@OneToMany(mappedBy="location")
 	private List<Purchase> purchases;
 
+	//bi-directional many-to-one association to PurchaseHistory
+	@OneToMany(mappedBy="location")
+	private List<PurchaseHistory> purchaseHistories;
+
 	public Location() {
 	}
 
@@ -75,6 +79,28 @@ public class Location implements Serializable {
 		purchas.setLocation(null);
 
 		return purchas;
+	}
+
+	public List<PurchaseHistory> getPurchaseHistories() {
+		return this.purchaseHistories;
+	}
+
+	public void setPurchaseHistories(List<PurchaseHistory> purchaseHistories) {
+		this.purchaseHistories = purchaseHistories;
+	}
+
+	public PurchaseHistory addPurchaseHistory(PurchaseHistory purchaseHistory) {
+		getPurchaseHistories().add(purchaseHistory);
+		purchaseHistory.setLocation(this);
+
+		return purchaseHistory;
+	}
+
+	public PurchaseHistory removePurchaseHistory(PurchaseHistory purchaseHistory) {
+		getPurchaseHistories().remove(purchaseHistory);
+		purchaseHistory.setLocation(null);
+
+		return purchaseHistory;
 	}
 
 }

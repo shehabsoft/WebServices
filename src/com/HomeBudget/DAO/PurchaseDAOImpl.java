@@ -16,6 +16,7 @@ import javax.persistence.TypedQuery;
 
 
 import com.entities.models.*;
+import com.HomeBudget.dataObject.PurchaseHistoryVO;
 import com.dataObject.CategoryVO;
 import com.dataObject.PurchaseVO;
 
@@ -79,7 +80,6 @@ public class PurchaseDAOImpl extends DataAccessObject implements PurchaseDAO{
 						purchase.setDetails(purchaseVO.getDetails());
 					}
 					purchase.setCreationDate(new Date());
-				//	category.setActualValue(category.getActualValue()+purchaseVO.getPrice());
 					getEntitymanager().getTransaction().begin();
 					purchase.setCategory(category);
 					Query query = (Query) getEntitymanager().createNamedQuery("getActiveMonthlyBudgetByUserId");
@@ -96,8 +96,18 @@ public class PurchaseDAOImpl extends DataAccessObject implements PurchaseDAO{
 					MonthlyBudgetCategory monthlyBudgetCategory=(MonthlyBudgetCategory) query2.getSingleResult();
 					monthlyBudgetCategory.setActualValue(monthlyBudgetCategory.getActualValue()+purchaseVO.getPrice());
 					getEntitymanager().persist(monthlyBudgetCategory);
-			/*	//	categorySession.updateCategory(categoryVO);
-			*/		getEntitymanager().getTransaction().commit();
+					//Purchase History
+					PurchaseHistoryDAO purchaseHistoryDAO=new PurchaseHistoryDAOImpl();
+				    PurchaseHistoryVO purchaseHistoryVO=new PurchaseHistoryVO();
+				    purchaseHistoryVO.setCreation_date(new Date());
+				    purchaseHistoryVO.setDetails(purchaseVO.getDetails());
+				    purchaseHistoryVO.setLocation_id(purchaseVO.getLocationId());
+				    purchaseHistoryVO.setPurchase_id(purchase.getId());
+				    purchaseHistoryVO.setPurchase(purchase);
+				    purchaseHistoryVO.setPrice(purchaseVO.getPrice());
+				    PurchaseHistory purchaseHistory= purchaseHistoryDAO.addPurchaseHistory(purchaseHistoryVO);
+				    getEntitymanager().persist(purchaseHistory);
+		    		getEntitymanager().getTransaction().commit();
 	    }
 		}catch(Exception e) 
 		{
@@ -117,6 +127,18 @@ public class PurchaseDAOImpl extends DataAccessObject implements PurchaseDAO{
 			if(purchase.getPrice()!=purchaseVO.getPrice())
 			    {
 				updateExpenseValue=purchaseVO.getPrice()-purchase.getPrice();//25-30
+				//update Purchase History 
+				if(updateExpenseValue>0)
+				{
+					PurchaseHistory newpurchaseHistory=new PurchaseHistory();
+					newpurchaseHistory.setCreationDate(new Date());
+					newpurchaseHistory.setDetails(purchaseVO.getDetails());
+					Location location=getEntitymanager().find(Location.class, purchaseVO.getLocationId());
+					newpurchaseHistory.setLocation(location);
+					newpurchaseHistory.setPrice(updateExpenseValue);
+					newpurchaseHistory.setPurchase(purchase);
+					getEntitymanager().persist(newpurchaseHistory);
+				}
 			    }
 			purchase.setArabicDescription(purchaseVO.getArabicDescription());
 			purchase.setEnglishDescription(purchaseVO.getEnglishDescription());
@@ -133,9 +155,9 @@ public class PurchaseDAOImpl extends DataAccessObject implements PurchaseDAO{
 			List<MonthlyBudgetCategory> monthlyBudgetCategoryList=null;
 			if(purchase.getCategory().getId()!=purchaseVO.getCategoryId())
 			{
-				//reduce value From Old Category in Table Monthly Budget Category 
-				query = (Query) getEntitymanager().createNamedQuery("getAllbyMonthlyBudget");
-				query.setParameter("id", monthlyBudget.getId());
+				 //reduce value From Old Category in Table Monthly Budget Category 
+				 query = (Query) getEntitymanager().createNamedQuery("getAllbyMonthlyBudget");
+				 query.setParameter("id", monthlyBudget.getId());
 				 monthlyBudgetCategoryList=  (List<MonthlyBudgetCategory>) query.getResultList();
 				for(MonthlyBudgetCategory monthlyBudgetCategory:monthlyBudgetCategoryList)
 				{
@@ -150,6 +172,7 @@ public class PurchaseDAOImpl extends DataAccessObject implements PurchaseDAO{
 					}
 					
 				}
+				
 				
 					
 				

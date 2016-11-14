@@ -16,6 +16,9 @@ public interface  Constants {
 	static int STATUS_ACTIVE=2;
 	static int STATUS_SUSPENDED=1;
 	static int STATUS_CANCELD=3;
+	static  int ADD_PURCHASE_HISTORY_SERVICE=10;
+	static  int EDIT_PURCHASE_HISTORY_SERVICE=11;
+	
 	
 	
 
