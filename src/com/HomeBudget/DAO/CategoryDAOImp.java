@@ -65,8 +65,8 @@ public class CategoryDAOImp extends DataAccessObject implements CategoryDAO{
 						List<MonthlyBudgetCategory>budgetCategories=query.getResultList();
 						for(MonthlyBudgetCategory budgetCategory:budgetCategories)
 						{
-							 budgetCategory.setPlanedValue(category.getPlanedValue());
-							 budgetCategory.setLimitValue(category.getLimitValue());
+							 budgetCategory.setPlanedValue(categoryVO.getPlanedValue());
+							 budgetCategory.setLimitValue(categoryVO.getLimitValue());
 							 getEntitymanager().persist(budgetCategory);
 						
 						}

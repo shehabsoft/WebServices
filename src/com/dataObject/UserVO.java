@@ -1,8 +1,7 @@
 package com.dataObject;
 
-public class UserVO {
-	private int id;
-	
+public class UserVO  {
+	private int Id;
 	private String name;
 	private String email;
 	private String address;
@@ -15,11 +14,12 @@ public class UserVO {
 	private int currencyId;
 	private int countryId;
 	
+
 	public int getId() {
-		return id;
+		return Id;
 	}
 	public void setId(int id) {
-		this.id = id;
+		Id = id;
 	}
 	public String getName() {
 		return name;

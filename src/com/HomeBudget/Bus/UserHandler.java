@@ -26,4 +26,9 @@ public class UserHandler {
 	{
 		return userDAO.checkMail(mail);
 	}
+	public UserVO getActiveUser() throws Exception
+	{
+		return userDAO.getActiveUser();
+	}
+	
 }

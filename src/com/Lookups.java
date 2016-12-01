@@ -27,6 +27,7 @@ import com.HomeBudget.Bus.CurrencyHandler;
 import com.HomeBudget.Bus.LocationHandler;
 import com.HomeBudget.Bus.MonthlyBudgetHandler;
 import com.HomeBudget.Bus.PurchaseHandler;
+import com.HomeBudget.Bus.PurchaseHistoryHandler;
 import com.HomeBudget.Bus.UserHandler;
 import com.HomeBudget.Sessions.CategorySession;
 import com.HomeBudget.Sessions.CountrySession;
@@ -35,6 +36,7 @@ import com.HomeBudget.Sessions.LocationSession;
 import com.HomeBudget.Sessions.MonthlyBudgetSession;
 import com.HomeBudget.Sessions.PurchaseSession;
 import com.HomeBudget.Sessions.UserSession;
+import com.HomeBudget.dataObject.PurchaseHistoryVO;
 import com.dataObject.CategoryVO;
 import com.dataObject.CountryVO;
 import com.dataObject.CurrencyVO;
@@ -42,6 +44,7 @@ import com.dataObject.LocationVO;
 import com.dataObject.MonthlyBudgetVO;
 import com.dataObject.PurchaseVO;
 import com.dataObject.StatusVO;
+import com.dataObject.UserVO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.jersey.core.util.Base64;
@@ -55,7 +58,7 @@ public class Lookups {
     CategoryHandler categoryHandler=null;
    
     PurchaseHandler purchaseHandler=null;
-   
+    PurchaseHistoryHandler purchaseHistoryHandler=null;
     LocationHandler locationHandler=null;
 
     
@@ -123,6 +126,20 @@ public class Lookups {
 	    String feeds = gson.toJson(categoryVOList);
 	   
 		return "{PurchaseVO:" + feeds + "}";
+	}
+	@POST
+	@Path("/getPurchaseHistory")
+	@Produces("application/json;charset=utf-8")
+	public String getPurchaseHistory(@Context HttpHeaders headers,String content) throws Exception 
+	{
+		
+		int purchaseId=Integer.parseInt(headers.getRequestHeader("purchaseId").get(0));
+		purchaseHistoryHandler=new PurchaseHistoryHandler();
+		ArrayList<PurchaseHistoryVO> purchaseHistoryVOs=(ArrayList<PurchaseHistoryVO>) purchaseHistoryHandler.getAll(purchaseId);
+		Gson gson = new Gson();
+	    String feeds = gson.toJson(purchaseHistoryVOs);
+	   
+		return "{PurchaseHistoryVO:" + feeds + "}";
 	}
 	@GET
 	@Path("/GetAllLocations")
@@ -206,7 +223,18 @@ public class Lookups {
 	   
 		return "{MonthlyBudgetVO:" + feeds + "}";
 	}
+	@GET
+	@Path("/getActiveUser")
+	@Produces("application/json")
+	public String getActiveUser(@Context HttpHeaders headers) throws Exception 
+	{
 	
+		userHandler=new  UserHandler();
+	    UserVO userVO=userHandler.getActiveUser();
+		Gson gson = new Gson();
+	    String feeds = gson.toJson(userVO);
+		return "{UserVO:" + feeds + "}";
+	}
 	
 	@POST
 	@Path("/checkEmail")

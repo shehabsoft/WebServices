@@ -37,9 +37,12 @@ public class MonthlyBudgetDAOImpl extends DataAccessObject implements MonthlyBud
 		
 	try
 	{
+		
 		MonthlyBudget monthlyBudget=new MonthlyBudget();
 		List<Category>categories=new ArrayList<Category>();
-		monthlyBudget.setStartDate(new Date(monthlyBudgetVO.getStartDate()));
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		Date date = formatter.parse(monthlyBudgetVO.getStartDate());
+		monthlyBudget.setStartDate(date);
 		String incomeCategoryList=monthlyBudgetVO.getIncomeCategoriesId().replace("[","").replace("]", "");
 		String []incomeCategories =incomeCategoryList.split(",");
 		String expenseCategoriesList=monthlyBudgetVO.getExpenseCategoriesId().replace("[","").replace("]", "");
@@ -62,20 +65,22 @@ public class MonthlyBudgetDAOImpl extends DataAccessObject implements MonthlyBud
 		    
 		     
 		}
-		User user=getEntitymanager().find(User.class, 37);
+		Query queryUser = (Query) getEntitymanager().createNamedQuery("getActiveUser");
+		User user=(User)queryUser.getResultList().get(0);
 		monthlyBudget.setUser(user);
 		monthlyBudget.setTotalIncome(totalIncome);
 		monthlyBudget.setTotalExpenses(totalExpenese);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		monthlyBudget.setEndDate(new Date(monthlyBudgetVO.getEndDate()));
+		Date enddate = formatter.parse(monthlyBudgetVO.getEndDate());
+		monthlyBudget.setEndDate(enddate);
 		getEntitymanager().getTransaction().begin();
-		deActivePreviousMonthlyBudget(37);
+		deActivePreviousMonthlyBudget(user.getId());
 		monthlyBudget.setStatus(2);
 		monthlyBudget.setCreationDate(new Date());
 		monthlyBudget.setCategories(categories);
 		getEntitymanager().persist(monthlyBudget);
 		getEntitymanager().getTransaction().commit();
-		int monthlyBudgetId=(int) (getNextKey()-1);
+		//int monthlyBudgetId=(int) (getNextKey()-1);
+		int monthlyBudgetId=monthlyBudget.getId();
 		getEntitymanager().getTransaction().begin();
 		//copy (planed limit actual) Values From Category to MonthlyBudgetCategory Table
 		Query query = (Query) getEntitymanager().createNamedQuery("getAllbyMonthlyBudget").setParameter("id", monthlyBudgetId);
@@ -243,7 +248,7 @@ public class MonthlyBudgetDAOImpl extends DataAccessObject implements MonthlyBud
 			if(monthlyBudget.size()>0)
 			{
 			    monthlyBudgetVO=new MonthlyBudgetVO();
-			    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			    String creationDate=sdf.format( monthlyBudget.get(0).getCreationDate());
 			    monthlyBudgetVO.setCreationDate(creationDate);
 				monthlyBudgetVO.setStartDate(sdf.format(monthlyBudget.get(0).getStartDate()));

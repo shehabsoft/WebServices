@@ -18,4 +18,5 @@ public interface UserDAO {
 	
 	public void addUser(UserVO userVo) throws Exception;
 	public boolean checkMail(String mail) throws Exception;
+	public UserVO getActiveUser();
 }

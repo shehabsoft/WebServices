@@ -109,7 +109,7 @@ public class UserDAOImpl extends DataAccessObject implements UserDAO {
 					if(userVo.getPassword()!=null)
 					{
 						DES des=new DES();
-						userVo.setPassword(new String(des.encrypt(userVo.getPassword().getBytes())));
+						//userVo.setPassword(new String(des.encrypt(userVo.getPassword().getBytes())));
 						user.setPassword(userVo.getPassword());
 					}else
 					{
@@ -150,8 +150,12 @@ public class UserDAOImpl extends DataAccessObject implements UserDAO {
 			
 		
 		}
-		
-		/*/
-*/		
-
+public UserVO getActiveUser()
+{
+	UserVO userVO=new UserVO();
+	Query query = (Query) getEntitymanager().createNamedQuery("getActiveUser");
+	List<User> user=(List<User>)query.getResultList();
+	userVO.setId(user.get(0).getId());
+	return userVO;
+}
 }

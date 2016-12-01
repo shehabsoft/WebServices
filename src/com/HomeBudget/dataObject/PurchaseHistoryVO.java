@@ -24,6 +24,7 @@ public class PurchaseHistoryVO extends ValueObject {
 	private String details;
 	private double price;
 	private Purchase purchase;
+	private String locationName;
 	public int getLocation_id() {
 		return location_id;
 	}
@@ -60,5 +61,12 @@ public class PurchaseHistoryVO extends ValueObject {
 	public void setPurchase(Purchase purchase) {
 		this.purchase = purchase;
 	}
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+	
 	
 }
