@@ -4,7 +4,22 @@ package com.dataObject;
 public class CategoryVO {
 	
 	private int Id;
-	
+	private boolean withenLimit;
+	 
+	public boolean isWithenLimit() {
+		return withenLimit;
+	}
+
+	public void setWithenLimit(boolean withenLimit) {
+		this.withenLimit = withenLimit;
+	}
+
+	public void setEnglishDescription(String englishDescription) {
+		this.englishDescription = englishDescription;
+	}
+
+
+
 	private String arabicDescription;
 	
 	private String englishDescription;

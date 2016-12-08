@@ -3,6 +3,7 @@ package com.HomeBudget.DAO;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -290,5 +291,40 @@ public class MonthlyBudgetDAOImpl extends DataAccessObject implements MonthlyBud
 	{
 		Query q = getEntitymanager().createNativeQuery("SELECT Max(Auto_increment) FROM information_schema.tables WHERE table_name='monthly_budget'");
 		return (Long)q.getSingleResult();
+	}
+
+
+
+	@Override
+	public List<MonthlyBudgetVO> getAllMonthlyBudgetByUserId(int userId) {
+		try
+		{
+			Query query = (Query) getEntitymanager().createNamedQuery("getAllMonthlyBudgetByUserId");
+			query.setParameter("id", userId);
+			MonthlyBudgetVO monthlyBudgetVO=null;
+			List<MonthlyBudgetVO> monthlyBudgetVOList=new ArrayList<MonthlyBudgetVO>();
+			List<MonthlyBudget> monthlyBudgetList=(List<MonthlyBudget>) query.getResultList();
+		    Iterator itr = monthlyBudgetList.iterator();
+ 	    while(itr.hasNext()){
+ 	    	    MonthlyBudget monthlyBudget=  (MonthlyBudget) itr.next();
+ 	    	    monthlyBudgetVO=new MonthlyBudgetVO();
+			    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			    String creationDate=sdf.format( monthlyBudget.getCreationDate());
+			    monthlyBudgetVO.setCreationDate(creationDate);
+				monthlyBudgetVO.setStartDate(sdf.format(monthlyBudget.getStartDate()));
+				monthlyBudgetVO.setEndDate(sdf.format(monthlyBudget.getEndDate()));
+				monthlyBudgetVO.setCreationDate(sdf.format(monthlyBudget.getCreationDate()));
+				monthlyBudgetVO.setTotalExpenses(monthlyBudget.getTotalExpenses());
+				monthlyBudgetVO.setTotalIncomes(monthlyBudget.getTotalIncome());
+				monthlyBudgetVO.setId(monthlyBudget.getId());
+				monthlyBudgetVOList.add(monthlyBudgetVO);
+		}
+		 
+			return monthlyBudgetVOList;
+			
+		}catch(Exception e)
+		{
+			throw new BusinessException(e.toString());
+		}
 	}
 }

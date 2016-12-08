@@ -197,6 +197,7 @@ public  class TransactionServiceParser {
         String arabicDescription = getNodeValue(root, "arabicDescription", true, true);
         String englishDescription = getNodeValue(root, "englishDescription", true, true);
         String price = getNodeValue(root, "price", true, true);
+      
         String details = getNodeValue(root, "details", true, true);
         String categoryId = getNodeValue(root, "categoryId", true, true);
         String locationId = getNodeValue(root, "locationId", true, true);
@@ -204,9 +205,10 @@ public  class TransactionServiceParser {
         if(edit)
         {
         	 String purchaseId = getNodeValue(root, "purchaseId", true, true);
+        	 String newPrice = getNodeValue(root, "newPrice", true, true);
         	 purchaseVO.setId(Integer.parseInt(purchaseId));
+        	 purchaseVO.setNewPrice(Double.parseDouble(newPrice));
         }
-        
         trsVO.setServiceCode(serviceCode);
         purchaseVO.setUserId(userId);
         purchaseVO.setArabicDescription(arabicDescription);
@@ -215,8 +217,8 @@ public  class TransactionServiceParser {
         purchaseVO.setDetails(details);
         purchaseVO.setCategoryId(Integer.parseInt(categoryId));
         purchaseVO.setLocationId(Integer.parseInt(locationId));
-        trsVO.setPurchaseVO(purchaseVO);
         
+        trsVO.setPurchaseVO(purchaseVO);
         return  trsVO;
     	
     	

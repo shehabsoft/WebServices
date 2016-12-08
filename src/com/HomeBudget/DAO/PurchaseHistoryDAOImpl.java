@@ -130,13 +130,12 @@ public class PurchaseHistoryDAOImpl extends DataAccessObject implements Purchase
 			purchaseVO.setPrice(purchase.getPrice());
 			purchaseVO.setId(new Long(purchase.getId()));
 			purchaseVO.setDetails(purchase.getDetails());
-			purchaseVO.setCreation_date(purchase.getCreationDate());
 			purchaseVO.setPurchase_id(purchase.getPurchase().getId());
 			purchaseVO.setLocationName(purchase.getLocation().getEnglishName());
 			if(purchase.getCreationDate()!=null)
 				{
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-					purchaseVO.setCreationDate(sdf.format( purchase.getCreationDate()));
+					purchaseVO.setCreation_date(sdf.format( purchase.getCreationDate()));
 				}
 			purchaseHistoryVO.add(purchaseVO);
 		}

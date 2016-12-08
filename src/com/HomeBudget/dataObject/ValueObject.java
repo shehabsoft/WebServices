@@ -265,7 +265,7 @@ public class ValueObject implements Serializable {
      *
      * @param creationDate Related record creation date.
      */
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(Date creationDate) {
         creationDate = creationDate;
     }
 

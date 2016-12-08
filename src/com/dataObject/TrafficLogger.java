@@ -11,7 +11,7 @@
 
 package com.dataObject;
 
-import javax.servlet.http.HttpSession;
+
 
 /**
  * WARNING: This class will be removed from traffic project. Use Log4j API's.
@@ -87,7 +87,7 @@ public abstract class TrafficLogger {
      * @param session HTTP user session info
      * @param exception Exception to be loged
      */
-    public static void debugStackTrace(HttpSession session, Throwable exception) {
+   /* public static void debugStackTrace(HttpSession session, Throwable exception) {
         // Check if error page stack trace debugging is enabled
         if (! config.isErrorPageDebugEnabled()) {
             return;
@@ -113,5 +113,5 @@ public abstract class TrafficLogger {
         errLog.append("\nStack trace:");
         System.out.println(errLog);
         exception.printStackTrace(System.out);
-    }
+    }*/
 }

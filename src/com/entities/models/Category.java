@@ -54,6 +54,8 @@ public class Category implements Serializable {
 	@OneToMany(mappedBy="category")
 	private List<Purchase> purchases;
 
+	@OneToMany(mappedBy="category")
+	private List<CategoryHistory> categoryHistories;
 	//bi-directional many-to-one association to User
 	@ManyToOne
 	private User user;
@@ -139,6 +141,14 @@ public class Category implements Serializable {
 
 	public void setPlanedValue(double planedValue) {
 		this.planedValue = planedValue;
+	}
+
+	public List<CategoryHistory> getCategoryHistories() {
+		return categoryHistories;
+	}
+
+	public void setCategoryHistories(List<CategoryHistory> categoryHistories) {
+		this.categoryHistories = categoryHistories;
 	}
 
 	public List<MonthlyBudget> getMonthlyBudgets() {

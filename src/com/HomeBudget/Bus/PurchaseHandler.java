@@ -35,4 +35,8 @@ public class PurchaseHandler {
 	{
 		return purchaseDAO.getAllPurchases(monthlyBudgetId);
 	}
+	public List<PurchaseVO> getAll(int monthlyBudgetId,int categoryId) throws Exception
+	{
+		return purchaseDAO.getAllPurchases(monthlyBudgetId,categoryId);
+	}
 }

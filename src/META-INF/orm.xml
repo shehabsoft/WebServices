@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entity-mappings version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd">
+	
+	<named-query name="findAllCategoriesHistory">
+		<query>SELECT c FROM CategoryHistory  c where c.category.id=:id </query>
+	</named-query>
 	<named-query name="findAllPurchases">
 		<query>SELECT p FROM Purchase  p join p.monthlyBudget mob on p.monthlyBudget.id=mob.id where mob.id=:id</query>
+	</named-query>
+	<named-query name="findAllPurchasesByCategoryId">
+		<query>SELECT p FROM Purchase  p join p.monthlyBudget mob on p.monthlyBudget.id=mob.id where mob.id=:id and p.category.id=:categoryId</query>
 	</named-query>
 	<named-query name="getActiveUser">
 		<query>SELECT p FROM User p</query>
@@ -51,6 +58,9 @@
 	</named-query>
 	<named-query name="findAllCountries">
 		<query>SELECT c FROM Country c</query>
+	</named-query>
+	<named-query name="getAllMonthlyBudgetByUserId">
+		<query>SELECT m FROM MonthlyBudget m where m.user.id=:id</query>
 	</named-query>
 	<named-query name="getActiveMonthlyBudgetByUserId">
 		<query>SELECT m FROM MonthlyBudget m where m.user.id=:id and m.status=2</query>

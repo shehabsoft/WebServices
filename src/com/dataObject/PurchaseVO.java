@@ -27,7 +27,7 @@ public class PurchaseVO {
 
 
 	private double price;
-	
+	private double newPrice;
 	
 
 	public double getUpdatedExpenseValue() {
@@ -102,9 +102,16 @@ public class PurchaseVO {
 		return price;
 	}
 
-	public void setPrice(double limit_value) {
-		this.price = limit_value;
+	public void setPrice(double price) {
+		this.price = price;
 	}
+	public double getNewPrice() {
+		return newPrice;
+	}
+	public void setNewPrice(double newPrice) {
+		this.newPrice = newPrice;
+	}
+	
 
 	
 	

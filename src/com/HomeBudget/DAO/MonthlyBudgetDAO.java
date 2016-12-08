@@ -18,4 +18,6 @@ public interface MonthlyBudgetDAO {
 	public MonthlyBudgetVO getActiveMonthlyBudgetByUserId(int userId);
 	
 	public int getActiveMonthlyBudgetIdByUserId(int userId);
+	
+	public List<MonthlyBudgetVO>getAllMonthlyBudgetByUserId(int userId);
 }

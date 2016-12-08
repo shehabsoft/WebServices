@@ -51,4 +51,8 @@ public class MonthlyBudgetHandler {
 	{
 		return monthlyBudgetDAO.getActiveMonthlyBudgetIdByUserId(userId);
 	}
+	public  List<MonthlyBudgetVO>getAllByUserId(int userId)
+	{
+		return monthlyBudgetDAO.getAllMonthlyBudgetByUserId(userId);
+	}
 }

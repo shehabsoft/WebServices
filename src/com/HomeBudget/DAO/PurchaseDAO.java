@@ -9,4 +9,5 @@ public interface PurchaseDAO {
 	public void addPurchase(PurchaseVO purchaseVO) throws Exception;
 	public void updatePurchase(PurchaseVO purchaseVO) throws Exception;
 	public List<PurchaseVO> getAllPurchases(int monthlyBudgetId) throws Exception;
+	public List<PurchaseVO> getAllPurchases(int monthlyBudgetId,int categoryId) throws Exception;
 }

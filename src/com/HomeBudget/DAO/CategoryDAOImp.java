@@ -16,6 +16,7 @@ import com.dataObject.CategoryVO;
 import com.dataObject.Constants;
 import com.dataObject.MonthlyBudgetVO;
 import com.entities.models.Category;
+import com.entities.models.CategoryHistory;
 import com.entities.models.MonthlyBudget;
 import com.entities.models.MonthlyBudgetCategory;
 import com.entities.models.User;
@@ -36,6 +37,7 @@ public class CategoryDAOImp extends DataAccessObject implements CategoryDAO{
 			Category category=getEntitymanager().find(Category.class, categoryVO.getId());
 			category.setEnglishDescription(categoryVO.getEnglishDescription());
 			category.setArabicDescription(categoryVO.getArabicDescription());
+			categoryVO.setCategoryTypeId(category.getCategoryTypeId());
 			if(categoryVO.getCategoryStatus()!=Constants.STATUS_ACTIVE)
 			{
 				category.setCategoryStatus(categoryVO.getCategoryStatus());	
@@ -60,11 +62,23 @@ public class CategoryDAOImp extends DataAccessObject implements CategoryDAO{
 					Query query = (Query) getEntitymanager().createNamedQuery("getMonthlyBudgetCategoryByMonthlyBudgetIdAndCategoryId");
 					query.setParameter("id", monthlyBudgetVo.getId());
 					query.setParameter("categoryId", category.getId());
+					CategoryHistoryDAO categoryHistoryDAO=new CategoryHistoryDAOImpl();
+					CategoryHistory categoryHistory=null;
+					
 					if(category.getCategoryTypeId()==Constants.CATEGORY_TYPE_EXPENSES_ID)//Expenses
 					{
 						List<MonthlyBudgetCategory>budgetCategories=query.getResultList();
 						for(MonthlyBudgetCategory budgetCategory:budgetCategories)
 						{
+							//add new Category History If Changing in planned value or limit Value 
+							if(categoryVO.getPlanedValue()!=budgetCategory.getPlanedValue()||categoryVO.getLimitValue()!=budgetCategory.getLimitValue())
+							{
+								category.setActualValue(categoryVO.getActualValue());
+								category.setPlanedValue(categoryVO.getPlanedValue());
+								category.setLimitValue(categoryVO.getLimitValue());
+								categoryHistory=categoryHistoryDAO.addCategoryHistory(category);
+								getEntitymanager().persist(categoryHistory);
+							}
 							 budgetCategory.setPlanedValue(categoryVO.getPlanedValue());
 							 budgetCategory.setLimitValue(categoryVO.getLimitValue());
 							 getEntitymanager().persist(budgetCategory);
@@ -75,9 +89,14 @@ public class CategoryDAOImp extends DataAccessObject implements CategoryDAO{
 						List<MonthlyBudgetCategory>budgetCategories=query.getResultList();
 						for(MonthlyBudgetCategory budgetCategory:budgetCategories)
 						{
+							boolean updatedValues=false;
+							//add new Category History If Changing in planned value or limit Value 
+							if(categoryVO.getPlanedValue()!=budgetCategory.getPlanedValue()||categoryVO.getLimitValue()!=budgetCategory.getLimitValue())
+							{
 							 budgetCategory.setPlanedValue(categoryVO.getPlanedValue());
 							 budgetCategory.setLimitValue(categoryVO.getLimitValue());
-							 
+							 updatedValues=true;
+							} 
 							 if(category.getActualValue()!=categoryVO.getActualValue())//update Actual Value in Monthly Budget Table 
 							 {
 								 budgetCategory.setActualValue(categoryVO.getActualValue());
@@ -88,20 +107,30 @@ public class CategoryDAOImp extends DataAccessObject implements CategoryDAO{
 								 monthlyBudget.setTotalIncome(monthlyBudget.getTotalIncome()+difference);
 								
 								 getEntitymanager().persist(monthlyBudget);
-								 
+								 updatedValues=true; 
+							 }
+							 if(updatedValues)
+							 {
+							 categoryHistory=categoryHistoryDAO.addCategoryHistory(category);
+							 getEntitymanager().persist(categoryHistory);
 							 }
 							 getEntitymanager().persist(budgetCategory);
 						
 						}
 					}
-					
+					if(getEntitymanager().getTransaction().isActive())
+					{
 					getEntitymanager().getTransaction().commit();
+					}else
+					{
+						getEntitymanager().getTransaction().begin();
+						getEntitymanager().getTransaction().commit();
+					}
 					
 			}	
 			
 					}catch(Exception e)
 					{
-						getEntitymanager().getTransaction().rollback();
 						throw new Exception(e);
 					}
 		}
@@ -118,6 +147,10 @@ public class CategoryDAOImp extends DataAccessObject implements CategoryDAO{
 		if(userId!=0)
 		{
 			User user=getEntitymanager().find(User.class, userId);
+			if(user==null)
+			{
+				throw new BusinessException("Null User with ID"+userId);
+			}
 			category.setUser(user);
 		}else
 		{
@@ -179,6 +212,9 @@ public class CategoryDAOImp extends DataAccessObject implements CategoryDAO{
 		{
 		category.setParentCategoryId(categoryVO.getParentCategoryId());
 		}
+		
+		CategoryHistoryDAO categoryHistoryDAO=new CategoryHistoryDAOImpl();
+		categoryHistoryDAO.addCategoryHistory(category);
 		getEntitymanager().getTransaction().begin();
 		getEntitymanager().persist(category);
 		getEntitymanager().getTransaction().commit();
@@ -214,7 +250,6 @@ public class CategoryDAOImp extends DataAccessObject implements CategoryDAO{
 		Query query = (Query) getEntitymanager().createNamedQuery("findExpensesCategories");
 		query.setParameter("id", monthlyBudgetId);
 		query.setParameter("userId", userId);
-	    List<Category> categoryList =  query.getResultList();
 	    List<Object> result = query.getResultList();
 	    Iterator itr = result.iterator();
 	    while(itr.hasNext()){
@@ -227,12 +262,13 @@ public class CategoryDAOImp extends DataAccessObject implements CategoryDAO{
 		    categoryVO.setLimitValue(Double.parseDouble(String.valueOf(obj[6])));
 		    categoryVO.setPlanedValue(Double.parseDouble(String.valueOf(obj[7])));
 		    categoryVO.setId(Integer.parseInt(String.valueOf(obj[0])));
+		    categoryVO.setCategoryStatus(2);
 		    if(categoryVO.getActualValue()<=categoryVO.getLimitValue())
 			{
-				categoryVO.setCategoryStatus(2);
+				categoryVO.setWithenLimit(true);
 			}else
 			{
-				categoryVO.setCategoryStatus(1);
+				categoryVO.setWithenLimit(false);
 			}
 			    categoryVOs.add(categoryVO);
 		   

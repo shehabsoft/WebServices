@@ -20,7 +20,7 @@ public class PurchaseHistoryVO extends ValueObject {
 	private int location_id;
 
 	private int purchase_id;
-	private Date creation_date;
+	private String creation_date;
 	private String details;
 	private double price;
 	private Purchase purchase;
@@ -37,10 +37,10 @@ public class PurchaseHistoryVO extends ValueObject {
 	public void setPurchase_id(int purchase_id) {
 		this.purchase_id = purchase_id;
 	}
-	public Date getCreation_date() {
+	public String getCreation_date() {
 		return creation_date;
 	}
-	public void setCreation_date(Date creation_date) {
+	public void setCreation_date(String creation_date) {
 		this.creation_date = creation_date;
 	}
 	public String getDetails() {
