@@ -20,6 +20,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.HomeBudget.DAO.JPA.DataAccessObject1;
+
 /**
  * Data access objects factory.
  *
@@ -49,19 +51,19 @@ public class DAOFactory {
      * Construct and initialize DAOFactory singleton object.
      */
     private DAOFactory() {
-        namedQueriesMap = Collections.synchronizedMap(new HashMap());
-
-        // Load named queries
-        List jdbcResources = JdbcConfigurationParser.parse();
-        for (int i = 0; i < jdbcResources.size(); i++) {
-            Map queries = JdbcResourceParser.parse(jdbcResources.get(i).toString());
-
-            Iterator names = queries.keySet().iterator();
-            while (names.hasNext()) {
-                String name = names.next().toString();
-                addNamedQuery((NamedQuery) queries.get(name));
-            }
-        }
+//        namedQueriesMap = Collections.synchronizedMap(new HashMap());
+//
+//        // Load named queries
+//        List jdbcResources = JdbcConfigurationParser.parse();
+//        for (int i = 0; i < jdbcResources.size(); i++) {
+//            Map queries = JdbcResourceParser.parse(jdbcResources.get(i).toString());
+//
+//            Iterator names = queries.keySet().iterator();
+//            while (names.hasNext()) {
+//                String name = names.next().toString();
+//                addNamedQuery((NamedQuery) queries.get(name));
+//            }
+//        }
     }
 
     /*
@@ -149,12 +151,12 @@ public class DAOFactory {
      * @param daoType Data Access Object interface.
      * @return Data Access Object implementation class.
      */
-    public DataAccessObject getDAO(Class daoType) {
+    public static DataAccessObject1 getDAO(Class daoType) {
         String daoName = daoType.getName().replaceAll(".dao.", ".dao.jdbc.");
         String implName = new StringBuffer(daoName).append("Impl").toString();
 
         try {
-            return (DataAccessObject) Class.forName(implName).newInstance();
+            return (DataAccessObject1) Class.forName(implName).newInstance();
 
         } catch (Exception ex) {
             throw new DataAccessException(new StringBuffer().append("Failed to load DAO class: ").append(implName).toString(),
@@ -168,7 +170,7 @@ public class DAOFactory {
      * @param daoType Data Access Object interface.
      * @return Data Access Object implementation class.
      */
-    public <T extends DataAccessObject> T getDataAccessObject(Class<T> daoType) {
+    public <T extends DataAccessObject1> T getDataAccessObject(Class<T> daoType) {
         return (T) getDAO(daoType);
     }
 
@@ -179,7 +181,7 @@ public class DAOFactory {
      * @param dao The new DAO will use this DAO transaction.
      * @return Data Access Object implementation class.
      */
-    public DataAccessObject getDAO(Class daoType, DataAccessObject dao) {
+    public static DataAccessObject1 getDAO(Class daoType, DataAccessObject1 dao) {
         // Validate parameters
         if (daoType == null) {
             throw new DataAccessException("NULL DAO class type");
@@ -195,7 +197,7 @@ public class DAOFactory {
         }
 
         // Create new DAO
-        DataAccessObject newDAO = getDAO(daoType);
+        DataAccessObject1 newDAO = getDAO(daoType);
 
         // Connect the new DAO to the same dao transaction
         newDAO.connect(dao);
@@ -211,7 +213,7 @@ public class DAOFactory {
      * @param connection The new DAO will use this connection.
      * @return Data Access Object implementation class.
      */
-    public DataAccessObject getDAO(Class daoType, Connection connection) {
+    public DataAccessObject1 getDAO(Class daoType, Connection connection) {
         // Validate parameters
         if (daoType == null) {
             throw new DataAccessException("NULL DAO class type");
@@ -222,7 +224,7 @@ public class DAOFactory {
         }
 
         // Create new DAO
-        DataAccessObject newDAO = getDAO(daoType);
+        DataAccessObject1 newDAO = getDAO(daoType);
 
         // Connect the new DAO to the same dao transaction
         newDAO.connect(connection);

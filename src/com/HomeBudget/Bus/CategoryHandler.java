@@ -3,44 +3,138 @@ package com.HomeBudget.Bus;
 import java.util.ArrayList;
 
 import com.HomeBudget.DAO.CategoryDAO;
-import com.HomeBudget.DAO.CategoryDAOImp;
+import com.HomeBudget.DAO.CategoryDAOImpl;
+import com.dataObject.BusinessException;
+import com.dataObject.BusinessObject;
 import com.dataObject.CategoryVO;
+import com.dataObject.DAOFactory;
+import com.dataObject.DataAccessException;
 
-public class CategoryHandler {
-	private CategoryDAO categoryDAO=null;
-	public CategoryHandler()
-	{
-		categoryDAO=new CategoryDAOImp();
-	}
+public class CategoryHandler extends BusinessObject{
 	
+	
+	private CategoryHistoryHandler categoryHistoryHandler=null;
+ 	private MonthlyBudgetHandler monthlyBudgetHandler=null;
 	public void add(CategoryVO categoryVO) throws Exception {
-	
-		categoryDAO.addCategory(categoryVO);
+		   
+	 CategoryDAO categoryDAO=null;
+		 if(categoryVO==null)
+			 {
+			 throw new BusinessException("Null categoryVO");
+			 }
+	   try { 
+		    categoryHistoryHandler=new CategoryHistoryHandler();
+			categoryDAO = (CategoryDAO)getDAO(CategoryDAO.class);
+			categoryDAO.addCategory(categoryVO);
+			categoryHistoryHandler.add(categoryVO,categoryDAO);
+			categoryDAO.commit();
+	     }catch (DataAccessException ex) {
+	       throw ex;
+	     } catch (BusinessException ex) {
+	            throw ex;
+	      } catch (Exception ex) {
+	            throw new BusinessException(ex);
+	      } finally {
+	        close(categoryDAO);
+	      }
 	}
 	public void update(CategoryVO categoryVO)throws Exception 
-	{
-		categoryDAO.updateCategory(categoryVO);
+	{  
+	 if(categoryVO==null)
+	  {
+	   throw new BusinessException("Null categoryVO");
+	  }
+	  CategoryDAO categoryDAO=null;
+	  try {
+			categoryDAO = (CategoryDAO) DAOFactory.getDAO(CategoryDAO.class);
+		    categoryDAO.updateCategory(categoryVO);
+		    monthlyBudgetHandler=new MonthlyBudgetHandler();
+		    boolean updatedValues=monthlyBudgetHandler.update(categoryVO, categoryDAO);
+		   if(updatedValues)
+		   {
+			 categoryHistoryHandler=new CategoryHistoryHandler();
+			 categoryHistoryHandler.add(categoryVO,categoryDAO);
+		   }
+		    categoryDAO.commit();
+	  }catch (DataAccessException ex) {
+	       throw ex;
+	     } catch (BusinessException ex) {
+	            throw ex;
+	      } catch (Exception ex) {
+	            throw new BusinessException(ex);
+	      } finally {
+	        close(categoryDAO);
+	      }
 	}
 	public CategoryVO getById(int id)
 	{
+	    CategoryDAO categoryDAO=null;
 		return categoryDAO.getCategoryById(id);
 	}
 	
 	public ArrayList<CategoryVO> getExpensesCategories(int monthlyBudgetId,int userId)
-	{
-		return categoryDAO.getExpensesCategories(monthlyBudgetId, userId);
+	{   CategoryDAO categoryDAO=null;
+	   try {
+			categoryDAO = (CategoryDAO) DAOFactory.getDAO(CategoryDAO.class);
+			return categoryDAO.getExpensesCategories(monthlyBudgetId, userId);
+	       }catch (DataAccessException ex) {
+	       throw ex;
+	     } catch (BusinessException ex) {
+	            throw ex;
+	      } catch (Exception ex) {
+	            throw new BusinessException(ex);
+	      } finally {
+	        close(categoryDAO);
+	      }
+		
 	}
 	public ArrayList<CategoryVO> getAllExpensesCategories(int userId)
-	{
-		return categoryDAO.getAllExpensesCategories(userId);
+	{    
+		CategoryDAO categoryDAO=null;
+	 try {
+		  categoryDAO = (CategoryDAO) DAOFactory.getDAO(CategoryDAO.class);
+		  return categoryDAO.getAllExpensesCategories(userId);
+	 }catch (DataAccessException ex) {
+	       throw ex;
+	     } catch (BusinessException ex) {
+	            throw ex;
+	      } catch (Exception ex) {
+	            throw new BusinessException(ex);
+	      } finally {
+	        close(categoryDAO);
+	      }
 	}
 	public ArrayList<CategoryVO> getBudgetCategories(int monthlyBudgetId,int userId)
-	{
-		return categoryDAO.GetBudgetCategories(monthlyBudgetId, userId);
+	{   
+		CategoryDAO categoryDAO=null;
+		 try {
+			  categoryDAO = (CategoryDAO) DAOFactory.getDAO(CategoryDAO.class);
+		      return categoryDAO.GetBudgetCategories(monthlyBudgetId, userId);
+		 }catch (DataAccessException ex) {
+		       throw ex;
+		     } catch (BusinessException ex) {
+		            throw ex;
+		      } catch (Exception ex) {
+		            throw new BusinessException(ex);
+		      } finally {
+		        close(categoryDAO);
+		      }
 	}
 	
 	public ArrayList<CategoryVO> getAllBudgetCategories(int userId)
-	{
-		return categoryDAO.GetAllBudgetCategories(userId);
+	{  
+		CategoryDAO categoryDAO=null;
+		 try {
+			  categoryDAO = (CategoryDAO) DAOFactory.getDAO(CategoryDAO.class);
+		      return categoryDAO.GetAllBudgetCategories(userId);
+		 }catch (DataAccessException ex) {
+		       throw ex;
+		     } catch (BusinessException ex) {
+		            throw ex;
+		      } catch (Exception ex) {
+		            throw new BusinessException(ex);
+		      } finally {
+		        close(categoryDAO);
+		      }
 	}
 }

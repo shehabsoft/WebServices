@@ -17,6 +17,7 @@ import javax.persistence.TypedQuery;
 
 
 import com.entities.models.*;
+import com.HomeBudget.DAO.JPA.JPADataAccessObject;
 import com.dataObject.BusinessException;
 import com.dataObject.CategoryVO;
 import com.dataObject.Constants;
@@ -24,7 +25,7 @@ import com.dataObject.MonthlyBudgetVO;
 import com.dataObject.PurchaseVO;
 
 
-public class MonthlyBudgetDAOImpl extends DataAccessObject implements MonthlyBudgetDAO {
+public class MonthlyBudgetDAOImpl  extends JPADataAccessObject implements MonthlyBudgetDAO {
  
 	public MonthlyBudgetDAOImpl()
 	{
@@ -36,8 +37,8 @@ public class MonthlyBudgetDAOImpl extends DataAccessObject implements MonthlyBud
 	public void addMonthlyBudget(MonthlyBudgetVO monthlyBudgetVO) throws Exception
 	{
 		
-	try
-	{
+	  try
+	   {
 		
 		MonthlyBudget monthlyBudget=new MonthlyBudget();
 		List<Category>categories=new ArrayList<Category>();
@@ -55,16 +56,11 @@ public class MonthlyBudgetDAOImpl extends DataAccessObject implements MonthlyBud
 			 Category category=getEntitymanager().find(Category.class, Integer.parseInt(incomeCategories[i].trim()));
 		     categories.add(category);
 		     totalIncome+=category.getActualValue();
-		   
-		     
 		}
 		for(int i=0;i<expenseCategories.length;i++)
 		{
 			 Category category=getEntitymanager().find(Category.class, Integer.parseInt(expenseCategories[i].trim()));
 		     categories.add(category);
-		     
-		    
-		     
 		}
 		Query queryUser = (Query) getEntitymanager().createNamedQuery("getActiveUser");
 		User user=(User)queryUser.getResultList().get(0);
@@ -73,16 +69,13 @@ public class MonthlyBudgetDAOImpl extends DataAccessObject implements MonthlyBud
 		monthlyBudget.setTotalExpenses(totalExpenese);
 		Date enddate = formatter.parse(monthlyBudgetVO.getEndDate());
 		monthlyBudget.setEndDate(enddate);
-		getEntitymanager().getTransaction().begin();
 		deActivePreviousMonthlyBudget(user.getId());
 		monthlyBudget.setStatus(2);
 		monthlyBudget.setCreationDate(new Date());
 		monthlyBudget.setCategories(categories);
+		int monthlyBudgetId=(int) (getNextKey()-1);
+		monthlyBudget.setId(monthlyBudgetId);
 		getEntitymanager().persist(monthlyBudget);
-		getEntitymanager().getTransaction().commit();
-		//int monthlyBudgetId=(int) (getNextKey()-1);
-		int monthlyBudgetId=monthlyBudget.getId();
-		getEntitymanager().getTransaction().begin();
 		//copy (planed limit actual) Values From Category to MonthlyBudgetCategory Table
 		Query query = (Query) getEntitymanager().createNamedQuery("getAllbyMonthlyBudget").setParameter("id", monthlyBudgetId);
 		List<MonthlyBudgetCategory>budgetCategories=query.getResultList();
@@ -95,9 +88,6 @@ public class MonthlyBudgetDAOImpl extends DataAccessObject implements MonthlyBud
 			 getEntitymanager().persist(budgetCategory);
 		
 		}
-		
-		getEntitymanager().getTransaction().commit();
-		
 	}catch(Exception e)
 	{
 	
@@ -111,6 +101,62 @@ public class MonthlyBudgetDAOImpl extends DataAccessObject implements MonthlyBud
 		List<MonthlyBudgetCategory>budgetCategories=query.getResultList();
 		return budgetCategories;
 		
+		
+	}
+	public boolean updateMonthlyBudget(CategoryVO categoryVo) throws Exception
+	{
+		 Category category=getEntitymanager().find(Category.class, categoryVo.getId());
+		 MonthlyBudgetDAOImpl monthlyBudgetSession=new MonthlyBudgetDAOImpl();
+		 MonthlyBudgetVO monthlyBudgetVo=monthlyBudgetSession.getActiveMonthlyBudgetByUserId(categoryVo.getUserId());
+		 Query query = (Query) getEntitymanager().createNamedQuery("getMonthlyBudgetCategoryByMonthlyBudgetIdAndCategoryId");
+		 query.setParameter("id", monthlyBudgetVo.getId());
+		 query.setParameter("categoryId", category.getId());
+		 boolean updatedValues=false;
+			if(category.getCategoryTypeId()==Constants.CATEGORY_TYPE_EXPENSES_ID)//Expenses
+			{
+				List<MonthlyBudgetCategory>budgetCategories=query.getResultList();
+				for(MonthlyBudgetCategory budgetCategory:budgetCategories)
+				{
+					if(budgetCategory.getPlanedValue()!=categoryVo.getPlanedValue()||budgetCategory.getLimitValue()!=categoryVo.getLimitValue())
+					 {
+					 updatedValues=true;
+					 budgetCategory.setPlanedValue(categoryVo.getPlanedValue());
+					 budgetCategory.setLimitValue(categoryVo.getLimitValue());
+					 getEntitymanager().persist(budgetCategory);
+					 }
+				
+				}
+			}else
+			{
+				List<MonthlyBudgetCategory>budgetCategories=query.getResultList();
+				for(MonthlyBudgetCategory budgetCategory:budgetCategories)
+				{
+					//add new Category History If Changing in planned value or limit Value 
+					if(categoryVo.getPlanedValue()!=budgetCategory.getPlanedValue()||categoryVo.getLimitValue()!=budgetCategory.getLimitValue())
+					{
+					 budgetCategory.setPlanedValue(categoryVo.getPlanedValue());
+					 budgetCategory.setLimitValue(categoryVo.getLimitValue());
+					 updatedValues=true;
+					} 
+					 if(category.getActualValue()!=categoryVo.getActualValue())//update Actual Value in Monthly Budget Table 
+					 {
+						 budgetCategory.setActualValue(categoryVo.getActualValue());
+						 MonthlyBudget monthlyBudget=getEntitymanager().find(MonthlyBudget.class, monthlyBudgetVo.getId());
+						 double difference=categoryVo.getActualValue()-category.getActualValue();
+						 category.setActualValue(categoryVo.getActualValue());
+						 getEntitymanager().persist(category);
+						 monthlyBudget.setTotalIncome(monthlyBudget.getTotalIncome()+difference);
+						 getEntitymanager().persist(monthlyBudget);
+						 updatedValues=true; 
+					 }
+					 getEntitymanager().persist(category);
+					 getEntitymanager().persist(budgetCategory);
+					 return updatedValues;
+				
+				}
+				
+			}
+		return updatedValues;
 		
 	}
 	public boolean updateMonthlyBudget(MonthlyBudgetVO newmonthlyBudgetVO)
@@ -326,5 +372,59 @@ public class MonthlyBudgetDAOImpl extends DataAccessObject implements MonthlyBud
 		{
 			throw new BusinessException(e.toString());
 		}
+	}
+
+
+
+	@Override
+	public void updateMonthlyBudget(PurchaseVO purchaseVO) throws Exception {
+		// TODO Auto-generated method stub
+		 Purchase purchase=getEntitymanager().find(Purchase.class, purchaseVO.getId());
+		 Query query = (Query) getEntitymanager().createNamedQuery("getActiveMonthlyBudgetByUserId");
+		 query.setParameter("id", purchaseVO.getUserId());
+		 MonthlyBudget monthlyBudget=  (MonthlyBudget) query.getSingleResult();
+		 monthlyBudget.setTotalExpenses(monthlyBudget.getTotalExpenses()+purchaseVO.getPrice());
+		 purchase.setMonthlyBudget(monthlyBudget);
+		 getEntitymanager().persist(monthlyBudget);
+			//update If The Category Changed 
+			List<MonthlyBudgetCategory> monthlyBudgetCategoryList=null;
+			if(purchase.getCategory().getId()!=purchaseVO.getCategoryId())
+			{
+				 //reduce value From Old Category in Table Monthly Budget Category 
+				 query = (Query) getEntitymanager().createNamedQuery("getAllbyMonthlyBudget");
+				 query.setParameter("id", monthlyBudget.getId());
+				 monthlyBudgetCategoryList=  (List<MonthlyBudgetCategory>) query.getResultList();
+				for(MonthlyBudgetCategory monthlyBudgetCategory:monthlyBudgetCategoryList)
+				{
+					if(purchase.getCategory().getId()==monthlyBudgetCategory.getCategory().getId())
+					{
+						monthlyBudgetCategory.setActualValue(monthlyBudgetCategory.getActualValue()-purchaseVO.getPrice());
+						getEntitymanager().persist(monthlyBudgetCategory);
+					}else if(purchaseVO.getCategoryId()==monthlyBudgetCategory.getCategory().getId())
+					{
+						monthlyBudgetCategory.setActualValue(monthlyBudgetCategory.getActualValue()+purchaseVO.getPrice());
+						getEntitymanager().persist(monthlyBudgetCategory);
+					}
+					
+				}
+			}else //Update Monthly Budget in Case change In Actual Value
+			{
+				query = (Query) getEntitymanager().createNamedQuery("getAllbyMonthlyBudget");
+				query.setParameter("id", monthlyBudget.getId());
+				 monthlyBudgetCategoryList=  (List<MonthlyBudgetCategory>) query.getResultList();
+				for(MonthlyBudgetCategory monthlyBudgetCategory:monthlyBudgetCategoryList)
+				{
+					if(purchase.getCategory().getId()==monthlyBudgetCategory.getCategory().getId())
+					{
+						double actualValue=monthlyBudgetCategory.getActualValue();//30
+						monthlyBudgetCategory.setActualValue(actualValue+purchaseVO.getNewPrice());//
+						getEntitymanager().persist(monthlyBudgetCategory);
+					}
+				}
+			}
+		 
+		 
+		 
+		 
 	}
 }

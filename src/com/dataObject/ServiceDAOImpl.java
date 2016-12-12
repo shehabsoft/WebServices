@@ -18,6 +18,8 @@ import java.util.List;
 
 import javax.persistence.NamedQuery;
 
+import com.HomeBudget.DAO.JPA.DataAccessObject1;
+
 /**
  * Service data access object JDBC implementation.
  *
@@ -315,5 +317,11 @@ public class ServiceDAOImpl extends JdbcDataAccessObject implements ServiceDAO {
 //        }
     	return true;
     }
+
+	@Override
+	public void connect(DataAccessObject1 dao) {
+		// TODO Auto-generated method stub
+		
+	}
    
 }

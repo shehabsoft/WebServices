@@ -5,13 +5,15 @@ package com.HomeBudget.DAO;
 
 import java.util.ArrayList;
 
+import com.HomeBudget.DAO.JPA.DataAccessObject1;
 import com.dataObject.CategoryVO;
 
 /**
  * @author Shehab
  *
  */
-public interface CategoryDAO {
+public interface CategoryDAO extends DataAccessObject1 {
+	
 	public void updateCategory(CategoryVO categoryVO)throws Exception;
 	
 	public void addCategory(CategoryVO categoryVO) throws Exception;

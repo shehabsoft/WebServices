@@ -12,8 +12,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
+import com.HomeBudget.DAO.JPA.JPADataAccessObject;
 import com.HomeBudget.dataObject.PurchaseHistoryVO;
 import com.dataObject.BusinessException;
+import com.dataObject.PurchaseVO;
 import com.entities.models.Location;
 import com.entities.models.Purchase;
 import com.entities.models.PurchaseHistory;
@@ -22,15 +24,12 @@ import com.entities.models.PurchaseHistory;
  * @author Shehab
  *
  */
-public class PurchaseHistoryDAOImpl extends DataAccessObject implements PurchaseHistoryDAO {
+public class PurchaseHistoryDAOImpl extends JPADataAccessObject implements PurchaseHistoryDAO {
 
 	/* (non-Javadoc)
 	 * @see com.HomeBudget.DAO.PurchaseHistoryDAO#addPurchaseHistory(com.HomeBudget.dataObject.PurchaseHistoryVO)
 	 */
-	public PurchaseHistoryDAOImpl(EntityManagerFactory entityManager)
-	{
-		super(entityManager);
-	}
+	 
 	public PurchaseHistoryDAOImpl()
 	{
 		super();
@@ -147,6 +146,20 @@ public class PurchaseHistoryDAOImpl extends DataAccessObject implements Purchase
 		throw new Exception(e);
 		
 		}
+	}
+	@Override
+	public PurchaseHistory addPurchaseHistory(PurchaseVO purchaseVO) {
+		
+		 Purchase purchase=getEntitymanager().find(Purchase.class, purchaseVO.getId()) ;
+		 PurchaseHistory purchaseHistory=new PurchaseHistory();
+		 purchaseHistory.setCreationDate(new Date());
+		 purchaseHistory.setDetails(purchaseVO.getDetails());
+		 purchaseHistory.setLocation(purchase.getLocation());
+		 purchaseHistory.setPurchase(purchase);
+		 purchaseHistory.setPrice(purchaseVO.getPrice());
+		 getEntitymanager().persist(purchaseHistory);
+		 return purchaseHistory;
+		  
 	}
 
 }

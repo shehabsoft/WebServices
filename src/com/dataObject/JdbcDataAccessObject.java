@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import com.HomeBudget.DAO.JPA.DataAccessObject1;
 import com.HomeBudget.common.GlobalUtilities;
 
 /**
@@ -60,7 +61,7 @@ import com.HomeBudget.common.GlobalUtilities;
  * @author Eng. Ayman Atiyeh
  * @version 1.00
  */
-public abstract class JdbcDataAccessObject implements DataAccessObject {
+public abstract class JdbcDataAccessObject implements DataAccessObject1 {
     
     
     private static String CALENDER_CLS_QUERY =    "SELECT  1 \n" + 

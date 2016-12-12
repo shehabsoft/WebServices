@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.HomeBudget.DAO.JPA.DataAccessObject1;
+
 /**
  * Security data access object implementation class. This DAO defines all data
  * access methods for security role.
@@ -1686,4 +1688,10 @@ public class RoleDAOImpl extends JdbcDataAccessObject implements RoleDAO {
             close(prepStmt);
         }
     }
+
+	@Override
+	public void connect(DataAccessObject1 dao) {
+		// TODO Auto-generated method stub
+		
+	}
 }

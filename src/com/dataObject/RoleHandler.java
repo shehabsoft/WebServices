@@ -59,7 +59,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+          // //close(dao);
         }
     }
 
@@ -98,7 +98,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           ////close(dao);
         }
     }
 
@@ -139,7 +139,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           ////close(dao);
         }
     }
 
@@ -163,7 +163,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -246,16 +246,16 @@ public class RoleHandler extends BusinessObject {
             return newVO;
 
         } catch (DataAccessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (BusinessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (Exception ex) {
-            rollback(dao);
+           // rollback(dao);
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -337,16 +337,16 @@ public class RoleHandler extends BusinessObject {
             return newVO;
 
         } catch (DataAccessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (BusinessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (Exception ex) {
-            rollback(dao);
+           // rollback(dao);
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -436,16 +436,16 @@ public class RoleHandler extends BusinessObject {
             return newVO;
 
         } catch (DataAccessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (BusinessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (Exception ex) {
-            rollback(dao);
+           // rollback(dao);
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -540,16 +540,16 @@ public class RoleHandler extends BusinessObject {
             return newVO;
 
         } catch (DataAccessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (BusinessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (Exception ex) {
-            rollback(dao);
+           // rollback(dao);
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -643,16 +643,16 @@ public class RoleHandler extends BusinessObject {
             return newVO;
 
         } catch (DataAccessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (BusinessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (Exception ex) {
-            rollback(dao);
+           // rollback(dao);
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -752,16 +752,16 @@ public class RoleHandler extends BusinessObject {
             return newVO;
 
         } catch (DataAccessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (BusinessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (Exception ex) {
-            rollback(dao);
+           // rollback(dao);
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -857,16 +857,16 @@ public class RoleHandler extends BusinessObject {
             return newVO;
 
         } catch (DataAccessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (BusinessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (Exception ex) {
-            rollback(dao);
+           // rollback(dao);
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -968,16 +968,16 @@ public class RoleHandler extends BusinessObject {
             return newVO;
 
         } catch (DataAccessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (BusinessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (Exception ex) {
-            rollback(dao);
+           // rollback(dao);
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -1079,16 +1079,16 @@ public class RoleHandler extends BusinessObject {
             return newVO;
 
         } catch (DataAccessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (BusinessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (Exception ex) {
-            rollback(dao);
+           // rollback(dao);
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -1195,16 +1195,16 @@ public class RoleHandler extends BusinessObject {
             return newVO;
 
         } catch (DataAccessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (BusinessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (Exception ex) {
-            rollback(dao);
+           // rollback(dao);
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -1315,16 +1315,16 @@ public class RoleHandler extends BusinessObject {
             return newVO;
 
         } catch (DataAccessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (BusinessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (Exception ex) {
-            rollback(dao);
+           // rollback(dao);
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -1440,16 +1440,16 @@ public class RoleHandler extends BusinessObject {
             return newVO;
 
         } catch (DataAccessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (BusinessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (Exception ex) {
-            rollback(dao);
+           // rollback(dao);
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -1554,16 +1554,16 @@ public class RoleHandler extends BusinessObject {
             return newVO;
 
         } catch (DataAccessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (BusinessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (Exception ex) {
-            rollback(dao);
+           // rollback(dao);
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -1673,16 +1673,16 @@ public class RoleHandler extends BusinessObject {
             return newVO;
 
         } catch (DataAccessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (BusinessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (Exception ex) {
-            rollback(dao);
+           // rollback(dao);
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -1707,7 +1707,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -1732,7 +1732,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -1757,7 +1757,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -1782,7 +1782,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -1807,7 +1807,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -1832,7 +1832,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -1862,7 +1862,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -1880,16 +1880,16 @@ public class RoleHandler extends BusinessObject {
             dao.commit();
 
         } catch (DataAccessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (BusinessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (Exception ex) {
-            rollback(dao);
+           // rollback(dao);
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -1954,7 +1954,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -1980,7 +1980,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -2005,7 +2005,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -2030,7 +2030,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -2055,7 +2055,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -2080,7 +2080,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -2107,7 +2107,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -2138,16 +2138,16 @@ public class RoleHandler extends BusinessObject {
             return newVO;
 
         } catch (DataAccessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (BusinessException ex) {
-            rollback(dao);
+           // rollback(dao);
             throw ex;
         } catch (Exception ex) {
-            rollback(dao);
+           // rollback(dao);
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -2177,7 +2177,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -2206,7 +2206,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -2236,7 +2236,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -2269,7 +2269,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -2295,7 +2295,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
 
     }
@@ -2319,7 +2319,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -2346,7 +2346,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -2375,7 +2375,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 
@@ -2403,7 +2403,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           ////close(dao);
         }
     }
 
@@ -2427,7 +2427,7 @@ public class RoleHandler extends BusinessObject {
         } catch (Exception ex) {
             throw new BusinessException(ex);
         } finally {
-            close(dao);
+           //close(dao);
         }
     }
 

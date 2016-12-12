@@ -16,24 +16,18 @@ import org.eclipse.persistence.descriptors.DescriptorEventManager;
 
 import com.entities.models.*;
 import com.DES;
+import com.HomeBudget.DAO.JPA.JPADataAccessObject;
 import com.dataObject.CategoryVO;
 import com.dataObject.CountryVO;
 import com.dataObject.PurchaseVO;
 import com.dataObject.UserVO;
 
 
-public class UserDAOImpl extends DataAccessObject implements UserDAO {
-//	
-
-
-	public UserDAOImpl()
+public class UserDAOImpl extends JPADataAccessObject implements UserDAO {
+ 	public UserDAOImpl()
 	{
 	 super();
 	}
-	
-	
-	
-
 	public ArrayList<UserVO> getAllUsers()
 	{
 		try
@@ -116,10 +110,9 @@ public class UserDAOImpl extends DataAccessObject implements UserDAO {
 						throw new Exception("Password Should not be Null");
 					}
 					user.setCreationDate(new Date());
-					getEntitymanager().getTransaction().begin();
 					getEntitymanager().persist(user);
 		
-					getEntitymanager().getTransaction().commit();
+				 
 	    }
 		}catch(Exception e)
 		{

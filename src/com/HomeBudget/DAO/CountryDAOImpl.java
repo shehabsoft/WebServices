@@ -14,11 +14,12 @@ import javax.persistence.TypedQuery;
 
 
 import com.entities.models.*;
+import com.HomeBudget.DAO.JPA.JPADataAccessObject;
 import com.dataObject.CategoryVO;
 import com.dataObject.CountryVO;
 
 
-public class CountryDAOImpl extends DataAccessObject implements CountryDAO {
+public class CountryDAOImpl extends  JPADataAccessObject implements CountryDAO {
 //	
 
 	

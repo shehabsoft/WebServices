@@ -35,6 +35,8 @@ import java.util.List;
 
 import javax.persistence.NamedQuery;
 
+import com.HomeBudget.DAO.JPA.DataAccessObject1;
+
 /**
  * Transaction services data access object implementation class.
  *
@@ -1209,5 +1211,11 @@ public class ServiceDAOJdbcImpl extends JdbcDataAccessObject implements ServiceD
 	public boolean isServiceCodeExists(Integer serviceCode, Long serviceId) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void connect(DataAccessObject1 dao) {
+		// TODO Auto-generated method stub
+		
 	}
 }

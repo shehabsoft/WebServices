@@ -1,9 +1,11 @@
 package com.HomeBudget.DAO;
 import org.apache.log4j.Logger;
+
+import com.HomeBudget.DAO.JPA.JPADataAccessObject;
 import com.HomeBudget.dataObject.InfoTraceLogVO;
 import com.entities.models.InfoTraceLog;
 
-public class InfoTraceLogDAOImpl extends DataAccessObject implements InfoTraceLogDAO {
+public class InfoTraceLogDAOImpl extends  JPADataAccessObject  implements InfoTraceLogDAO {
 
 	
 	Logger logger = Logger.getLogger(InfoTraceLogDAOImpl.class);
@@ -24,9 +26,7 @@ public class InfoTraceLogDAOImpl extends DataAccessObject implements InfoTraceLo
 		infoTraceLog.setRequestDate(infoTraceLogVO.getCreationDate());
 		infoTraceLog.setResponseData(infoTraceLogVO.getResponseData());
 		infoTraceLog.setResponseDate(infoTraceLogVO.getResponseDate());
-		getEntitymanager().getTransaction().begin();
 		getEntitymanager().persist(infoTraceLog);
-		getEntitymanager().getTransaction().commit();
 		logger.info("Done Adding  Trace Log Info");
 		}catch(Exception e)
 		{

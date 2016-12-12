@@ -14,12 +14,13 @@ import javax.persistence.TypedQuery;
 
 
 import com.entities.models.*;
+import com.HomeBudget.DAO.JPA.JPADataAccessObject;
 import com.dataObject.CategoryVO;
 import com.dataObject.CountryVO;
 import com.dataObject.CurrencyVO;
 
 
-public class CurrencyDAOImpl extends DataAccessObject implements CurrencyDAO{
+public class CurrencyDAOImpl extends JPADataAccessObject implements CurrencyDAO{
 //	
  
 	public CurrencyDAOImpl()

@@ -4,31 +4,87 @@ import java.util.ArrayList;
 
 import com.HomeBudget.DAO.UserDAO;
 import com.HomeBudget.DAO.UserDAOImpl;
+import com.dataObject.BusinessException;
+import com.dataObject.BusinessObject;
+import com.dataObject.DataAccessException;
 import com.dataObject.UserVO;
 
-public class UserHandler {
-
-	private UserDAO userDAO=null;
-	public UserHandler(){
-		userDAO=new UserDAOImpl();
-	}
+public class UserHandler extends BusinessObject{
 	public ArrayList<UserVO> getAll()
 	{
-		return userDAO.getAllUsers();
+		 UserDAO userDAO=null;
+		 try
+		 {
+		  userDAO=(UserDAO)getDAO(UserDAO.class);
+		  return userDAO.getAllUsers();
+		 }catch (DataAccessException ex) {
+		  throw ex;
+		  } catch (BusinessException ex) {
+		   throw ex;
+		   } catch (Exception ex) {
+		   throw new BusinessException(ex);
+		   } finally {
+		  close(userDAO);
+		   }
 	}
 	
 	public void add(UserVO userVo) throws Exception
 	{
-		userDAO.addUser(userVo);
+
+		 UserDAO userDAO=null;
+		 try
+		 {
+		  userDAO=(UserDAO)getDAO(UserDAO.class);
+		  userDAO.addUser(userVo);
+		  userDAO.commit();
+		 }catch (DataAccessException ex) {
+		  throw ex;
+		  } catch (BusinessException ex) {
+		   throw ex;
+		   } catch (Exception ex) {
+		   throw new BusinessException(ex);
+		   } finally {
+		  close(userDAO);
+		   }
+		
 	}
 	
 	public boolean checkMail(String mail) throws Exception
 	{
-		return userDAO.checkMail(mail);
+		UserDAO userDAO=null;
+		 try
+		 {
+		  userDAO=(UserDAO)getDAO(UserDAO.class);
+		  return userDAO.checkMail(mail);
+		 }catch (DataAccessException ex) {
+		  throw ex;
+		  } catch (BusinessException ex) {
+		   throw ex;
+		   } catch (Exception ex) {
+		   throw new BusinessException(ex);
+		   } finally {
+		  close(userDAO);
+		   }
+		
+		
 	}
 	public UserVO getActiveUser() throws Exception
 	{
-		return userDAO.getActiveUser();
+		UserDAO userDAO=null;
+		 try
+		 {
+		  userDAO=(UserDAO)getDAO(UserDAO.class);
+		  return userDAO.getActiveUser();
+		 }catch (DataAccessException ex) {
+		  throw ex;
+		  } catch (BusinessException ex) {
+		   throw ex;
+		   } catch (Exception ex) {
+		   throw new BusinessException(ex);
+		   } finally {
+		  close(userDAO);
+		   }
+		
 	}
 	
 }

@@ -19,6 +19,8 @@ import java.net.Socket;
 import java.sql.Connection;
 import java.util.logging.Logger;
 
+import com.HomeBudget.DAO.JPA.DataAccessObject1;
+
 /**
  * Defines the common functionality for business objects. All BO classes must 
  * extend this class.
@@ -37,7 +39,7 @@ public abstract class BusinessObject {
      * 
      * @param dao DataAccessObject to be closed.
      */
-    public void close(DataAccessObject dao) {
+    public void close(DataAccessObject1 dao) {
         if (dao == null) {
             return;
         }
@@ -50,7 +52,7 @@ public abstract class BusinessObject {
      * 
      * @param dao DataAccessObject to be rolled back.
      */
-    public void rollback(DataAccessObject dao) {
+    public void rollback(DataAccessObject1 dao) {
         if (dao == null) {
             return;
         }
@@ -98,11 +100,11 @@ public abstract class BusinessObject {
      * @param daoType Data Access Object interface.
      * @return Data Access Object implementation class.
      */
-    protected DataAccessObject getDAO(Class daoType) {
+    protected DataAccessObject1 getDAO(Class daoType) {
         return DAOFactory.getInstance().getDAO(daoType);
     }
     
-    public <T extends DataAccessObject> T getDataAccessObject(Class<T> daoType){
+    public <T extends DataAccessObject1> T getDataAccessObject(Class<T> daoType){
         return DAOFactory.getInstance().getDataAccessObject(daoType);
     }
 
@@ -114,7 +116,7 @@ public abstract class BusinessObject {
      * @param trsDAO Transactional DAO used to initialize the new created DAO.
      * @return Data Access Object implementation class.
      */
-    protected DataAccessObject getDAO(Class daoType, DataAccessObject trsDAO) {
+    protected DataAccessObject1 getDAO(Class daoType, DataAccessObject1 trsDAO) {
         return DAOFactory.getInstance().getDAO(daoType, trsDAO);
     }
 
@@ -125,7 +127,7 @@ public abstract class BusinessObject {
      * @param connection The new DAO will use this connection.
      * @return Data Access Object implementation class.
      */
-    protected DataAccessObject getDAO(Class daoType, Connection connection) {
+    protected DataAccessObject1 getDAO(Class daoType, Connection connection) {
         return DAOFactory.getInstance().getDAO(daoType, connection);
     }
 

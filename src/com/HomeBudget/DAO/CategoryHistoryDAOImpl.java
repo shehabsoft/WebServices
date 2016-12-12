@@ -4,48 +4,36 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-
-
-
-import com.entities.models.*;
+import com.HomeBudget.DAO.JPA.JPADataAccessObject;
 import com.HomeBudget.dataObject.CategoryHistoryVO;
-import com.HomeBudget.dataObject.PurchaseHistoryVO;
 import com.dataObject.CategoryVO;
-import com.dataObject.PurchaseVO;
+import com.entities.models.Category;
+import com.entities.models.CategoryHistory;
 
 
-public class CategoryHistoryDAOImpl extends DataAccessObject implements CategoryHistoryDAO{
+public class CategoryHistoryDAOImpl extends  JPADataAccessObject implements CategoryHistoryDAO{
  
 	
-	public CategoryHistoryDAOImpl()
-	{
-		 super();
-	}
+
 	
-	
-	public CategoryHistory addCategoryHistory(Category category) throws Exception
+	public CategoryHistory addCategoryHistory(CategoryVO categoryVo) throws Exception
 	{
 		
 		 CategoryHistory categoryHistory =new CategoryHistory();
 		try
 		{
-			categoryHistory.setActualValue(category.getActualValue());	
-			categoryHistory.setCategoryStatus(category.getCategoryStatus());
+			Category category=getEntitymanager().find(Category.class, categoryVo.getId());
+			categoryHistory.setActualValue(categoryVo.getActualValue());	
+			categoryHistory.setCategoryStatus(categoryVo.getCategoryStatus());
 			categoryHistory.setCategory(category);
-			categoryHistory.setCategoryTypeId(category.getCategoryTypeId());
-			categoryHistory.setLimitValue(category.getLimitValue());
-			categoryHistory.setPlanedValue(category.getPlanedValue());
+			categoryHistory.setCategoryTypeId(categoryVo.getCategoryTypeId());
+			categoryHistory.setLimitValue(categoryVo.getLimitValue());
+			categoryHistory.setPlanedValue(categoryVo.getPlanedValue());
 			categoryHistory.setUserId(category.getUser().getId());
-			categoryHistory.setActualValue(category.getActualValue());
+			categoryHistory.setActualValue(categoryVo.getActualValue());
 			categoryHistory.setCreationDate(new Date());
+			getEntitymanager().persist(categoryHistory);
 			return categoryHistory;
 		}catch(Exception e) 
 		{
@@ -118,6 +106,8 @@ public class CategoryHistoryDAOImpl extends DataAccessObject implements Category
 		}
 	}
 
+
+ 
 
 
 	

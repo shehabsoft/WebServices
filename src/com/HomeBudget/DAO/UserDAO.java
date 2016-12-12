@@ -5,13 +5,14 @@ package com.HomeBudget.DAO;
 
 import java.util.ArrayList;
 
+import com.HomeBudget.DAO.JPA.DataAccessObject1;
 import com.dataObject.UserVO;
 
 /**
  * @author Shehab
  *
  */
-public interface UserDAO {
+public interface UserDAO extends DataAccessObject1 {
 
 	
 	public ArrayList<UserVO> getAllUsers();
