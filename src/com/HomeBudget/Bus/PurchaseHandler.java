@@ -21,7 +21,7 @@ public class PurchaseHandler extends BusinessObject {
 	private MonthlyBudgetHandler monthlyBudgetHandler;
 	private PurchaseHistoryHandler purchaseHistoryHandler;
 	 
-	public void add(PurchaseVO purchaseVO) throws Exception
+	public void add(PurchaseVO purchaseVO) throws BusinessException
 	{
 		PurchaseDAO purchaseDAO=null;
 		try
@@ -43,7 +43,7 @@ public class PurchaseHandler extends BusinessObject {
 		        close(purchaseDAO);
 		      }
 	}
-	public void update(PurchaseVO purchaseVO) throws Exception
+	public void update(PurchaseVO purchaseVO) throws BusinessException
 	{
 		PurchaseDAO purchaseDAO=null;
 		try

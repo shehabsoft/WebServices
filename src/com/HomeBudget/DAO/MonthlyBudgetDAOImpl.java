@@ -162,7 +162,6 @@ public class MonthlyBudgetDAOImpl  extends JPADataAccessObject implements Monthl
 	public boolean updateMonthlyBudget(MonthlyBudgetVO newmonthlyBudgetVO)
 	{
 		//get old Monthly Budget by Id
-		getEntitymanager().getTransaction().begin();
 		MonthlyBudget oldmonthlyBudget=getEntitymanager().find(MonthlyBudget.class, newmonthlyBudgetVO.getId());
 		//get old Monthly Budget Categories 
 		List<MonthlyBudgetCategory>oldbudgetCategories=getMonthlyBudgetCategoriesById(oldmonthlyBudget.getId());
@@ -245,10 +244,7 @@ public class MonthlyBudgetDAOImpl  extends JPADataAccessObject implements Monthl
 		{
 		getEntitymanager().persist(oldmonthlyBudget);
 		}
-		if(changedInMonthlyBudgetCategories)
-		{
-		getEntitymanager().getTransaction().commit();
-		}
+	 
 		
 		
 		

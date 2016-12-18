@@ -18,6 +18,7 @@ import javax.persistence.TypedQuery;
 import com.entities.models.*;
 import com.HomeBudget.DAO.JPA.JPADataAccessObject;
 import com.HomeBudget.dataObject.PurchaseHistoryVO;
+import com.dataObject.BusinessException;
 import com.dataObject.CategoryVO;
 import com.dataObject.PurchaseVO;
 
@@ -40,7 +41,7 @@ public class PurchaseDAOImpl extends  JPADataAccessObject implements PurchaseDAO
 	    purchase.setCategory(category);
 	    if(category==null)
 	    {
-	    	throw new Exception("There is No Category with ID "+purchaseVO.getCategoryId());
+	    	throw new BusinessException("There is No Category with ID "+purchaseVO.getCategoryId());
 	    }else
 	    {
 		 if(purchaseVO.getArabicDescription()!=null)
@@ -48,7 +49,7 @@ public class PurchaseDAOImpl extends  JPADataAccessObject implements PurchaseDAO
 		 purchase.setArabicDescription(purchaseVO.getArabicDescription());
 		 }else
 		 {
-		 throw new Exception("Purchase Arabic Description Should not be Null");
+		 throw new BusinessException("Purchase Arabic Description Should not be Null");
 		 }
 		 if(purchaseVO.getLocationId()!=0)
 		 {
@@ -56,21 +57,21 @@ public class PurchaseDAOImpl extends  JPADataAccessObject implements PurchaseDAO
 		  purchase.setLocation(location);;
 		 }else
 		 {
-		 throw new Exception("Location  Should not be Null or 0");
+		 throw new BusinessException("Location  Should not be Null or 0");
 		 }
 		 if(purchaseVO.getEnglishDescription()!=null)
 		 {
 		 purchase.setEnglishDescription(purchaseVO.getEnglishDescription());
 		 }else
 		 {
-		 throw new Exception("Purchase English Description Should not be Null");
+		 throw new BusinessException("Purchase English Description Should not be Null");
 		 }
 	     if(purchaseVO.getPrice()>0)
 		 {
 		 purchase.setPrice(purchaseVO.getPrice());
 		 }else
 		 {
-		 throw new Exception("Purchase Price  Should be Greater than 0");
+		 throw new BusinessException("Purchase Price  Should be Greater than 0");
 		 }
 		 if(purchaseVO.getDetails()!=null)
 		 {

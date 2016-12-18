@@ -64,7 +64,9 @@ public class MonthlyBudgetHandler extends BusinessObject{
 		MonthlyBudgetDAO monthlyBudgetDAO=null;
 		try {
 			monthlyBudgetDAO=(MonthlyBudgetDAO)getDAO(MonthlyBudgetDAO.class);
-			return monthlyBudgetDAO.updateMonthlyBudget(newmonthlyBudgetVO);
+			boolean updateFlage= monthlyBudgetDAO.updateMonthlyBudget(newmonthlyBudgetVO);
+			monthlyBudgetDAO.commit();
+			return updateFlage;
 		}catch (DataAccessException ex) {
 			   throw ex;
 			  } catch (BusinessException ex) {
