@@ -12,6 +12,7 @@ public class MonthlyBudgetVO {
 	private String startDate;
 	private String endDate;
 	private String incomeCategoriesId;
+	private List<CategoryVO> incomeCategories;
 	private String expenseCategoriesId;
 	private double totalExpenses;
 	private double totalIncomes;
@@ -19,6 +20,16 @@ public class MonthlyBudgetVO {
 	private double completedRatio;
 	public double getCompletedRatio() {
 		return completedRatio;
+	}
+
+
+	public List<CategoryVO> getIncomeCategories() {
+		return incomeCategories;
+	}
+
+
+	public void setIncomeCategories(List<CategoryVO> incomeCategories) {
+		this.incomeCategories = incomeCategories;
 	}
 
 

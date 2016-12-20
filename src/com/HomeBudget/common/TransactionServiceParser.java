@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
@@ -25,6 +26,8 @@ import com.dataObject.MonthlyBudgetVO;
 import com.dataObject.PurchaseVO;
 import com.dataObject.TransactionVO;
 import com.dataObject.UserVO;
+import com.google.gson.Gson;
+import com.models.Documents.CategoriesKeyBasedDocument;
 
 public  class TransactionServiceParser {
 
@@ -108,6 +111,10 @@ public  class TransactionServiceParser {
         }else if(serviceCode==Constants.EDIT_MONTHLY_BUDGET_SERVICE)
         {
         	trsVO = getMonthlyBudgetInfo(root,true);
+        }
+        else if(serviceCode==Constants.CLOSE_MONTHLY_BUDGET_SERVICE)
+        {
+        	trsVO = getCloseMonthlyBudgetInfo(root);
         }
         return trsVO;
     }
@@ -272,6 +279,29 @@ public  class TransactionServiceParser {
     	
     	
     }
+    public TransactionVO getCloseMonthlyBudgetInfo(Node root)
+    {
+   	 // Create transaction VO
+        TransactionVO trsVO = null;
+         MonthlyBudgetVO monthlyBudgetVO=new MonthlyBudgetVO();
+        Integer serviceCode = new Integer(getNodeValue(root, "serviceCode", true, true));
+        String incomeCategories = getNodeValue(root, "incomeCategories", true, true);
+        Gson gson=new Gson();
+	    Object obj = gson.fromJson(incomeCategories, CategoriesKeyBasedDocument.class);
+	    CategoriesKeyBasedDocument categoriesKeyBasedDocument=(CategoriesKeyBasedDocument)obj;
+	    ArrayList<CategoryVO>categoryVOs=(ArrayList<CategoryVO>)categoriesKeyBasedDocument.getCategoryVO();
+        String monthlyBudgetId ="";
+        monthlyBudgetId = getNodeValue(root, "monthlyBudgetId", true, true);
+        monthlyBudgetVO.setId(Integer.parseInt(monthlyBudgetId));
+        trsVO=new TransactionVO();
+        trsVO.setServiceCode(serviceCode);
+        monthlyBudgetVO.setIncomeCategories(categoryVOs);
+        trsVO.setMonthlyBudgetVO(monthlyBudgetVO);
+        
+        return  trsVO;
+    	
+    	
+    }
         /**
          * Get document node by name.
          * 
@@ -332,6 +362,7 @@ public  class TransactionServiceParser {
             
             return null;
         }
+        
 
 
 }

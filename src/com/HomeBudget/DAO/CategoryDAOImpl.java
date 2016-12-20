@@ -49,16 +49,37 @@ public class CategoryDAOImpl extends JPADataAccessObject implements CategoryDAO{
 			   {
 				 throw new BusinessException("Planed Value Should Be Less Than Limit Value");
 			   }
+			 if(categoryVO.getCategoryTypeId()!=Constants.CATEGORY_TYPE_REVENUES_ID)//update Actual Value In Case Of Revenes
+			 {
 				 category.setPlanedValue(categoryVO.getPlanedValue());
 				 category.setLimitValue(categoryVO.getLimitValue());
-				 getEntitymanager().persist(category);
+			 } 
+			 getEntitymanager().persist(category);
 			}	
 			 }catch(Exception e)
 			  {
 				throw new Exception(e);
 			  }
 		}
-		
+	public void updateCategoryActualValue(MonthlyBudgetVO monthlyBudgetVO)throws Exception
+	{
+		try
+		{
+			ArrayList <CategoryVO> incomecategoryVOs=(ArrayList<CategoryVO>) monthlyBudgetVO.getIncomeCategories();
+			for(CategoryVO categoryVO: incomecategoryVOs)
+			{
+			Category category=getEntitymanager().find(Category.class, categoryVO.getId());
+			 if(categoryVO.getNewValue()!=0)
+			 {
+			   category.setActualValue(categoryVO.getNewValue());
+			   getEntitymanager().persist(category);
+			 } 
+			}	
+			 }catch(Exception e)
+			  {
+				throw new Exception(e);
+			  }
+		}
 	
 	public void addCategory(CategoryVO categoryVO) throws Exception
 	{

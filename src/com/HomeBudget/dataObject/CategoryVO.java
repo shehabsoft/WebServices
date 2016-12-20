@@ -1,9 +1,14 @@
-package com.dataObject;
+package com.HomeBudget.dataObject;
 
 
-public class CategoryVO {
+public class CategoryVO extends ValueObject{
 	
-	private int Id;
+ 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private boolean withenLimit;
 	 
 	public boolean isWithenLimit() {
@@ -67,14 +72,7 @@ public class CategoryVO {
 	private double planedValue;
 	
 	private double actualValue;
-
-	public int getId() {
-		return Id;
-	}
-
-	public void setId(int id) {
-		Id = id;
-	}
+ 
 
 	public String getArabicDescription() {
 		return arabicDescription;

@@ -85,6 +85,10 @@ public class TransactionService {
         {
         	PurchaseHistoryHandler purchaseHistoryHandler=new PurchaseHistoryHandler();
         	purchaseHistoryHandler.add(transactionVO.getPurchaseHistoryVO());
+        }else if(transactionVO.getServiceCode()==Constants.CLOSE_MONTHLY_BUDGET_SERVICE)
+        {
+        	MonthlyBudgetHandler monthlyBudgetHandler=new MonthlyBudgetHandler();
+        	monthlyBudgetHandler.Close(transactionVO.getMonthlyBudgetVO());
         }
 	
        

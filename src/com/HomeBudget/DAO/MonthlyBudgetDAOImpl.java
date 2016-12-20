@@ -413,7 +413,13 @@ public class MonthlyBudgetDAOImpl  extends JPADataAccessObject implements Monthl
 					if(purchase.getCategory().getId()==monthlyBudgetCategory.getCategory().getId())
 					{
 						double actualValue=monthlyBudgetCategory.getActualValue();//30
-						monthlyBudgetCategory.setActualValue(actualValue+purchaseVO.getNewPrice());//
+						if(purchaseVO.getNewPrice()==0)//if the new price is zero this mean that this is the first purchase in selected Expenses Category
+						{
+						    monthlyBudgetCategory.setActualValue(actualValue+purchaseVO.getPrice());//
+						}else
+						{
+							monthlyBudgetCategory.setActualValue(actualValue+purchaseVO.getNewPrice());//
+						}
 						getEntitymanager().persist(monthlyBudgetCategory);
 					}
 				}
@@ -422,5 +428,22 @@ public class MonthlyBudgetDAOImpl  extends JPADataAccessObject implements Monthl
 		 
 		 
 		 
+	}
+
+
+
+	@Override
+	public boolean closeMonthlyBudget(MonthlyBudgetVO monthlyBudgetVO) throws BusinessException {
+		// TODO Auto-generated method stub
+		try
+		{
+			MonthlyBudget monthlyBudget=getEntitymanager().find(MonthlyBudget.class, monthlyBudgetVO.getId());
+			monthlyBudget.setStatus(3);
+		}catch(Exception e)
+		{
+			throw new BusinessException(e.toString());
+		}
+		return true;
+		
 	}
 }

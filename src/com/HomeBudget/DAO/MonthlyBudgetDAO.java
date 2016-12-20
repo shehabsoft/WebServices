@@ -12,6 +12,8 @@ public interface MonthlyBudgetDAO extends DataAccessObject1{
 
 	public void addMonthlyBudget(MonthlyBudgetVO monthlyBudgetVO) throws Exception;
 	
+	public boolean closeMonthlyBudget(MonthlyBudgetVO monthlyBudgetVO) throws Exception;
+	
 	public List<MonthlyBudgetCategory> getMonthlyBudgetCategoriesById(int monthlyBudgetId);
 	
 	public boolean updateMonthlyBudget(MonthlyBudgetVO newmonthlyBudgetVO);

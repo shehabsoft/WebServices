@@ -77,6 +77,26 @@ public class MonthlyBudgetHandler extends BusinessObject{
 			    close(monthlyBudgetDAO);
 			  }
 	}
+	public boolean Close(MonthlyBudgetVO monthlyBudgetVO)
+	{
+		MonthlyBudgetDAO monthlyBudgetDAO=null;
+		CategoryHandler categoryHandler=new CategoryHandler();
+		try {
+			monthlyBudgetDAO=(MonthlyBudgetDAO)getDAO(MonthlyBudgetDAO.class);
+			categoryHandler.updateCategoryActualValue(monthlyBudgetVO, monthlyBudgetDAO);
+			boolean updateFlage=monthlyBudgetDAO.closeMonthlyBudget(monthlyBudgetVO);
+			monthlyBudgetDAO.commit();
+			return updateFlage;
+		}catch (DataAccessException ex) {
+			   throw ex;
+			  } catch (BusinessException ex) {
+			    throw ex;
+			 } catch (Exception ex) {
+			    throw new BusinessException(ex);
+			  } finally {
+			    close(monthlyBudgetDAO);
+			  }
+	}
 	public boolean update(CategoryVO categoryVO,DataAccessObject1 parentDao) throws Exception
 	{ 
 		MonthlyBudgetDAO monthlyBudgetDAO=null;

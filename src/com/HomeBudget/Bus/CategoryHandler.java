@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 import com.HomeBudget.DAO.CategoryDAO;
 import com.HomeBudget.DAO.CategoryDAOImpl;
+import com.HomeBudget.DAO.JPA.DataAccessObject1;
 import com.dataObject.BusinessException;
 import com.dataObject.BusinessObject;
 import com.dataObject.CategoryVO;
 import com.dataObject.DAOFactory;
 import com.dataObject.DataAccessException;
+import com.dataObject.MonthlyBudgetVO;
 
 public class CategoryHandler extends BusinessObject{
 	
@@ -65,6 +67,18 @@ public class CategoryHandler extends BusinessObject{
 	      } finally {
 	        close(categoryDAO);
 	      }
+	}
+	
+	public void updateCategoryActualValue(MonthlyBudgetVO monthlyBudgetVO,DataAccessObject1 parentDao)throws Exception
+	{
+		if(monthlyBudgetVO==null)
+		  {
+		   throw new BusinessException("Null monthlyBudgetVO");
+		  }
+		  CategoryDAO categoryDAO=null;
+		categoryDAO = (CategoryDAO) DAOFactory.getDAO(CategoryDAO.class,parentDao);
+		categoryDAO.updateCategoryActualValue(monthlyBudgetVO);
+		
 	}
 	public CategoryVO getById(int id)
 	{

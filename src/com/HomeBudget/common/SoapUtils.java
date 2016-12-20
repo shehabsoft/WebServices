@@ -12,6 +12,7 @@
 package com.HomeBudget.common;
 
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -23,6 +24,9 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import com.dataObject.CategoryVO;
+
 import org.w3c.dom.NamedNodeMap;
 
 import java.text.SimpleDateFormat;
@@ -189,7 +193,7 @@ public abstract class SoapUtils {
             throw new WebServiceException(new StringBuffer(name)
               .append(" element not found").toString());
         }
-
+        
         String value = node.getNodeValue();
         if (value == null || value.trim().length() == 0) {
             throw new WebServiceException(new StringBuffer(name)
@@ -531,7 +535,7 @@ public abstract class SoapUtils {
      * @return text content.
      */
     public static String getTextContent(Node node) throws DOMException {
-        if (node.getNodeType() == Node.ATTRIBUTE_NODE) {
+    	if (node.getNodeType() == Node.ATTRIBUTE_NODE) {
             return node.getNodeValue();	
         }
 
@@ -547,6 +551,8 @@ public abstract class SoapUtils {
 
         return textContent.toString();
     }
+    
+
     
     /**
      * Decode Arabic Values
