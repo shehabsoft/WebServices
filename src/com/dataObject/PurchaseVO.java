@@ -3,48 +3,57 @@ package com.dataObject;
 import java.util.Date;
 
 public class PurchaseVO {
-	
+
 	private int Id;
-	
 	private String arabicDescription;
-	
 	private String englishDescription;
 	private String details;
-    private String categoryName;
-	private String  locationName;
+	private String categoryName;
+	private String locationName;
 	private String creationDate;
-    private int userId;
-	public String getLocationName() {
-		return locationName;
-	}
-	public void setLocationName(String locationName) {
-		this.locationName = locationName;
-	}
-    private double updatedExpenseValue;
+	private int userId;
+	private double updatedExpenseValue;
 	private int categoryId;
 	private int locationId;
-	
+	private double totalPrice;
 
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
 
 	private double price;
 	private double newPrice;
-	
 
 	public double getUpdatedExpenseValue() {
 		return updatedExpenseValue;
 	}
+
 	public void setUpdatedExpenseValue(double updatedExpenseValue) {
 		this.updatedExpenseValue = updatedExpenseValue;
 	}
+
 	public int getUserId() {
 		return userId;
 	}
+
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+	public String getLocationName() {
+		return locationName;
+	}
+
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
 	}
 	public int getId() {
 		return Id;
 	}
+
 	public String getCategoryName() {
 		return categoryName;
 	}
@@ -52,24 +61,31 @@ public class PurchaseVO {
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
+
 	public void setId(int id) {
 		Id = id;
 	}
+
 	public String getDetails() {
 		return details;
 	}
+
 	public int getLocationId() {
 		return locationId;
 	}
+
 	public String getCreationDate() {
 		return creationDate;
 	}
+
 	public void setCreationDate(String creationDate) {
 		this.creationDate = creationDate;
 	}
+
 	public void setLocationId(int locationId) {
 		this.locationId = locationId;
 	}
+
 	public void setDetails(String details) {
 		this.details = details;
 	}
@@ -105,14 +121,13 @@ public class PurchaseVO {
 	public void setPrice(double price) {
 		this.price = price;
 	}
+
 	public double getNewPrice() {
 		return newPrice;
 	}
+
 	public void setNewPrice(double newPrice) {
 		this.newPrice = newPrice;
 	}
-	
 
-	
-	
 }

@@ -26,45 +26,46 @@ import com.entities.models.PurchaseHistory;
  */
 public class PurchaseHistoryDAOImpl extends JPADataAccessObject implements PurchaseHistoryDAO {
 
-	/* (non-Javadoc)
-	 * @see com.HomeBudget.DAO.PurchaseHistoryDAO#addPurchaseHistory(com.HomeBudget.dataObject.PurchaseHistoryVO)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.HomeBudget.DAO.PurchaseHistoryDAO#addPurchaseHistory(com.HomeBudget.
+	 * dataObject.PurchaseHistoryVO)
 	 */
-	 
-	public PurchaseHistoryDAOImpl()
-	{
+
+	public PurchaseHistoryDAOImpl() {
 		super();
 	}
+
 	@Override
 	public PurchaseHistory addPurchaseHistory(PurchaseHistoryVO purchaseHistoryVO) {
 		// TODO Auto-generated method stub
-		PurchaseHistory purchaseHistory=null;
-		Location location=getEntitymanager().find(Location.class, purchaseHistoryVO.getLocation_id());
-		if(location==null)
-		{
-			throw new  BusinessException("There IS No Location With ID "+purchaseHistoryVO.getLocation_id());
+		PurchaseHistory purchaseHistory = null;
+		Location location = getEntitymanager().find(Location.class, purchaseHistoryVO.getLocation_id());
+		if (location == null) {
+			throw new BusinessException("There IS No Location With ID " + purchaseHistoryVO.getLocation_id());
 		}
-		if(purchaseHistoryVO.getId()==null)//new Purchase History
+		if (purchaseHistoryVO.getId() == null)// new Purchase History
 		{
-			    purchaseHistory=new PurchaseHistory();
-			    purchaseHistory.setCreationDate(new Date());
-				purchaseHistory.setPrice(purchaseHistoryVO.getPrice());
-				purchaseHistory.setDetails(purchaseHistoryVO.getDetails());
-				purchaseHistory.setLocation(location);
-				purchaseHistory.setPurchase(purchaseHistoryVO.getPurchase());
-				return purchaseHistory;
-				
-		}else  //
+			purchaseHistory = new PurchaseHistory();
+			purchaseHistory.setCreationDate(new Date());
+			purchaseHistory.setPrice(purchaseHistoryVO.getPrice());
+			purchaseHistory.setDetails(purchaseHistoryVO.getDetails());
+			purchaseHistory.setLocation(location);
+			purchaseHistory.setPurchase(purchaseHistoryVO.getPurchase());
+			return purchaseHistory;
+
+		} else //
 		{
-			PurchaseHistory newPurchasehistory=new PurchaseHistory();
-			double oldPrice=purchaseHistory.getPrice();
-			double newPrice=purchaseHistoryVO.getPrice();
-			double updatedValue=0;
-			if(oldPrice>newPrice)
-			{
+			PurchaseHistory newPurchasehistory = new PurchaseHistory();
+			double oldPrice = purchaseHistory.getPrice();
+			double newPrice = purchaseHistoryVO.getPrice();
+			double updatedValue = 0;
+			if (oldPrice > newPrice) {
 				throw new BusinessException("New Price should Not Be Less Than Old Price(oldPrice)");
-			}else
-			{
-				updatedValue=newPrice-oldPrice;
+			} else {
+				updatedValue = newPrice - oldPrice;
 			}
 			newPurchasehistory.setPrice(updatedValue);
 			newPurchasehistory.setCreationDate(new Date());
@@ -72,38 +73,35 @@ public class PurchaseHistoryDAOImpl extends JPADataAccessObject implements Purch
 			newPurchasehistory.setLocation(location);
 			newPurchasehistory.setPurchase(purchaseHistoryVO.getPurchase());
 			return newPurchasehistory;
-			
+
 		}
-		
-		
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.HomeBudget.DAO.PurchaseHistoryDAO#updatePurchaseHistory(com.HomeBudget.dataObject.PurchaseHistoryVO)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.HomeBudget.DAO.PurchaseHistoryDAO#updatePurchaseHistory(com.
+	 * HomeBudget.dataObject.PurchaseHistoryVO)
 	 */
 	@Override
 	public void updatePurchaseHistory(PurchaseHistoryVO purchaseHistoryVO) {
 		// TODO Auto-generated method stub
-		
+
 		// TODO Auto-generated method stub
-		PurchaseHistory purchaseHistory=getEntitymanager().find(PurchaseHistory.class, purchaseHistoryVO.getId());
+		PurchaseHistory purchaseHistory = getEntitymanager().find(PurchaseHistory.class, purchaseHistoryVO.getId());
 		purchaseHistory.setPrice(purchaseHistoryVO.getPrice());
 		purchaseHistory.setDetails(purchaseHistoryVO.getDetails());
-		Location location=getEntitymanager().find(Location.class, purchaseHistoryVO.getLocation_id());
-		if(location==null)
-		{
-			throw new  BusinessException("There IS No Location With ID "+purchaseHistoryVO.getLocation_id());
-		}else
-		{
+		Location location = getEntitymanager().find(Location.class, purchaseHistoryVO.getLocation_id());
+		if (location == null) {
+			throw new BusinessException("There IS No Location With ID " + purchaseHistoryVO.getLocation_id());
+		} else {
 			purchaseHistory.setLocation(location);
 		}
-		Purchase purchase=getEntitymanager().find(Purchase.class, purchaseHistoryVO.getPurchase_id());
-		if(purchase==null)
-		{
-			throw new  BusinessException("There IS No Purchase With ID "+purchaseHistoryVO.getPurchase_id());
-		}else
-		{
+		Purchase purchase = getEntitymanager().find(Purchase.class, purchaseHistoryVO.getPurchase_id());
+		if (purchase == null) {
+			throw new BusinessException("There IS No Purchase With ID " + purchaseHistoryVO.getPurchase_id());
+		} else {
 			purchaseHistory.setPurchase(purchase);
 		}
 		getEntitymanager().getTransaction().begin();
@@ -111,55 +109,59 @@ public class PurchaseHistoryDAOImpl extends JPADataAccessObject implements Purch
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.HomeBudget.DAO.PurchaseHistoryDAO#getPurchaseHistoryByPurchaseId(int)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.HomeBudget.DAO.PurchaseHistoryDAO#getPurchaseHistoryByPurchaseId(int)
 	 */
 	@Override
 	public List<PurchaseHistoryVO> getPurchaseHistoryByPurchaseId(int purchaseId) throws Exception {
-		try
-		{
-		ArrayList<PurchaseHistoryVO>purchaseHistoryVO=new ArrayList<PurchaseHistoryVO>();
-		Query query = (Query) getEntitymanager().createNamedQuery("findPurchaseHistoryByPurchaseId");
-		query.setParameter("id", purchaseId);
-	    List<PurchaseHistory> purchaseHistoryList =  query.getResultList();
-		for (PurchaseHistory purchase : purchaseHistoryList) {
-			PurchaseHistoryVO purchaseVO=new PurchaseHistoryVO();
-			
-			purchaseVO.setLocation_id(purchase.getLocation().getId());
-			purchaseVO.setPrice(purchase.getPrice());
-			purchaseVO.setId(new Long(purchase.getId()));
-			purchaseVO.setDetails(purchase.getDetails());
-			purchaseVO.setPurchase_id(purchase.getPurchase().getId());
-			purchaseVO.setLocationName(purchase.getLocation().getEnglishName());
-			if(purchase.getCreationDate()!=null)
-				{
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-					purchaseVO.setCreation_date(sdf.format( purchase.getCreationDate()));
-				}
-			purchaseHistoryVO.add(purchaseVO);
-		}
+		try {
+			ArrayList<PurchaseHistoryVO> purchaseHistoryVO = new ArrayList<PurchaseHistoryVO>();
+			Query query = (Query) getEntitymanager().createNamedQuery("findPurchaseHistoryByPurchaseId");
+			query.setParameter("id", purchaseId);
+			List<PurchaseHistory> purchaseHistoryList = query.getResultList();
+			for (PurchaseHistory purchase : purchaseHistoryList) {
+				PurchaseHistoryVO purchaseVO = new PurchaseHistoryVO();
 
-	
-		return purchaseHistoryVO;
-	}catch(Exception e)
-		{
-		throw new Exception(e);
-		
+				purchaseVO.setLocation_id(purchase.getLocation().getId());
+				purchaseVO.setPrice(purchase.getPrice());
+				purchaseVO.setId(new Long(purchase.getId()));
+				purchaseVO.setDetails(purchase.getDetails());
+				purchaseVO.setPurchase_id(purchase.getPurchase().getId());
+				purchaseVO.setLocationName(purchase.getLocation().getEnglishName());
+				if (purchase.getCreationDate() != null) {
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					purchaseVO.setCreation_date(sdf.format(purchase.getCreationDate()));
+				}
+				purchaseHistoryVO.add(purchaseVO);
+			}
+
+			return purchaseHistoryVO;
+		} catch (Exception e) {
+			throw new Exception(e);
+
 		}
 	}
+
 	@Override
 	public PurchaseHistory addPurchaseHistory(PurchaseVO purchaseVO) {
-		
-		 Purchase purchase=getEntitymanager().find(Purchase.class, purchaseVO.getId()) ;
-		 PurchaseHistory purchaseHistory=new PurchaseHistory();
-		 purchaseHistory.setCreationDate(new Date());
-		 purchaseHistory.setDetails(purchaseVO.getDetails());
-		 purchaseHistory.setLocation(purchase.getLocation());
-		 purchaseHistory.setPurchase(purchase);
-		 purchaseHistory.setPrice(purchaseVO.getPrice());
-		 getEntitymanager().persist(purchaseHistory);
-		 return purchaseHistory;
-		  
+
+		Purchase purchase = getEntitymanager().find(Purchase.class, purchaseVO.getId());
+		PurchaseHistory purchaseHistory = new PurchaseHistory();
+		purchaseHistory.setCreationDate(new Date());
+		purchaseHistory.setDetails(purchaseVO.getDetails());
+		purchaseHistory.setLocation(purchase.getLocation());
+		purchaseHistory.setPurchase(purchase);
+		if (purchaseVO.getNewPrice() > 0) {
+			purchaseHistory.setPrice(purchaseVO.getNewPrice());
+		} else {
+			purchaseHistory.setPrice(purchaseVO.getPrice());
+		}
+		getEntitymanager().persist(purchaseHistory);
+		return purchaseHistory;
+
 	}
 
 }

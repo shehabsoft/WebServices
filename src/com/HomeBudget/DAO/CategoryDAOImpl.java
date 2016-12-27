@@ -83,113 +83,86 @@ public class CategoryDAOImpl extends JPADataAccessObject implements CategoryDAO{
 	
 	public void addCategory(CategoryVO categoryVO) throws Exception
 	{
-		Category category=new Category();
+		Category category = new Category();
 		category.setCategoryStatus(categoryVO.getCategoryStatus());
 		category.setCategoryTypeId(categoryVO.getCategoryTypeId());
-		int userId=categoryVO.getUserId();
-		if(userId!=0)
-		{
-			User user=getEntitymanager().find(User.class, userId);
-			if(user==null)
-			{
-				throw new BusinessException("Null User with ID"+userId);
+		int userId = categoryVO.getUserId();
+		if (userId != 0) {
+			User user = getEntitymanager().find(User.class, userId);
+			if (user == null) {
+				throw new BusinessException("Null User with ID" + userId);
 			}
 			category.setUser(user);
-		}else
-		{
+		} else {
 			throw new Exception("User  Should not be Null");
 		}
-		if(categoryVO.getArabicDescription()!=null)
-		{
-		category.setArabicDescription(categoryVO.getArabicDescription());
-		}else
-		{
+		if (categoryVO.getArabicDescription() != null) {
+			category.setArabicDescription(categoryVO.getArabicDescription());
+		} else {
 			throw new Exception("Category Arabic Description Should not be Null");
 		}
-		if(categoryVO.getEnglishDescription()!=null)
-		{
-		category.setEnglishDescription(categoryVO.getEnglishDescription());
-		}else
-		{
+		if (categoryVO.getEnglishDescription() != null) {
+			category.setEnglishDescription(categoryVO.getEnglishDescription());
+		} else {
 			throw new Exception("Category English Description Should not be Null");
 		}
-		if(categoryVO.getCategoryTypeId()==Constants.CATEGORY_TYPE_EXPENSES_ID&&categoryVO.getPlanedValue()>0)
-		{
-		category.setPlanedValue(categoryVO.getPlanedValue());
-		}else 
-		{
-			if(categoryVO.getCategoryTypeId()==Constants.CATEGORY_TYPE_REVENUES_ID)
-			{
+		if (categoryVO.getCategoryTypeId() == Constants.CATEGORY_TYPE_EXPENSES_ID && categoryVO.getPlanedValue() > 0) {
+			category.setPlanedValue(categoryVO.getPlanedValue());
+		} else {
+			if (categoryVO.getCategoryTypeId() == Constants.CATEGORY_TYPE_REVENUES_ID) {
 				category.setPlanedValue(0);
-			}else
-			{
-			throw new Exception("Planed Value Should not be Enter");
+			} else {
+				throw new Exception("Planed Value Should not be Enter");
 			}
 		}
-		if(categoryVO.getLimitValue()>=categoryVO.getPlanedValue())
-		{
-		category.setLimitValue(categoryVO.getLimitValue());
-		}else
-		{
-			if(categoryVO.getCategoryTypeId()==Constants.CATEGORY_TYPE_EXPENSES_ID)
-			{
-			throw new Exception("Planed Value Should  be Less Than Limit Value");
-			}else
-			{
+		if (categoryVO.getLimitValue() >= categoryVO.getPlanedValue()) {
+			category.setLimitValue(categoryVO.getLimitValue());
+		} else {
+			if (categoryVO.getCategoryTypeId() == Constants.CATEGORY_TYPE_EXPENSES_ID) {
+				throw new Exception("Planed Value Should  be Less Than Limit Value");
+			} else {
 				category.setLimitValue(categoryVO.getLimitValue());
 			}
 		}
-		if(categoryVO.getActualValue()<categoryVO.getPlanedValue())
-		{
-		category.setActualValue(categoryVO.getActualValue());
-		}else
-		{
-			if(categoryVO.getCategoryTypeId()==Constants.CATEGORY_TYPE_EXPENSES_ID)
-			{
-			throw new Exception("Actual Value Should  be Less Than PLaned Value");
-			}
-			else
-			{
+		if (categoryVO.getActualValue() < categoryVO.getPlanedValue()) {
+			category.setActualValue(categoryVO.getActualValue());
+		} else {
+			if (categoryVO.getCategoryTypeId() == Constants.CATEGORY_TYPE_EXPENSES_ID) {
+				throw new Exception("Actual Value Should  be Less Than PLaned Value");
+			} else {
 				category.setActualValue(categoryVO.getActualValue());
 			}
 		}
-		if(categoryVO.getParentCategoryId()!=0)
-		{
-		category.setParentCategoryId(categoryVO.getParentCategoryId());
+		if (categoryVO.getParentCategoryId() != 0) {
+			category.setParentCategoryId(categoryVO.getParentCategoryId());
 		}
-		if(categoryVO.getParentCategoryId()!=0)
-		{
-		category.setParentCategoryId(categoryVO.getParentCategoryId());
+		if (categoryVO.getParentCategoryId() != 0) {
+			category.setParentCategoryId(categoryVO.getParentCategoryId());
 		}
 		category.setId(Integer.parseInt(getNextKey().toString()));
 		categoryVO.setId(category.getId());
-		//CategoryHistoryDAO categoryHistoryDAO=new CategoryHistoryDAOImpl();
-		//categoryHistoryDAO.addCategoryHistory(category);
-		//getEntitymanager().getTransaction().begin();
 		getEntitymanager().persist(category);
-		//getEntitymanager().getTransaction().commit();
+		 
 	}
 	public CategoryVO getCategoryById(int id)
 	{
-		try
-		{
-		
+		try {
+
 			getEntitymanager().getTransaction().begin();
-		Query query = (Query) getEntitymanager().createNamedQuery("findCategotyById").setParameter("id", id);
-		Category category=(Category)query.getSingleResult();
-		CategoryVO categoryVO=new CategoryVO();
-		categoryVO.setActualValue(category.getActualValue());
-		categoryVO.setArabicDescription(category.getArabicDescription());
-		categoryVO.setCategoryStatus(category.getCategoryStatus());
-		categoryVO.setLimitValue(category.getLimitValue());
-		categoryVO.setPlanedValue(category.getPlanedValue());
-		categoryVO.setEnglisDescription(category.getEnglishDescription());
-		categoryVO.setId(category.getId());
-		return categoryVO;
-	}catch(Exception e)
-		{
-		System.out.println(e);
-		throw new BusinessException(e.toString());
+			Query query = (Query) getEntitymanager().createNamedQuery("findCategotyById").setParameter("id", id);
+			Category category = (Category) query.getSingleResult();
+			CategoryVO categoryVO = new CategoryVO();
+			categoryVO.setActualValue(category.getActualValue());
+			categoryVO.setArabicDescription(category.getArabicDescription());
+			categoryVO.setCategoryStatus(category.getCategoryStatus());
+			categoryVO.setLimitValue(category.getLimitValue());
+			categoryVO.setPlanedValue(category.getPlanedValue());
+			categoryVO.setEnglisDescription(category.getEnglishDescription());
+			categoryVO.setId(category.getId());
+			return categoryVO;
+		} catch (Exception e) {
+			System.out.println(e);
+			throw new BusinessException(e.toString());
 		}
 	}
 	public ArrayList<CategoryVO> getExpensesCategories(int monthlyBudgetId,int userId)
@@ -205,7 +178,7 @@ public class CategoryDAOImpl extends JPADataAccessObject implements CategoryDAO{
 	    while(itr.hasNext()){
 	        CategoryVO categoryVO=new CategoryVO();
 	        Object[] obj = (Object[]) itr.next();
-		    	 	categoryVO.setArabicDescription(String.valueOf(obj[1]));
+		    categoryVO.setArabicDescription(String.valueOf(obj[1]));
 	    	categoryVO.setEnglisDescription(String.valueOf(obj[2]));
 	    	categoryVO.setCategoryTypeId(Integer.parseInt(String.valueOf(obj[3])));
 		    categoryVO.setActualValue(Double.parseDouble(String.valueOf(obj[5])));
