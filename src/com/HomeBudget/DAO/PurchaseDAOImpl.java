@@ -183,9 +183,9 @@ public class PurchaseDAOImpl extends JPADataAccessObject implements PurchaseDAO 
 	@Override
 	public List<PurchaseVO> getMonthlyPurchases(int monthlyBudgetId, int categoryId) throws Exception {
 		Query query = getEntitymanager().createNativeQuery(
-				"SELECT Date(ph.creation_date),ph.price FROM homebudget.purchase p,purchase_history ph where p.id=ph.Purchase_Id and     p.monthlyBudget_ID="
-						+ monthlyBudgetId + " and p.Category_ID=" + categoryId
-						+ " group by  Category_ID,DATE(ph.creation_date)");
+				"SELECT Date(ph.creation_date),sum(ph.price) FROM homebudget.purchase p,purchase_history ph where p.id=ph.Purchase_Id and     p.monthlyBudget_ID="
+						+ monthlyBudgetId + " and p.Category_ID=" + categoryId +" Group by p.Category_ID,Date(ph.creation_date)"
+						 );
 		query.setParameter("id", monthlyBudgetId);
 		List<Object> result = query.getResultList();
 		List<PurchaseVO> purchaseVOs = new ArrayList<PurchaseVO>();

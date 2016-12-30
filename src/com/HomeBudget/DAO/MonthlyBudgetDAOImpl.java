@@ -379,7 +379,14 @@ public class MonthlyBudgetDAOImpl  extends JPADataAccessObject implements Monthl
 		 Query query = (Query) getEntitymanager().createNamedQuery("getActiveMonthlyBudgetByUserId");
 		 query.setParameter("id", purchaseVO.getUserId());
 		 MonthlyBudget monthlyBudget=  (MonthlyBudget) query.getSingleResult();
-		 monthlyBudget.setTotalExpenses(monthlyBudget.getTotalExpenses()+purchaseVO.getPrice());
+		 if(purchaseVO.getNewPrice()>0)//in case edit purchase new value will be added to monthly budget 
+		 {
+			 monthlyBudget.setTotalExpenses(monthlyBudget.getTotalExpenses()+purchaseVO.getNewPrice());
+			 
+		 }else
+		 {
+		   monthlyBudget.setTotalExpenses(monthlyBudget.getTotalExpenses()+purchaseVO.getPrice());
+		 }
 		 purchase.setMonthlyBudget(monthlyBudget);
 		 getEntitymanager().persist(monthlyBudget);
 			//update If The Category Changed 
