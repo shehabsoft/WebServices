@@ -163,7 +163,7 @@ public class PurchaseDAOImpl extends JPADataAccessObject implements PurchaseDAO 
 	@Override
 	public List<PurchaseVO> getMonthlyPurchases(int monthlyBudgetId) throws Exception {
 		Query query = getEntitymanager().createNativeQuery(
-				"SELECT DATE(creation_date) as creation_date,SUM(price)Total FROM homebudget.purchase where monthlyBudget_ID="
+				"SELECT DATE(creation_date) as creation_date,SUM(price)Total FROM purchase where monthlyBudget_ID="
 						+ monthlyBudgetId + " group by  DATE(creation_date)");
 		query.setParameter("id", monthlyBudgetId);
 		List<Object> result = query.getResultList();
@@ -183,7 +183,7 @@ public class PurchaseDAOImpl extends JPADataAccessObject implements PurchaseDAO 
 	@Override
 	public List<PurchaseVO> getMonthlyPurchases(int monthlyBudgetId, int categoryId) throws Exception {
 		Query query = getEntitymanager().createNativeQuery(
-				"SELECT Date(ph.creation_date),sum(ph.price) FROM homebudget.purchase p,purchase_history ph where p.id=ph.Purchase_Id and     p.monthlyBudget_ID="
+				"SELECT Date(ph.creation_date),sum(ph.price) FROM purchase p,purchase_history ph where p.id=ph.Purchase_Id and     p.monthlyBudget_ID="
 						+ monthlyBudgetId + " and p.Category_ID=" + categoryId +" Group by p.Category_ID,Date(ph.creation_date)"
 						 );
 		query.setParameter("id", monthlyBudgetId);

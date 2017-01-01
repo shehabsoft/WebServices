@@ -73,7 +73,8 @@ public class MonthlyBudgetDAOImpl  extends JPADataAccessObject implements Monthl
 		monthlyBudget.setStatus(2);
 		monthlyBudget.setCreationDate(new Date());
 		monthlyBudget.setCategories(categories);
-		int monthlyBudgetId=(int) (getNextKey()-1);
+		int monthlyBudgetId=(int) (getNextKey()-0);
+		
 		monthlyBudget.setId(monthlyBudgetId);
 		getEntitymanager().persist(monthlyBudget);
 		//copy (planed limit actual) Values From Category to MonthlyBudgetCategory Table
@@ -138,7 +139,7 @@ public class MonthlyBudgetDAOImpl  extends JPADataAccessObject implements Monthl
 					 budgetCategory.setLimitValue(categoryVo.getLimitValue());
 					 updatedValues=true;
 					} 
-					 if(category.getActualValue()!=categoryVo.getActualValue())//update Actual Value in Monthly Budget Table 
+					 if(budgetCategory.getActualValue()!=categoryVo.getActualValue())//update Actual Value in Monthly Budget Table 
 					 {
 						 budgetCategory.setActualValue(categoryVo.getActualValue());
 						 MonthlyBudget monthlyBudget=getEntitymanager().find(MonthlyBudget.class, monthlyBudgetVo.getId());
@@ -331,7 +332,7 @@ public class MonthlyBudgetDAOImpl  extends JPADataAccessObject implements Monthl
 	}
 	public Long getNextKey()
 	{
-		Query q = getEntitymanager().createNativeQuery("SELECT Max(Auto_increment) FROM information_schema.tables WHERE table_name='monthly_budget'");
+		Query q = getEntitymanager().createNativeQuery("SELECT Auto_increment FROM information_schema.tables WHERE table_name='monthly_budget' and Table_SCHEMA='homebudgetProduction'");
 		return (Long)q.getSingleResult();
 	}
 

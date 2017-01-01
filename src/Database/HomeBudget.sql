@@ -46,7 +46,7 @@ CREATE TABLE  `homebudgetProduction`.`users` (
 DROP TABLE IF EXISTS `homebudgetProduction`.`info_trace_log`;
 CREATE TABLE  `homebudgetProduction`.`info_trace_log` (
   `id` int(11) NOT NULL auto_increment,
-  `request_data` varchar(1000) NOT NULL default '',
+  `request_data` varchar(2000) NOT NULL default '',
   `response_data` varchar(500) NOT NULL default '',
   `request_date` datetime default NULL,
   `response_date` datetime default NULL,
