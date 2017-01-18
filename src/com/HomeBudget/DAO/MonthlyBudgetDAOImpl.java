@@ -21,6 +21,7 @@ import com.HomeBudget.DAO.JPA.JPADataAccessObject;
 import com.dataObject.BusinessException;
 import com.dataObject.CategoryVO;
 import com.dataObject.Constants;
+import com.dataObject.MonthlyBudgetCategoryVO;
 import com.dataObject.MonthlyBudgetVO;
 import com.dataObject.PurchaseVO;
 
@@ -453,5 +454,44 @@ public class MonthlyBudgetDAOImpl  extends JPADataAccessObject implements Monthl
 		}
 		return true;
 		
+	}
+
+
+
+	@Override
+	public List<MonthlyBudgetVO> getAllMonthlyBudgetByCategoryIdAndUserId(int categoryId, int userId) {
+		try
+		{
+			Query query = (Query) getEntitymanager().createNativeQuery("SELECT MonthlyBudget_ID,categories_id,sum(m.limit_value) limitValue,sum(m.actual_value)actualValue FROM monthly_budget_category m join category c join monthly_budget mb where  c.id=m.MonthlyBudget_ID and mb.id=m.MonthlyBudget_ID and mb.user_id="+userId+"  and categories_id="+categoryId+" group by categories_id,MonthlyBudget_ID");
+			List<MonthlyBudgetVO> monthlyBudgetVOList=new ArrayList<MonthlyBudgetVO>();
+			List<Object> result = query.getResultList();
+			    Iterator itr = result.iterator();
+			    while(itr.hasNext()){
+			    	MonthlyBudgetVO monthlyBudgetVO=new MonthlyBudgetVO();
+			        Object[] obj = (Object[]) itr.next();
+			        if(obj[2]==null)
+			        {
+			        	monthlyBudgetVO.setLimitValue(0);
+			        }else
+			        {
+			           monthlyBudgetVO.setLimitValue((Double)obj[2]);
+			        }
+			        if(obj[3]==null)
+			        {
+			        	 monthlyBudgetVO.setActualValue(0);
+			        }else
+			        {
+			        	   monthlyBudgetVO.setActualValue((Double)obj[3]);
+			        }
+			     
+			        monthlyBudgetVOList.add(monthlyBudgetVO);
+			    }
+			
+				return monthlyBudgetVOList;
+			
+		}catch(Exception e)
+		{
+			throw new BusinessException(e.toString());
+		}
 	}
 }

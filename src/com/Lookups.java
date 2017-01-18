@@ -349,6 +349,24 @@ public class Lookups {
 			throw new Exception(e);
 		}
 	}
+	@POST
+	@Path("/getAllMonthlyBudgetByCategoryIdAndUserId")
+	@Produces("application/json")
+	public String getAllMonthlyBudgetByCategoryIdAndUserId(@Context HttpHeaders headers, String content) throws Exception {
+		try {
+			int index = content.lastIndexOf("=");
+			int userId = Integer.parseInt(content.substring(index + 1));
+			int categoryId = Integer.parseInt(headers.getRequestHeader("categoryId").get(0));
+			monthlyBudgetHandler = new MonthlyBudgetHandler();
+			List<MonthlyBudgetVO> monthlyBudgetVOs = monthlyBudgetHandler.getAllMonthlyBudgetByCategoryIdAndUserId(categoryId, userId,null);
+			Gson gson = new Gson();
+			String feeds = gson.toJson(monthlyBudgetVOs);
+			return "{MonthlyBudgetVOs:" + feeds + "}";
+		} catch (Exception e) {
+			logger.error(e);
+			throw new Exception(e);
+		}
+	}
 
 	@GET
 	@Path("/getActiveUser")

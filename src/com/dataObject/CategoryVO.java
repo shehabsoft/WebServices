@@ -5,7 +5,7 @@ public class CategoryVO {
 	
 	private int Id;
 	private boolean withenLimit;
-	 
+	private String actualValueStr;
 	public boolean isWithenLimit() {
 		return withenLimit;
 	}
@@ -22,6 +22,16 @@ public class CategoryVO {
 
 	private String arabicDescription;
 	
+	public String getActualValueStr() {
+		return actualValueStr;
+	}
+
+	public void setActualValueStr(String actualValueStr) {
+		this.actualValueStr = actualValueStr;
+	}
+
+
+
 	private String englishDescription;
     private int userId;
 	public int getUserId() {

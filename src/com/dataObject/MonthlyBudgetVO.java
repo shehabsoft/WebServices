@@ -18,8 +18,30 @@ public class MonthlyBudgetVO {
 	private double totalIncomes;
 	private String creationDate;
 	private double completedRatio;
+	private double limitValue;
+	private double actualValue;
 	public double getCompletedRatio() {
 		return completedRatio;
+	}
+
+
+	public double getLimitValue() {
+		return limitValue;
+	}
+
+
+	public void setLimitValue(double limitValue) {
+		this.limitValue = limitValue;
+	}
+
+
+	public double getActualValue() {
+		return actualValue;
+	}
+
+
+	public void setActualValue(double actualValue) {
+		this.actualValue = actualValue;
 	}
 
 
