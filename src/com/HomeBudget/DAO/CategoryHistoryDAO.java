@@ -10,5 +10,5 @@ import com.entities.models.CategoryHistory;
 public interface CategoryHistoryDAO extends DataAccessObject1  {
 	public CategoryHistory addCategoryHistory(CategoryVO category) throws Exception;
 	public void updateCategoryHistory(CategoryHistoryVO categoryHistoryVO) throws Exception;
-	public List<CategoryHistoryVO> getAllCategoriesHistory(int monthlyBudgetId) throws Exception;
+	public List<CategoryHistoryVO> getAllCategoriesHistory(int categoryId) throws Exception;
 }

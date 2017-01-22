@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.HomeBudget.DAO.CategoryDAO;
 import com.HomeBudget.DAO.CategoryDAOImpl;
+import com.HomeBudget.DAO.CategoryHistoryDAO;
 import com.HomeBudget.DAO.JPA.DataAccessObject1;
+import com.HomeBudget.dataObject.CategoryHistoryVO;
 import com.dataObject.BusinessException;
 import com.dataObject.BusinessObject;
 import com.dataObject.CategoryVO;
@@ -17,7 +19,6 @@ public class CategoryHandler extends BusinessObject {
 
 	private CategoryHistoryHandler categoryHistoryHandler = null;
 	private MonthlyBudgetHandler monthlyBudgetHandler = null;
-
 	public void add(CategoryVO categoryVO) throws Exception {
 
 		CategoryDAO categoryDAO = null;
@@ -138,8 +139,26 @@ public class CategoryHandler extends BusinessObject {
 	public ArrayList<CategoryVO> getBudgetCategories(int monthlyBudgetId, int userId) {
 		CategoryDAO categoryDAO = null;
 		try {
-			categoryDAO = (CategoryDAO) DAOFactory.getDAO(CategoryDAO.class);
-			return categoryDAO.GetBudgetCategories(monthlyBudgetId, userId);
+			 categoryDAO = (CategoryDAO) DAOFactory.getDAO(CategoryDAO.class);
+			 ArrayList<CategoryVO> categoryVOs=categoryDAO.GetBudgetCategories(monthlyBudgetId, userId);
+			 String actualValue="";
+			 categoryHistoryHandler=new CategoryHistoryHandler();
+			for(int i=0;i<categoryVOs.size();i++)
+			{
+			ArrayList<CategoryHistoryVO> categoryHistoryVOs=(ArrayList<CategoryHistoryVO>) categoryHistoryHandler.getAll(categoryVOs.get(i).getId());
+			 for (int j = 0; j < categoryHistoryVOs.size()-1; j++) {
+					if (j == categoryHistoryVOs.size() - 2) {
+						actualValue += categoryHistoryVOs.get(j).getActualValue();
+					
+					} else {
+						actualValue += categoryHistoryVOs.get(j).getActualValue() + ",";
+					}
+				}
+			 categoryVOs.get(i).setActualValueStr(actualValue);
+			 actualValue="";
+			}
+			
+             return categoryVOs;
 		} catch (DataAccessException ex) {
 			throw ex;
 		} catch (BusinessException ex) {
