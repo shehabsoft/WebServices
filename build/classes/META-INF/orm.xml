@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd">
+	
+	<named-query name="findAllCategoriesHistory">
+		<query>SELECT c FROM CategoryHistory  c where c.category.id=:id </query>
+	</named-query>
+ 
+	<named-query name="findAllPurchases">
+		<query>SELECT p FROM Purchase  p join p.monthlyBudget mob on p.monthlyBudget.id=mob.id where mob.id=:id</query>
+	</named-query>
+	<named-query name="findAllPurchasesByCategoryId">
+		<query>SELECT p FROM Purchase  p join p.monthlyBudget mob on p.monthlyBudget.id=mob.id where mob.id=:id and p.category.id=:categoryId</query>
+	</named-query>
+	<named-query name="getActiveUser">
+		<query>SELECT p FROM User p</query>
+	</named-query>
+	<named-query name="findPurchaseHistoryByPurchaseId">
+		<query>SELECT p FROM PurchaseHistory p where p.purchase.id=:id</query>
+	</named-query>
+	<named-query name="findAllExpensesCategories">
+		<query>SELECT c FROM Category c  where c.user.id=:userId and c.categoryStatus=2 and c.categoryTypeId=2 </query>
+	</named-query>
+	<named-query name="findAllBudgetCategories">
+		<query>SELECT c FROM Category c  where c.user.id=:userId and c.categoryTypeId=1 </query>
+	</named-query>
+	<named-query name="findBudgetCategories">
+		<query>SELECT c.id,c.arabicDescription,c.englishDescription,c.categoryTypeId,c.categoryStatus,mbc.actualValue,mbc.limitValue,mbc.planedValue FROM Category c  join c.monthlyBudgetCategories mbc on c.id=mbc.category.id  join mbc.monthlyBudget mob on mob.id=mbc.monthlyBudget.id where c.categoryTypeId=1 and c.categoryStatus=2 and mob.id=:id and mob.user.id=:userId</query>
+	</named-query>
+	<named-query name="MonthlyBudgetCategory.findAll">
+		<query>SELECT m FROM MonthlyBudgetCategory m</query>
+	</named-query>
+	<named-query name="getAllbyMonthlyBudget">
+		<query>select m from MonthlyBudgetCategory m where m.monthlyBudget.id=:id</query>
+	</named-query>
+	<named-query name="findAllCurrencies">
+		<query>SELECT c FROM Currency c</query>
+	</named-query>
+	<named-query name="findAllLocations">
+		<query>SELECT l FROM Location l</query>
+	</named-query>
+	<named-query name="findAllCategories">
+		<query>SELECT c FROM Category c</query>
+	</named-query>
+	<named-query name="findCategotyById">
+		<query>SELECT c FROM Category c where c.id=:id</query>
+	</named-query>
+	<named-query name="User.checkMail">
+		<query>SELECT u.id FROM User u where u.email =:email</query>
+	</named-query>
+	
+	<named-query name="findExpensesCategories">
+		<query>SELECT c.id,c.arabicDescription,c.englishDescription,c.categoryTypeId,c.categoryStatus,mbc.actualValue,mbc.limitValue,mbc.planedValue FROM Category c  join c.monthlyBudgetCategories mbc on c.id=mbc.category.id  join mbc.monthlyBudget mob on mob.id=mbc.monthlyBudget.id where c.categoryTypeId=2 and c.categoryStatus=2 and mob.id=:id and mob.user.id=:userId </query>
+	</named-query>
+	<named-query name="User.findAll">
+		<query>SELECT u FROM User u</query>
+	</named-query>
+	<named-query name="deActivePreviosMonthlyBudget">
+		<query>update  MonthlyBudget m set m.status=1  where m.user.id=:id</query>
+	</named-query>
+	<named-query name="findAllCountries">
+		<query>SELECT c FROM Country c</query>
+	</named-query>
+	<named-query name="getAllMonthlyBudgetByUserId">
+		<query>SELECT m FROM MonthlyBudget m where m.user.id=:id</query>
+	</named-query>
+	<named-query name="getActiveMonthlyBudgetByUserId">
+		<query>SELECT m FROM MonthlyBudget m where m.user.id=:id and m.status=2</query>
+	</named-query>
+	<named-query name="getMonthlyBudgetCategoryByMonthlyBudgetIdAndCategoryId">
+		<query>select m from MonthlyBudgetCategory m where m.monthlyBudget.id=:id and m.category.id=:categoryId</query>
+	</named-query>
+	<named-query name="deleteMonthlyBudgetCategoriesByMonthlyBudgetId">
+		<query>delete from MonthlyBudgetCategory mbc where mbc.monthlyBudget.id =:id</query>
+	</named-query>
+		<named-query name="deleteMonthlyBudgetByMonthlyBudgetId">
+		<query>delete from MonthlyBudget m where m.id =:id</query>
+	</named-query>
+</entity-mappings>

@@ -91,20 +91,26 @@ public class CategoryHandler extends BusinessObject {
 			 ArrayList<CategoryVO> categoryVOs= categoryDAO.getExpensesCategories(monthlyBudgetId, userId);
 			 String actualValue="";
 			 monthlyBudgetHandler=new MonthlyBudgetHandler();
+			 String status_date="";
 			for(int i=0;i<categoryVOs.size();i++)
 			{
 			 List<MonthlyBudgetVO> monthlyBudgetVOs = monthlyBudgetHandler.getAllMonthlyBudgetByCategoryIdAndUserId(categoryVOs.get(i).getId(), userId,categoryDAO);
 			 for (int j = 0; j < monthlyBudgetVOs.size(); j++) {
 					if (j == monthlyBudgetVOs.size() - 1) {
 						actualValue += monthlyBudgetVOs.get(j).getActualValue();
+						status_date+=monthlyBudgetVOs.get(j).getCreationDate();
 					
 					} else {
 						actualValue += monthlyBudgetVOs.get(j).getActualValue() + ",";
+						status_date+=monthlyBudgetVOs.get(j).getCreationDate()+ ",";
+						
 					}
 					
 				}
 			 categoryVOs.get(i).setActualValueStr(actualValue);
+			 categoryVOs.get(i).setStatusDate(status_date);
 			 actualValue="";
+			 status_date="";
 			}
 			
              return categoryVOs;

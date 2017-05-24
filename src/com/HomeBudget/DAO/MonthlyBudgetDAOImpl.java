@@ -333,7 +333,7 @@ public class MonthlyBudgetDAOImpl  extends JPADataAccessObject implements Monthl
 	}
 	public Long getNextKey()
 	{
-		Query q = getEntitymanager().createNativeQuery("SELECT Auto_increment FROM information_schema.tables WHERE table_name='monthly_budget' and Table_SCHEMA='homebudgetProduction'");
+		Query q = getEntitymanager().createNativeQuery("SELECT Auto_increment FROM information_schema.tables WHERE table_name='monthly_budget' and Table_SCHEMA='homebudget'");
 		return (Long)q.getSingleResult();
 	}
 
@@ -462,7 +462,7 @@ public class MonthlyBudgetDAOImpl  extends JPADataAccessObject implements Monthl
 	public List<MonthlyBudgetVO> getAllMonthlyBudgetByCategoryIdAndUserId(int categoryId, int userId) {
 		try
 		{
-			Query query = (Query) getEntitymanager().createNativeQuery("SELECT MonthlyBudget_ID,categories_id,sum(m.limit_value) limitValue,sum(m.actual_value)actualValue FROM monthly_budget_category m join category c join monthly_budget mb where  c.id=m.MonthlyBudget_ID and mb.id=m.MonthlyBudget_ID and mb.user_id="+userId+"  and categories_id="+categoryId+" group by categories_id,MonthlyBudget_ID");
+			Query query = (Query) getEntitymanager().createNativeQuery("SELECT MonthlyBudget_ID,categories_id,sum(m.limit_value) limitValue,sum(m.actual_value)actualValue,mb.creation_date as creation_date FROM monthly_budget_category m join category c join monthly_budget mb where  c.id=m.categories_ID and mb.id=m.MonthlyBudget_ID and mb.user_id="+userId+"  and categories_id="+categoryId+" group by categories_id,MonthlyBudget_ID");
 			List<MonthlyBudgetVO> monthlyBudgetVOList=new ArrayList<MonthlyBudgetVO>();
 			List<Object> result = query.getResultList();
 			    Iterator itr = result.iterator();
@@ -474,7 +474,7 @@ public class MonthlyBudgetDAOImpl  extends JPADataAccessObject implements Monthl
 			        	monthlyBudgetVO.setLimitValue(0);
 			        }else
 			        {
-			           monthlyBudgetVO.setLimitValue((Double)obj[2]);
+			        	monthlyBudgetVO.setLimitValue((Double)obj[2]);
 			        }
 			        if(obj[3]==null)
 			        {
@@ -482,6 +482,9 @@ public class MonthlyBudgetDAOImpl  extends JPADataAccessObject implements Monthl
 			        }else
 			        {
 			        	   monthlyBudgetVO.setActualValue((Double)obj[3]);
+			        	   SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+						   String creationDate=sdf.format(obj[4]);
+			        	   monthlyBudgetVO.setCreationDate(creationDate);
 			        }
 			     
 			        monthlyBudgetVOList.add(monthlyBudgetVO);

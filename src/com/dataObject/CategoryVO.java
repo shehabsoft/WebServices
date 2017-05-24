@@ -6,6 +6,15 @@ public class CategoryVO {
 	private int Id;
 	private boolean withenLimit;
 	private String actualValueStr;
+	private String statusDate;
+	public String getStatusDate() {
+		return statusDate;
+	}
+
+	public void setStatusDate(String statusDate) {
+		this.statusDate = statusDate;
+	}
+
 	public boolean isWithenLimit() {
 		return withenLimit;
 	}
