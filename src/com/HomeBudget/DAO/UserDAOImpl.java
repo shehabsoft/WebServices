@@ -143,6 +143,39 @@ public class UserDAOImpl extends JPADataAccessObject implements UserDAO {
 			
 		
 		}
+		public UserVO checkAccount(String email,String pass)throws Exception
+		{
+			try
+			{
+				Query query = (Query) getEntitymanager().createNamedQuery("User.checkAccount");
+				query.setParameter("password", pass);
+				query.setParameter("email", email);
+				List<User> userList=(List<User>)query.getResultList();
+				if(userList!=null&&userList.size()>0)
+				{
+				UserVO userVO=new UserVO();
+				User user=userList.get(0);
+				if(user!=null)
+				{
+				    userVO.setId(user.getId());
+				    userVO.setName(user.getName());	
+					return userVO;
+				}else
+				{
+					return null;
+				}
+				}else
+				{
+					return null;
+				}
+				
+				
+			}catch(Exception e)
+			{
+				throw new Exception(e);
+			}
+		}
+		
 public UserVO getActiveUser()
 {
 	UserVO userVO=new UserVO();

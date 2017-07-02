@@ -47,6 +47,9 @@
 	<named-query name="User.checkMail">
 		<query>SELECT u.id FROM User u where u.email =:email</query>
 	</named-query>
+		<named-query name="User.checkAccount">
+		<query>SELECT u FROM User u where u.password =:password and u.email=:email</query>
+	</named-query>
 	
 	<named-query name="findExpensesCategories">
 		<query>SELECT c.id,c.arabicDescription,c.englishDescription,c.categoryTypeId,c.categoryStatus,mbc.actualValue,mbc.limitValue,mbc.planedValue FROM Category c  join c.monthlyBudgetCategories mbc on c.id=mbc.category.id  join mbc.monthlyBudget mob on mob.id=mbc.monthlyBudget.id where c.categoryTypeId=2 and c.categoryStatus=2 and mob.id=:id and mob.user.id=:userId </query>

@@ -68,6 +68,25 @@ public class UserHandler extends BusinessObject{
 		
 		
 	}
+	public UserVO checkAccount(String email,String password) throws Exception
+	{
+		UserDAO userDAO=null;
+		 try
+		 {
+		  userDAO=(UserDAO)getDAO(UserDAO.class);
+		  return userDAO.checkAccount(email, password);
+		 }catch (DataAccessException ex) {
+		  throw ex;
+		  } catch (BusinessException ex) {
+		   throw ex;
+		   } catch (Exception ex) {
+		   throw new BusinessException(ex);
+		   } finally {
+		  close(userDAO);
+		   }
+		
+		
+	}
 	public UserVO getActiveUser() throws Exception
 	{
 		UserDAO userDAO=null;

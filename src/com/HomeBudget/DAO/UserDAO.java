@@ -19,5 +19,6 @@ public interface UserDAO extends DataAccessObject1 {
 	
 	public void addUser(UserVO userVo) throws Exception;
 	public boolean checkMail(String mail) throws Exception;
+	public UserVO checkAccount(String email,String pass)throws Exception;
 	public UserVO getActiveUser();
 }

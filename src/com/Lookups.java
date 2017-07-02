@@ -405,5 +405,23 @@ public class Lookups {
 			throw new Exception(e);
 		}
 	}
+	@POST
+	@Path("/checkAccount")
+	@Produces("application/json")
+	public String checkAccount(@Context HttpHeaders headers, String content) throws Exception {
+		try {
+			String email =  headers.getRequestHeader("email").get(0);
+			String password =  headers.getRequestHeader("password").get(0);
+			userHandler = new UserHandler();
+			UserVO userVO= userHandler.checkAccount(email, password);
+			Gson gson = new Gson();
+			String feeds = gson.toJson(userVO);
+
+			return "{UserVO:" + feeds + "}";
+		} catch (Exception e) {
+			logger.error(e);
+			throw new Exception(e);
+		}
+	}
 
 }
