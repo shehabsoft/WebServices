@@ -116,6 +116,14 @@ public  class TransactionServiceParser {
         {
         	trsVO = getCloseMonthlyBudgetInfo(root);
         }
+        else if(serviceCode==Constants.APPROVE_PURCHASE_SERVICE)
+        {
+        	trsVO = getApprovedPurchaseInfo(root);
+        }
+        else if(serviceCode==Constants.REJECT_PURCHASE_SERVICE)
+        {
+        	trsVO = getApprovedPurchaseInfo(root);
+        }
         return trsVO;
     }
     public TransactionVO getCategoryInfo(Node root,boolean edit,int serviceCodeType)
@@ -230,6 +238,36 @@ public  class TransactionServiceParser {
     	
     	
     }
+    public TransactionVO getApprovedPurchaseInfo(Node root)
+    {
+   	 // Create transaction VO
+        TransactionVO trsVO = null;
+        PurchaseVO purchaseVO=new PurchaseVO();
+       
+        Integer serviceCode = new Integer(getNodeValue(root, "serviceCode", true, true));
+        String arabicDescription = getNodeValue(root, "arabicDescription", true, true);
+        String englishDescription = getNodeValue(root, "englishDescription", true, true);
+        String purchaseId = getNodeValue(root, "purchaseId", true, true);
+      
+        String details = getNodeValue(root, "details", true, true);
+        String categoryId = getNodeValue(root, "categoryId", true, true);
+        
+        trsVO=new TransactionVO();
+   	    purchaseVO.setId(Integer.parseInt(purchaseId));
+        trsVO.setServiceCode(serviceCode);
+        purchaseVO.setArabicDescription(arabicDescription);
+        purchaseVO.setEnglishDescription(englishDescription);
+    
+        purchaseVO.setDetails(details);
+        purchaseVO.setCategoryId(Integer.parseInt(categoryId));
+ 
+        
+        trsVO.setPurchaseVO(purchaseVO);
+        return  trsVO;
+    	
+    	
+    }
+
 
     public TransactionVO getLocationInfo(Node root)
     {

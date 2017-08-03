@@ -5,6 +5,7 @@ package com.HomeBudget.Bus;
 
 import java.util.List;
 
+import com.HomeBudget.DAO.ApprovedPurchasesDAO;
 import com.HomeBudget.DAO.PurchaseDAO;
 import com.dataObject.BusinessException;
 import com.dataObject.BusinessObject;
@@ -28,6 +29,51 @@ public class PurchaseHandler extends BusinessObject {
 			monthlyBudgetHandler.update(purchaseVO, purchaseDAO);
 			purchaseHistoryHandler = new PurchaseHistoryHandler();
 			purchaseHistoryHandler.add(purchaseVO, purchaseDAO);
+			purchaseDAO.commit();
+		} catch (DataAccessException ex) {
+			throw ex;
+		} catch (BusinessException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			throw new BusinessException(ex);
+		} finally {
+			close(purchaseDAO);
+		}
+	}
+	public void approve(PurchaseVO purchaseVO) throws BusinessException {
+		PurchaseDAO purchaseDAO = null;
+		ApprovedPurchasesDAO approvedPurchasesDAO=null;
+		try {
+			
+			approvedPurchasesDAO=(ApprovedPurchasesDAO)getDAO(ApprovedPurchasesDAO.class);
+			boolean flage=approvedPurchasesDAO.validateBeforeAdd(purchaseVO);
+			if(flage)
+			{
+			approvedPurchasesDAO.add(purchaseVO);
+			purchaseDAO = (PurchaseDAO) getDAO(PurchaseDAO.class,approvedPurchasesDAO);
+			purchaseDAO.approvePurchase(purchaseVO);
+			purchaseDAO.commit();
+			}else
+			{
+				throw new BusinessException("This Purchase Is Approved Before") ;
+			}
+		} catch (DataAccessException ex) {
+			throw ex;
+		} catch (BusinessException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			throw new BusinessException(ex);
+		} finally {
+			close(purchaseDAO);
+		}
+	}
+	public void reject(PurchaseVO purchaseVO) throws BusinessException {
+		PurchaseDAO purchaseDAO = null;
+		try {
+			
+			
+			purchaseDAO = (PurchaseDAO) getDAO(PurchaseDAO.class);
+			purchaseDAO.rejectPurchase(purchaseVO);
 			purchaseDAO.commit();
 		} catch (DataAccessException ex) {
 			throw ex;
@@ -82,6 +128,21 @@ public class PurchaseHandler extends BusinessObject {
 		try {
 			purchaseDAO = (PurchaseDAO) getDAO(PurchaseDAO.class);
 			return purchaseDAO.getAllPurchases(monthlyBudgetId, categoryId);
+		} catch (DataAccessException ex) {
+			throw ex;
+		} catch (BusinessException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			throw new BusinessException(ex);
+		} finally {
+			close(purchaseDAO);
+		}
+	}
+	public List<PurchaseVO> getAllPurchases(int categoryId) throws Exception {
+		PurchaseDAO purchaseDAO = null;
+		try {
+			purchaseDAO = (PurchaseDAO) getDAO(PurchaseDAO.class);
+			return purchaseDAO.getAllPurchasesByCategoryId(categoryId);
 		} catch (DataAccessException ex) {
 			throw ex;
 		} catch (BusinessException ex) {

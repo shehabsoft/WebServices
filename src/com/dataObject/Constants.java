@@ -19,6 +19,8 @@ public interface  Constants {
 	static  int ADD_PURCHASE_HISTORY_SERVICE=10;
 	static  int EDIT_PURCHASE_HISTORY_SERVICE=11;
     static int CLOSE_MONTHLY_BUDGET_SERVICE=12;
+    static int APPROVE_PURCHASE_SERVICE=13;
+    static int REJECT_PURCHASE_SERVICE=14;
 	
 	
 	

@@ -136,8 +136,12 @@ public class PurchaseDAOImpl extends JPADataAccessObject implements PurchaseDAO 
 				purchaseVO.setEnglishDescription(purchase.getEnglishDescription());
 				purchaseVO.setId(purchase.getId());
 				purchaseVO.setDetails(purchase.getDetails());
+				if(purchase.getLocation()!=null)
+				{
 				purchaseVO.setLocationId(purchase.getLocation().getId());
 				purchaseVO.setLocationName(purchase.getLocation().getEnglishName());
+				} 
+				
 				purchaseVO.setCategoryName(purchase.getCategory().getEnglishDescription());
 
 				if (purchase.getCreationDate() != null) {
@@ -199,6 +203,63 @@ public class PurchaseDAOImpl extends JPADataAccessObject implements PurchaseDAO 
 		}
 
 		return purchaseVOs;
+	}
+
+	@Override
+	public List<PurchaseVO> getAllPurchasesByCategoryId(int categoryId) throws Exception {
+		try {
+			ArrayList<PurchaseVO> purchases = new ArrayList<PurchaseVO>();
+			Query query = (Query) getEntitymanager().createNamedQuery("cleansing.findAllPurchasesByCategoryId");
+			query.setParameter("categoryId", categoryId);
+			List<Purchase> purchaseList = query.getResultList();
+			for (Purchase purchase : purchaseList) {
+				PurchaseVO purchaseVO = new PurchaseVO();
+
+				purchaseVO.setArabicDescription(purchase.getArabicDescription());
+				purchaseVO.setCategoryId(purchase.getCategory().getId());
+				purchaseVO.setPrice(purchase.getPrice());
+				purchaseVO.setEnglishDescription(purchase.getEnglishDescription());
+				purchaseVO.setId(purchase.getId());
+				purchaseVO.setDetails(purchase.getDetails());
+				purchaseVO.setLocationId(purchase.getLocation().getId());
+				purchaseVO.setLocationName(purchase.getLocation().getEnglishName());
+				purchaseVO.setCategoryName(purchase.getCategory().getEnglishDescription());
+
+				if (purchase.getCreationDate() != null) {
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					purchaseVO.setCreationDate(sdf.format(purchase.getCreationDate()));
+				}
+				purchases.add(purchaseVO);
+			}
+
+			return purchases;
+		} catch (Exception e) {
+			throw new Exception(e);
+
+		}
+	}
+
+	@Override
+	public void approvePurchase(PurchaseVO purchaseVO) throws Exception {
+		try {
+			Purchase purchase = getEntitymanager().find(Purchase.class, purchaseVO.getId());
+			purchase.setStatus(2);
+			getEntitymanager().persist(purchase);
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+		
+	}
+	@Override
+	public void rejectPurchase(PurchaseVO purchaseVO) throws Exception {
+		try {
+			Purchase purchase = getEntitymanager().find(Purchase.class, purchaseVO.getId());
+			purchase.setStatus(3);
+			getEntitymanager().persist(purchase);
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+		
 	}
 
 }

@@ -12,6 +12,9 @@ import java.util.List;
  */
 @Entity
 @Table(name="monthly_budget")
+@NamedQueries({@NamedQuery(name="getActiveMonthlyBudgetByUserId", query="SELECT m FROM MonthlyBudget m where m.user.id=:id and m.status=2"),
+	@NamedQuery(name="deActivePreviosMonthlyBudget",query="update  MonthlyBudget m set m.status=1  where m.user.id=:id")})
+
 public class MonthlyBudget implements Serializable {
 	private static final long serialVersionUID = 1L;
 

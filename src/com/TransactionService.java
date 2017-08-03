@@ -89,6 +89,17 @@ public class TransactionService {
         {
         	MonthlyBudgetHandler monthlyBudgetHandler=new MonthlyBudgetHandler();
         	monthlyBudgetHandler.Close(transactionVO.getMonthlyBudgetVO());
+        }else if(transactionVO.getServiceCode()==Constants.APPROVE_PURCHASE_SERVICE)
+        {
+        	PurchaseHandler purchaseHandler=new PurchaseHandler();
+        	purchaseHandler.approve(transactionVO.getPurchaseVO());
+        	
+        }
+        else if(transactionVO.getServiceCode()==Constants.REJECT_PURCHASE_SERVICE)
+        {
+        	PurchaseHandler purchaseHandler=new PurchaseHandler();
+        	purchaseHandler.reject(transactionVO.getPurchaseVO());
+        	
         }
 	
        

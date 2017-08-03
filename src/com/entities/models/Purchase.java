@@ -11,7 +11,7 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="purchase")
+@NamedQuery(name="Purchase.findAll", query="SELECT p FROM Purchase p")
 public class Purchase implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -23,7 +23,6 @@ public class Purchase implements Serializable {
 	@Column(name="arabic_description")
 	private String arabicDescription;
 
-
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="creation_date")
 	private Date creationDate;
@@ -33,9 +32,11 @@ public class Purchase implements Serializable {
 	@Column(name="english_description")
 	private String englishDescription;
 
-	
 
 	private double price;
+
+	private int status;
+
 	//bi-directional many-to-one association to Category
 	@ManyToOne
 	private Category category;
@@ -44,7 +45,6 @@ public class Purchase implements Serializable {
 	@ManyToOne
 	private Location location;
 
-	
 	@ManyToOne
 	private MonthlyBudget monthlyBudget;
 
@@ -71,8 +71,6 @@ public class Purchase implements Serializable {
 		this.arabicDescription = arabicDescription;
 	}
 
-
-
 	public Date getCreationDate() {
 		return this.creationDate;
 	}
@@ -97,8 +95,6 @@ public class Purchase implements Serializable {
 		this.englishDescription = englishDescription;
 	}
 
-
-
 	public double getPrice() {
 		return this.price;
 	}
@@ -107,28 +103,34 @@ public class Purchase implements Serializable {
 		this.price = price;
 	}
 
+	public int getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public List<PurchaseHistory> getPurchaseHistories() {
+		return this.purchaseHistories;
+	}
+	public Category getCategory() {
+		return this.category;
+	}
+
+	public void setPurchaseHistories(List<PurchaseHistory> purchaseHistories) {
+		this.purchaseHistories = purchaseHistories;
+	}
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
 	public Location getLocation() {
 		return this.location;
 	}
 
 	public void setLocation(Location location) {
 		this.location = location;
-	}
-
-	public List<PurchaseHistory> getPurchaseHistories() {
-		return this.purchaseHistories;
-	}
-
-	public void setPurchaseHistories(List<PurchaseHistory> purchaseHistories) {
-		this.purchaseHistories = purchaseHistories;
-	}
-
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
 	}
 
 	public MonthlyBudget getMonthlyBudget() {

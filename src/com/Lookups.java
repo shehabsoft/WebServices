@@ -184,6 +184,28 @@ public class Lookups {
 		}
 
 	}
+	@POST
+	@Path("/getAllPurchasesByCategoryId")
+	@Produces("application/json;charset=utf-8")
+	public String getAllPurchasesByCategoryId(@Context HttpHeaders headers, String content) throws Exception {
+		try {
+			monthlyBudgetHandler = new MonthlyBudgetHandler();
+			int index = content.lastIndexOf("=");
+			int userId = Integer.parseInt(content.substring(index + 1));
+			int categoryId = Integer.parseInt(headers.getRequestHeader("categoryId").get(0));
+			purchaseHandler = new PurchaseHandler();
+			ArrayList<PurchaseVO> categoryVOList = (ArrayList<PurchaseVO>) purchaseHandler.getAllPurchases(categoryId);
+				 
+			Gson gson = new Gson();
+			String feeds = gson.toJson(categoryVOList);
+
+			return "{PurchaseVO:" + feeds + "}";
+		} catch (Exception e) {
+			logger.error(e);
+			throw new Exception(e);
+		}
+
+	}
 
 	@POST
 	@Path("/getPurchaseHistory")

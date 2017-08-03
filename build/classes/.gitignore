@@ -1,1 +1,6 @@
+/Database/
+/META-INF/
 /com/
+/log4j.xml
+/model/
+/properties.properties
