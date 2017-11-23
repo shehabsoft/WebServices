@@ -14,7 +14,7 @@
 		<class>com.entities.models.Purchase</class>
 		<class>com.entities.models.PurchaseHistory</class>
 		<class>com.entities.models.CategoryHistory</class>
-		<class>com.entities.models.ApprovedPurchas</class>
+		<class>com.entities.models.ApprovedPurchases</class>
 	
 		<properties>
 			<property name="javax.persistence.schema-generation.scripts.action" value="none"/>

@@ -16,6 +16,9 @@ public class PurchaseVO {
 	private int categoryId;
 	private int locationId;
 	private double totalPrice;
+	private int approvedPurchaseId;
+	private String totalPriceStr;
+	private String creationDateStr;
 
 	public double getTotalPrice() {
 		return totalPrice;
@@ -129,5 +132,30 @@ public class PurchaseVO {
 	public void setNewPrice(double newPrice) {
 		this.newPrice = newPrice;
 	}
+
+	public int getApprovedPurchaseId() {
+		return approvedPurchaseId;
+	}
+
+	public void setApprovedPurchaseId(int approvedPurchaseId) {
+		this.approvedPurchaseId = approvedPurchaseId;
+	}
+
+	public String getTotalPriceStr() {
+		return totalPriceStr;
+	}
+
+	public void setTotalPriceStr(String totalPriceStr) {
+		this.totalPriceStr = totalPriceStr;
+	}
+
+	public String getCreationDateStr() {
+		return creationDateStr;
+	}
+
+	public void setCreationDateStr(String creationDateStr) {
+		this.creationDateStr = creationDateStr;
+	}
+	
 
 }

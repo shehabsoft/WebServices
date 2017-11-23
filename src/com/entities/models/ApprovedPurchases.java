@@ -2,6 +2,7 @@ package com.entities.models;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -10,12 +11,13 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="approved_purchases")
-@NamedQuery(name="ApprovedPurchas.findAll", query="SELECT a FROM ApprovedPurchas a")
-public class ApprovedPurchas implements Serializable {
+@NamedQuery(name="ApprovedPurchases.findAll", query="SELECT a FROM ApprovedPurchases a")
+public class ApprovedPurchases implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@SequenceGenerator(name="APPROVED_PURCHASES_ID_GENERATOR" )
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="APPROVED_PURCHASES_ID_GENERATOR")
 	private int id;
 
 	@Column(name="arabic_description")
@@ -30,9 +32,11 @@ public class ApprovedPurchas implements Serializable {
 	@ManyToOne
 	private Category category;
 
-	
+	//bi-directional many-to-one association to Purchase
+	@OneToMany(mappedBy="approvedPurchas")
+	private List<Purchase> purchases;
 
-	public ApprovedPurchas() {
+	public ApprovedPurchases() {
 	}
 
 	public int getId() {
@@ -75,6 +79,26 @@ public class ApprovedPurchas implements Serializable {
 		this.category = category;
 	}
 
-	
+	public List<Purchase> getPurchases() {
+		return this.purchases;
+	}
+
+	public void setPurchases(List<Purchase> purchases) {
+		this.purchases = purchases;
+	}
+
+	public Purchase addPurchas(Purchase purchas) {
+		getPurchases().add(purchas);
+		purchas.setApprovedPurchas(this);
+
+		return purchas;
+	}
+
+	public Purchase removePurchas(Purchase purchas) {
+		getPurchases().remove(purchas);
+		purchas.setApprovedPurchas(null);
+
+		return purchas;
+	}
 
 }

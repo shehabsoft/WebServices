@@ -37,7 +37,7 @@ public class PurchaseSession extends SessionFactory{
 		{
 			
 	    Category category=getEntitymanager().find(Category.class, purchaseVO.getCategoryId());
-	    purchase.setCategory(category);
+	//    purchase.setCategory(category);
 	   
 	    if(category==null)
 	    {
@@ -81,7 +81,7 @@ public class PurchaseSession extends SessionFactory{
 					purchase.setCreationDate(new Date());
 				//	category.setActualValue(category.getActualValue()+purchaseVO.getPrice());
 					getEntitymanager().getTransaction().begin();
-					purchase.setCategory(category);
+				//	purchase.setCategory(category);
 					Query query = (Query) getEntitymanager().createNamedQuery("getActiveMonthlyBudgetByUserId");
 					query.setParameter("id", purchaseVO.getUserId());
 					MonthlyBudget monthlyBudget=  (MonthlyBudget) query.getSingleResult();
@@ -131,46 +131,46 @@ public class PurchaseSession extends SessionFactory{
 			
 			//update If The Category Changed 
 			List<MonthlyBudgetCategory> monthlyBudgetCategoryList=null;
-			if(purchase.getCategory().getId()!=purchaseVO.getCategoryId())
-			{
-				//reduce value From Old Category in Table Monthly Budget Category 
-				query = (Query) getEntitymanager().createNamedQuery("getAllbyMonthlyBudget");
-				query.setParameter("id", monthlyBudget.getId());
-				 monthlyBudgetCategoryList=  (List<MonthlyBudgetCategory>) query.getResultList();
-				for(MonthlyBudgetCategory monthlyBudgetCategory:monthlyBudgetCategoryList)
-				{
-					if(purchase.getCategory().getId()==monthlyBudgetCategory.getCategory().getId())
-					{
-						monthlyBudgetCategory.setActualValue(monthlyBudgetCategory.getActualValue()-purchaseVO.getPrice());
-						getEntitymanager().persist(monthlyBudgetCategory);
-					}else if(purchaseVO.getCategoryId()==monthlyBudgetCategory.getCategory().getId())
-					{
-						monthlyBudgetCategory.setActualValue(monthlyBudgetCategory.getActualValue()+purchaseVO.getPrice());
-						getEntitymanager().persist(monthlyBudgetCategory);
-					}
-					
-				}
-				
-					
-				
-				
-				
-			}else //Update Monthly Budget in Case change In Actual Value
-			{
-				query = (Query) getEntitymanager().createNamedQuery("getAllbyMonthlyBudget");
-				query.setParameter("id", monthlyBudget.getId());
-				 monthlyBudgetCategoryList=  (List<MonthlyBudgetCategory>) query.getResultList();
-				for(MonthlyBudgetCategory monthlyBudgetCategory:monthlyBudgetCategoryList)
-				{
-					if(purchase.getCategory().getId()==monthlyBudgetCategory.getCategory().getId())
-					{
-						double actualValue=monthlyBudgetCategory.getActualValue();//30
-						monthlyBudgetCategory.setActualValue(actualValue+updateExpenseValue);//
-						getEntitymanager().persist(monthlyBudgetCategory);
-					}
-				}
-			}
-		    purchase.setCategory(category);
+//			if(purchase.getCategory().getId()!=purchaseVO.getCategoryId())
+//			{
+//				//reduce value From Old Category in Table Monthly Budget Category 
+//				query = (Query) getEntitymanager().createNamedQuery("getAllbyMonthlyBudget");
+//				query.setParameter("id", monthlyBudget.getId());
+//				 monthlyBudgetCategoryList=  (List<MonthlyBudgetCategory>) query.getResultList();
+//				for(MonthlyBudgetCategory monthlyBudgetCategory:monthlyBudgetCategoryList)
+//				{
+//					if(purchase.getCategory().getId()==monthlyBudgetCategory.getCategory().getId())
+//					{
+//						monthlyBudgetCategory.setActualValue(monthlyBudgetCategory.getActualValue()-purchaseVO.getPrice());
+//						getEntitymanager().persist(monthlyBudgetCategory);
+//					}else if(purchaseVO.getCategoryId()==monthlyBudgetCategory.getCategory().getId())
+//					{
+//						monthlyBudgetCategory.setActualValue(monthlyBudgetCategory.getActualValue()+purchaseVO.getPrice());
+//						getEntitymanager().persist(monthlyBudgetCategory);
+//					}
+//					
+//				}
+//				
+//					
+//				
+//				
+//				
+//			}else //Update Monthly Budget in Case change In Actual Value
+//			{
+//				query = (Query) getEntitymanager().createNamedQuery("getAllbyMonthlyBudget");
+//				query.setParameter("id", monthlyBudget.getId());
+//				 monthlyBudgetCategoryList=  (List<MonthlyBudgetCategory>) query.getResultList();
+//				for(MonthlyBudgetCategory monthlyBudgetCategory:monthlyBudgetCategoryList)
+//				{
+//					if(purchase.getCategory().getId()==monthlyBudgetCategory.getCategory().getId())
+//					{
+//						double actualValue=monthlyBudgetCategory.getActualValue();//30
+//						monthlyBudgetCategory.setActualValue(actualValue+updateExpenseValue);//
+//						getEntitymanager().persist(monthlyBudgetCategory);
+//					}
+//				}
+//			}
+//		    purchase.setCategory(category);
 		    purchase.setCreationDate(new Date());
 		    purchase.setMonthlyBudget(monthlyBudget);
 		   
@@ -199,14 +199,14 @@ public class PurchaseSession extends SessionFactory{
 			PurchaseVO purchaseVO=new PurchaseVO();
 			
 			purchaseVO.setArabicDescription(purchase.getArabicDescription());
-			purchaseVO.setCategoryId(purchase.getCategory().getId());
+			//purchaseVO.setCategoryId(purchase.getCategory().getId());
 			purchaseVO.setPrice(purchase.getPrice());
 			purchaseVO.setEnglishDescription(purchase.getEnglishDescription());
 			purchaseVO.setId(purchase.getId());
 			purchaseVO.setDetails(purchase.getDetails());
 			purchaseVO.setLocationId(purchase.getLocation().getId());
 			purchaseVO.setLocationName(purchase.getLocation().getEnglishName());
-			purchaseVO.setCategoryName(purchase.getCategory().getEnglishDescription());
+			//purchaseVO.setCategoryName(purchase.getCategory().getEnglishDescription());
 			
 			if(purchase.getCreationDate()!=null)
 				{

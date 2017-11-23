@@ -6,8 +6,9 @@ package com.HomeBudget.DAO;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
-
+import java.util.Arrays;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
@@ -164,4 +165,63 @@ public class PurchaseHistoryDAOImpl extends JPADataAccessObject implements Purch
 
 	}
 
+	@Override
+	public PurchaseVO getPurchasesHistoryChartByApprovedPurchaseId(int approvedPurchaseId, int userId) {
+		// TODO Auto-generated method stub
+	 try
+		{
+		 Query query = (Query) getEntitymanager().createNamedQuery("getPurchasesHistoryChartByApprovedPurchaseId");
+		 query.setParameter("userId", userId);
+		 query.setParameter("approvedPurchaseId", approvedPurchaseId);
+			List<PurchaseVO> purchaseVOList=new ArrayList<PurchaseVO>();
+			List<Double>totalPriceStr=new ArrayList<Double>();
+			List<String>creationDateStr=new ArrayList<String>();
+			List<Object> result = query.getResultList();
+			    Iterator itr = result.iterator();
+			    PurchaseVO purchaseVO=new PurchaseVO();
+			    while(itr.hasNext()){
+			    	
+			        Object[] obj = (Object[]) itr.next();
+			        if(obj[0]==null)
+			        {
+			        	
+			        	totalPriceStr.add((double) 0);
+			        }else
+			        {
+			        	
+			        	totalPriceStr.add((Double)obj[0]);
+			        }
+			        if(obj[1]!=null)
+			        {
+			        	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+						String creationDate=sdf.format(obj[1]);
+			        	
+			        	creationDateStr.add(creationDate);
+			        } 
+			        
+			        
+			    }
+			    
+			    	String creationDateStrArr = Arrays.toString(creationDateStr.toArray()); 
+			    	String  totalPriceStrArr = Arrays.toString(totalPriceStr.toArray()); 
+			    	
+			    	 
+			    	String creationDateStrArrModify=creationDateStrArr.replace("[", "").replace("]", "");
+			    	String TotalPriceStrModify=totalPriceStrArr.replace("[","").replace("]", "");
+			    	purchaseVO.setCreationDateStr(creationDateStrArrModify);
+ 			    	 purchaseVO.setTotalPriceStr(TotalPriceStrModify);
+//			     
+			   
+			   
+			
+				return purchaseVO;
+			
+		}catch(Exception e)
+		{
+			throw new BusinessException(e.toString());
+		}
 }
+	
+
+}
+

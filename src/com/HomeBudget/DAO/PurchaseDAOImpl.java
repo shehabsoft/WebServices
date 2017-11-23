@@ -54,6 +54,7 @@ public class PurchaseDAOImpl extends JPADataAccessObject implements PurchaseDAO 
 				if (purchaseVO.getDetails() != null) {
 					purchase.setDetails(purchaseVO.getDetails());
 				}
+				purchase.setStatus(1);//new
 				purchase.setCreationDate(new Date());
 				purchase.setCategory(category);
 				int purchaseId = (int) (getNextKey() - 1);
@@ -129,7 +130,10 @@ public class PurchaseDAOImpl extends JPADataAccessObject implements PurchaseDAO 
 			List<Purchase> purchaseList = query.getResultList();
 			for (Purchase purchase : purchaseList) {
 				PurchaseVO purchaseVO = new PurchaseVO();
-
+				if(purchase.getApprovedPurchas()!=null)
+				{
+					purchaseVO.setApprovedPurchaseId(purchase.getApprovedPurchas().getId());
+				}	
 				purchaseVO.setArabicDescription(purchase.getArabicDescription());
 				purchaseVO.setCategoryId(purchase.getCategory().getId());
 				purchaseVO.setPrice(purchase.getPrice());

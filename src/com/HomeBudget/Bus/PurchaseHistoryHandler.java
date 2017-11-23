@@ -6,6 +6,7 @@ package com.HomeBudget.Bus;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.HomeBudget.DAO.CategoryDAO;
 import com.HomeBudget.DAO.PurchaseDAO;
 import com.HomeBudget.DAO.PurchaseDAOImpl;
 import com.HomeBudget.DAO.PurchaseHistoryDAO;
@@ -14,7 +15,10 @@ import com.HomeBudget.DAO.JPA.DataAccessObject1;
 import com.HomeBudget.dataObject.PurchaseHistoryVO;
 import com.dataObject.BusinessException;
 import com.dataObject.BusinessObject;
+import com.dataObject.CategoryVO;
+import com.dataObject.DAOFactory;
 import com.dataObject.DataAccessException;
+import com.dataObject.MonthlyBudgetVO;
 import com.dataObject.PurchaseVO;
 
 /**
@@ -90,5 +94,22 @@ public class PurchaseHistoryHandler extends BusinessObject{
 		 close(purchaseHistoryDAO);
 		 }
 		
+	}
+	public PurchaseVO getPurchasesHistoryChartByApprovedPurchaseId(int approvalPurchaseId,int userId) {
+		PurchaseHistoryDAO purchaseHistoryDAO=null;
+		try {
+			 purchaseHistoryDAO = (PurchaseHistoryDAO) DAOFactory.getDAO(PurchaseHistoryDAO.class);
+			 PurchaseVO purchaseVOs= purchaseHistoryDAO.getPurchasesHistoryChartByApprovedPurchaseId(approvalPurchaseId, userId);
+             return purchaseVOs;
+		} catch (DataAccessException ex) {
+			throw ex;
+		} catch (BusinessException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			throw new BusinessException(ex);
+		} finally {
+			close(purchaseHistoryDAO);
+		}
+
 	}
 }

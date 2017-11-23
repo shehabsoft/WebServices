@@ -19,7 +19,8 @@ import com.dataObject.CategoryVO;
 import com.dataObject.Constants;
 import com.dataObject.MonthlyBudgetVO;
 import com.dataObject.PurchaseVO;
-import com.entities.models.ApprovedPurchas;
+
+import com.entities.models.ApprovedPurchases;
 import com.entities.models.Category;
 import com.entities.models.CategoryHistory;
 import com.entities.models.Location;
@@ -40,7 +41,7 @@ public class ApprovedPurchasesDAOImpl extends JPADataAccessObject implements App
 	
 	public void add(PurchaseVO purchaseVO) throws Exception
 	{
-		ApprovedPurchas approvedPurchas=new ApprovedPurchas();
+		ApprovedPurchases approvedPurchas=new ApprovedPurchases();
 		if (purchaseVO.getArabicDescription() != null) {
 			approvedPurchas.setArabicDescription(purchaseVO.getArabicDescription());	
 		} else {

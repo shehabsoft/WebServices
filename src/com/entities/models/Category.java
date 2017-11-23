@@ -10,6 +10,7 @@ import java.util.List;
  * 
  */
 @Entity
+@NamedQuery(name="Category.findAll", query="SELECT c FROM Category c")
 public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -46,7 +47,10 @@ public class Category implements Serializable {
 	@ManyToMany(mappedBy="categories")
 	private List<MonthlyBudget> monthlyBudgets;
 
-	//bi-directional many-to-one association to MonthlyBudgetCategory
+
+	//bi-directional many-to-one association to ApprovedPurchases
+	@OneToMany(mappedBy="category")
+	private List<ApprovedPurchases> approvedPurchases;
 	@OneToMany(mappedBy="category")
 	private List<MonthlyBudgetCategory> monthlyBudgetCategories;
 
@@ -147,18 +151,24 @@ public class Category implements Serializable {
 		return categoryHistories;
 	}
 
-	public void setCategoryHistories(List<CategoryHistory> categoryHistories) {
-		this.categoryHistories = categoryHistories;
-	}
+ 
 
 	public List<MonthlyBudget> getMonthlyBudgets() {
 		return this.monthlyBudgets;
 	}
 
+	public void setApprovedPurchases(List<ApprovedPurchases> approvedPurchases) {
+		this.approvedPurchases = approvedPurchases;
+	}
 	public void setMonthlyBudgets(List<MonthlyBudget> monthlyBudgets) {
 		this.monthlyBudgets = monthlyBudgets;
 	}
 
+	public ApprovedPurchases addApprovedPurchas(ApprovedPurchases approvedPurchas) {
+		getApprovedPurchases().add(approvedPurchas);
+		approvedPurchas.setCategory(this);
+		return  approvedPurchas;
+}
 	public List<MonthlyBudgetCategory> getMonthlyBudgetCategories() {
 		return this.monthlyBudgetCategories;
 	}
@@ -167,6 +177,11 @@ public class Category implements Serializable {
 		this.monthlyBudgetCategories = monthlyBudgetCategories;
 	}
 
+	public ApprovedPurchases removeApprovedPurchas(ApprovedPurchases approvedPurchas) {
+		getApprovedPurchases().remove(approvedPurchas);
+		approvedPurchas.setCategory(null);
+        return approvedPurchas;
+}
 	public MonthlyBudgetCategory addMonthlyBudgetCategory(MonthlyBudgetCategory monthlyBudgetCategory) {
 		getMonthlyBudgetCategories().add(monthlyBudgetCategory);
 		monthlyBudgetCategory.setCategory(this);
@@ -201,6 +216,14 @@ public class Category implements Serializable {
 		purchas.setCategory(null);
 
 		return purchas;
+	}
+
+	public List<ApprovedPurchases> getApprovedPurchases() {
+		return approvedPurchases;
+	}
+
+	public void setCategoryHistories(List<CategoryHistory> categoryHistories) {
+		this.categoryHistories = categoryHistories;
 	}
 
 }

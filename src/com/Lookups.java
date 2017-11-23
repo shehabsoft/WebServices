@@ -173,9 +173,32 @@ public class Lookups {
 			int monthlyBudgetId = monthlyBudgetHandler.getActiveMonthlyBudgetIdByUserId(userId);
 			purchaseHandler = new PurchaseHandler();
 			ArrayList<PurchaseVO> categoryVOList = (ArrayList<PurchaseVO>) purchaseHandler.getAll(monthlyBudgetId,
-					categoryId);
+					categoryId,userId);
 			Gson gson = new Gson();
 			String feeds = gson.toJson(categoryVOList);
+
+			return "{PurchaseVO:" + feeds + "}";
+		} catch (Exception e) {
+			logger.error(e);
+			throw new Exception(e);
+		}
+
+	}
+	@POST
+	@Path("/getPurchasesHistoryChartByApprovedPurchaseId")
+	@Produces("application/json;charset=utf-8")
+	public String getPurchasesHistoryChartByApprovedPurchaseId(@Context HttpHeaders headers, String content) throws Exception {
+		try {
+			 
+			int index = content.lastIndexOf("=");
+			int userId = Integer.parseInt(content.substring(index + 1));
+			int approvedPurchaseId = Integer.parseInt(headers.getRequestHeader("approvedPurchaseId").get(0));
+			 
+			purchaseHistoryHandler = new PurchaseHistoryHandler();
+			PurchaseVO PurchaseVO = ( PurchaseVO) purchaseHistoryHandler.getPurchasesHistoryChartByApprovedPurchaseId(approvedPurchaseId, userId);
+					
+			Gson gson = new Gson();
+			String feeds = gson.toJson(PurchaseVO);
 
 			return "{PurchaseVO:" + feeds + "}";
 		} catch (Exception e) {
@@ -212,8 +235,10 @@ public class Lookups {
 	@Produces("application/json;charset=utf-8")
 	public String getPurchaseHistory(@Context HttpHeaders headers, String content) throws Exception {
 		try {
+		
 			int purchaseId = Integer.parseInt(headers.getRequestHeader("purchaseId").get(0));
 			purchaseHistoryHandler = new PurchaseHistoryHandler();
+			
 			ArrayList<PurchaseHistoryVO> purchaseHistoryVOs = (ArrayList<PurchaseHistoryVO>) purchaseHistoryHandler
 					.getAll(purchaseId);
 			Gson gson = new Gson();
@@ -231,6 +256,7 @@ public class Lookups {
 	@Produces("application/json;charset=utf-8")
 	public String getCategoryHistory(@Context HttpHeaders headers, String content) throws Exception {
 		try {
+			
 			int categoryId = Integer.parseInt(headers.getRequestHeader("categoryId").get(0));
 			categoryHistoryHandler = new CategoryHistoryHandler();
 			ArrayList<CategoryHistoryVO> categoryHistoryVOs = (ArrayList<CategoryHistoryVO>) categoryHistoryHandler

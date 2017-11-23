@@ -123,11 +123,21 @@ public class PurchaseHandler extends BusinessObject {
 		}
 	}
 
-	public List<PurchaseVO> getAll(int monthlyBudgetId, int categoryId) throws Exception {
+	public List<PurchaseVO> getAll(int monthlyBudgetId, int categoryId,int userId) throws Exception {
 		PurchaseDAO purchaseDAO = null;
+		purchaseHistoryHandler=new PurchaseHistoryHandler();
 		try {
 			purchaseDAO = (PurchaseDAO) getDAO(PurchaseDAO.class);
-			return purchaseDAO.getAllPurchases(monthlyBudgetId, categoryId);
+			List<PurchaseVO> purchaseVOs=purchaseDAO.getAllPurchases(monthlyBudgetId, categoryId);
+			for(int i=0;i<purchaseVOs.size();i++)
+			{
+				PurchaseVO purchaseVO=purchaseVOs.get(i);
+				PurchaseVO purchaseVOUpdated=purchaseHistoryHandler.getPurchasesHistoryChartByApprovedPurchaseId(purchaseVO.getApprovedPurchaseId(), userId);
+				purchaseVO.setCreationDateStr(purchaseVOUpdated.getCreationDateStr());
+				purchaseVO.setTotalPriceStr(purchaseVOUpdated.getTotalPriceStr());
+				purchaseVOs.set(i, purchaseVO);
+			}
+			return  purchaseVOs;
 		} catch (DataAccessException ex) {
 			throw ex;
 		} catch (BusinessException ex) {

@@ -37,6 +37,11 @@ public class Purchase implements Serializable {
 
 	private int status;
 
+	//bi-directional many-to-one association to ApprovedPurchases
+	@ManyToOne
+	@JoinColumn(name="approved_Purchase_ID")
+	private ApprovedPurchases approvedPurchas;
+
 	//bi-directional many-to-one association to Category
 	@ManyToOne
 	private Category category;
@@ -94,6 +99,7 @@ public class Purchase implements Serializable {
 	public void setEnglishDescription(String englishDescription) {
 		this.englishDescription = englishDescription;
 	}
+ 
 
 	public double getPrice() {
 		return this.price;
@@ -111,9 +117,17 @@ public class Purchase implements Serializable {
 		this.status = status;
 	}
 
+	public ApprovedPurchases getApprovedPurchas() {
+		return this.approvedPurchas;
+	}
 	public List<PurchaseHistory> getPurchaseHistories() {
 		return this.purchaseHistories;
 	}
+
+	public void setApprovedPurchas(ApprovedPurchases approvedPurchas) {
+		this.approvedPurchas = approvedPurchas;
+	}
+
 	public Category getCategory() {
 		return this.category;
 	}

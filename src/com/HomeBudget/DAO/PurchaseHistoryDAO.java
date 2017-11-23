@@ -3,6 +3,7 @@
  */
 package com.HomeBudget.DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.HomeBudget.DAO.JPA.DataAccessObject1;
@@ -23,6 +24,8 @@ public interface PurchaseHistoryDAO  extends DataAccessObject1{
 	public void updatePurchaseHistory(PurchaseHistoryVO purchaseHistoryVO);
 	
 	public List<PurchaseHistoryVO>getPurchaseHistoryByPurchaseId(int purchaseId) throws Exception;
+	
+	public PurchaseVO getPurchasesHistoryChartByApprovedPurchaseId(int approvalPurchaseId,int userId);
 	
 	
 }

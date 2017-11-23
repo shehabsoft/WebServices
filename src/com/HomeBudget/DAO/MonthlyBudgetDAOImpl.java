@@ -94,19 +94,22 @@ public class MonthlyBudgetDAOImpl  extends JPADataAccessObject implements Monthl
 		for(int i=0;i<categories.size();i++)
 		{
 			Query query2 = (Query) getEntitymanager().createNamedQuery("getApprovedPurchaseByCategoryId").setParameter("categoryId", categories.get(i).getId());
-			List<ApprovedPurchas>approvedPurchases=query2.getResultList();
-			for(int j=0;j<approvedPurchases.size();j++)
+			List<ApprovedPurchases>approvedPurchasesList=query2.getResultList();
+			for(int j=0;j<approvedPurchasesList.size();j++)
 			{
 			Purchase purchase=new Purchase();
-			purchase.setArabicDescription(approvedPurchases.get(j).getArabicDescription());
-			purchase.setEnglishDescription(approvedPurchases.get(j).getEnglishDescription());
-			Category category=  approvedPurchases.get(j).getCategory();
+			ApprovedPurchases approvedPurchases=approvedPurchasesList.get(j);
+			purchase.setArabicDescription(approvedPurchases.getArabicDescription());
+			purchase.setEnglishDescription(approvedPurchases.getEnglishDescription());
+			Category category=  approvedPurchases.getCategory();
 			purchase.setCreationDate(new Date());
 			purchase.setCategory(category);
 			purchase.setPrice(0);
 			purchase.setMonthlyBudget(monthlyBudget);
 			purchase.setStatus(2);
-			purchase.setDetails(approvedPurchases.get(j).getDetails());
+			purchase.setDetails(approvedPurchases.getDetails());
+			purchase.setApprovedPurchas(approvedPurchases);
+			
 			getEntitymanager().persist(purchase);
 			
 			}
