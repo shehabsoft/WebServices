@@ -193,11 +193,20 @@ public class CategoryDAOImpl extends JPADataAccessObject implements CategoryDAO{
 			{
 				categoryVO.setWithenLimit(false);
 			}
-			    categoryVOs.add(categoryVO);
-		   
+		    if(categoryVO.getActualValue()==0||categoryVO.getLimitValue()==0)
+		    {
+		    	categoryVO.setPercentageExpenses(0);
+		    }else
+		    {
+		    categoryVO.setPercentageExpenses(Math.floor(categoryVO.getActualValue()/categoryVO.getLimitValue()*100));
 		    }
+			 categoryVOs.add(categoryVO);
+		   
+		    
+	    
+		   
 
-	
+	    }
 		return categoryVOs;
 	}catch(Exception e)
 		{
@@ -216,7 +225,7 @@ public class CategoryDAOImpl extends JPADataAccessObject implements CategoryDAO{
 	   for(Category category:categoryList)
 	   {
 	        CategoryVO categoryVO=new CategoryVO();
-	    	categoryVO.setArabicDescription(category.getArabicDescription());
+	        categoryVO.setArabicDescription(category.getArabicDescription());
 	    	categoryVO.setEnglisDescription(category.getEnglishDescription());
 	    	categoryVO.setCategoryTypeId(category.getCategoryTypeId());
 		    categoryVO.setActualValue(category.getActualValue());
@@ -230,6 +239,7 @@ public class CategoryDAOImpl extends JPADataAccessObject implements CategoryDAO{
 			{
 				categoryVO.setCategoryStatus(1);
 			}
+		   
 		    categoryVOs.add(categoryVO);
 	   
 	    }

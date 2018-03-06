@@ -7,6 +7,7 @@ public class CategoryVO {
 	private boolean withenLimit;
 	private String actualValueStr;
 	private String statusDate;
+	private double percentageExpenses;
 	public String getStatusDate() {
 		return statusDate;
 	}
@@ -143,6 +144,14 @@ public class CategoryVO {
 
 	public void setActualValue(double actualValue) {
 		this.actualValue = actualValue;
+	}
+
+	public double getPercentageExpenses() {
+		return percentageExpenses;
+	}
+
+	public void setPercentageExpenses(double percentageExpenses) {
+		this.percentageExpenses = percentageExpenses;
 	}
 
 	public int getCategoryStatus() {

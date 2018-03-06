@@ -76,7 +76,7 @@
 		<query>SELECT c FROM Country c</query>
 	</named-query>
 	<named-query name="getAllMonthlyBudgetByUserId">
-		<query>SELECT m FROM MonthlyBudget m where m.user.id=:id</query>
+		<query>SELECT m FROM MonthlyBudget m where m.user.id=:id and SUBSTRING(m.startDate, 1, 4)='2018'</query>
 	</named-query>
 	<named-query name="getActiveMonthlyBudgetByUserId">
 		<query>SELECT m FROM MonthlyBudget m where m.user.id=:id and m.status=2</query>
