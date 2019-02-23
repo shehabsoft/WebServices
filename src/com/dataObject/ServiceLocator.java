@@ -5,9 +5,9 @@
  * P.O. Box: 32326
  * All Rights Reserved.
  *
- * ver    Developer          Date        Comments
- * ----- -----------------  ----------  ----------------------------------------
- * 1.00  Eng. Ayman Atiyeh  19/09/2006  - File created.
+ * ver    Developer               Date        Comments
+ * ----- -----------------      ----------  ----------------------------------------
+ * 1.00  Eng. shehab eldin tarek  19/01/2019  - File created.
  */
 
 package com.dataObject;
@@ -33,7 +33,7 @@ import org.hibernate.SessionFactory;
  * Centralize distributed service objects lookups and provides a centralized
  * point of control for locating services and resources.
  *
- * @author Eng. Ayman Atiyeh
+ * @author Eng. shehab eldin tarek 
  * @version 1.00
  */
 public class ServiceLocator {
@@ -102,14 +102,12 @@ public class ServiceLocator {
      * 
      * @return configuration object.
      */
-    public TrafficConfig getConfig() {
-        if (cache.containsKey(JNDINames.SYS_CONFIG)) {
-            return (TrafficConfig) cache.get(JNDINames.SYS_CONFIG);
-        }
+    public SmartHomeBudgetConfig getConfig() {
+       
 
         try {
             logger.info("Loading system configuration");
-            TrafficConfig config = getSystemConfiguration();
+            SmartHomeBudgetConfig config = getSystemConfiguration();
 
             cache.put(JNDINames.SYS_CONFIG, config);
             return config;
@@ -147,54 +145,9 @@ public class ServiceLocator {
         }
     }
 
-    /**
-     * Get DataSource reference.
-     * 
-     * @return DataSource
-     */
-    public DataSource getDataSource() {
-        if (cache.containsKey(JNDINames.DATA_SOURCE)) {
-            return (DataSource) cache.get(JNDINames.DATA_SOURCE);
-        }
+    
 
-        try {
-            logger.info("Lookup DataSource");
-            String jndiName = getConfig().getProperty(JNDINames.DATA_SOURCE);
-            DataSource ds = (DataSource) context.lookup(jndiName);
-
-            cache.put(JNDINames.DATA_SOURCE, ds);
-            return ds;
-
-        } catch (NamingException ex) {
-            String err = "Failed to lookup DataSource";
-            logger.log(Level.SEVERE, err, ex);
-            throw new ServiceLocatorException(err, ex);
-        }
-    }
-
-    /**
-     * Get hibernate session factory.
-     * 
-     * @return hibernate session factory.
-     */
-    public SessionFactory getHibernateSessionFactory() {
-        if (cache.containsKey(JNDINames.HIBERNATE_SESSION_FACTORY) && cache.get(JNDINames.HIBERNATE_SESSION_FACTORY) != null) {
-            return (SessionFactory) cache.get(JNDINames.HIBERNATE_SESSION_FACTORY);
-        }
-
-        try {
-            logger.info("Load hibernate SessionFactory...");
-            SessionFactory factory = loadHibernateSessionFactory();
-            
-            cache.put(JNDINames.HIBERNATE_SESSION_FACTORY, factory);
-            return factory;
-
-        } catch (Exception ex) {
-            String err = "Failed to load hibernate SessionFactory";
-            logger.log(Level.SEVERE, err, ex);
-            throw new ServiceLocatorException(err, ex);
-        } 
-    }
+    
     
     /*
      * Private Helper Methods
@@ -205,36 +158,22 @@ public class ServiceLocator {
      * 
      * @return system configuration.
      */
-    private TrafficConfig getSystemConfiguration() {
-        // Create ResourceBundle to read configurations
-        ResourceBundle rb = ResourceBundle.getBundle(TrafficConfig.CONFIG_FILE);
+    private SmartHomeBudgetConfig getSystemConfiguration() {
+    
         Map<String, String> map = Collections.synchronizedMap(new HashMap<String, String>());
 
-        // Load configurations
-        Enumeration keys = rb.getKeys();
-        while (keys.hasMoreElements()) {
-            String key = (String) keys.nextElement();
-            map.put(key, rb.getString(key));
-        }
+       
 
         // Save config object on the cache map
-        TrafficConfig config = new TrafficConfig(map);
+        SmartHomeBudgetConfig config = new SmartHomeBudgetConfig(map);
 
         // Return configuration reference
         logger.info(new StringBuffer("Config loaded: ").append(config).toString());
         return config;
     }
 
-    /**
-     * Get hibernate session factory.
-     * 
-     * @return hibernate session factory.
-     */
-    private SessionFactory loadHibernateSessionFactory() {
-        return new org.hibernate.cfg.Configuration()
-                                    .configure()
-                                    .buildSessionFactory();
-    }
+    
+
 
     /**
      * Get URLs related to pages migrated from old traffic system with custom security logic inside the old pages.

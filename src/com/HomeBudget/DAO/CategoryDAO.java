@@ -21,7 +21,7 @@ public interface CategoryDAO extends DataAccessObject1 {
 	
 	public CategoryVO getCategoryById(int id);
 	
-	public ArrayList<CategoryVO> getExpensesCategories(int monthlyBudgetId,int userId);
+	public ArrayList<CategoryVO> getExpensesCategories(int monthlyBudgetId,int userId,String year);
 	
 	public ArrayList<CategoryVO> getAllExpensesCategories(int userId);
 	public ArrayList<CategoryVO> GetBudgetCategories(int monthlyBudgetId,int userId);

@@ -136,7 +136,7 @@ public abstract class BusinessObject {
      * 
      * @return configuration object.
      */
-    protected TrafficConfig getConfig() {
+    protected SmartHomeBudgetConfig getConfig() {
         return ServiceLocator.getInstance().getConfig();        
     }
 

@@ -31,5 +31,5 @@ public interface MonthlyBudgetDAO extends DataAccessObject1{
 	
 	public List<MonthlyBudgetVO>getAllMonthlyBudgetByUserId(int userId);
 	
-	public List<MonthlyBudgetVO>getAllMonthlyBudgetByCategoryIdAndUserId(int categoryId,int userId);
+	public List<MonthlyBudgetVO>getAllMonthlyBudgetByCategoryIdAndUserId(int categoryId,int userId,String startYear,String endYear);
 }

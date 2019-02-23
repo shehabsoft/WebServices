@@ -1,92 +1,4 @@
-/*
- * Used to encapsulate all common configuration for traffic module
- *
- * Auther        : Eng. Ayman Atiyeh
- * Creation Date : 06/09/2004
- * 
- * ver   Developer          Date        Comments 
- * ----  -----------------  ----------  ----------------------------------------
- * 1.00  Eng. Ayman Atiyeh  06/09/2004  - First version.
- *
- * 1.01  Husam A. Barham   29/04/2005   - Add a method to get error logging flag
- *                                       from properties file.
- * 
- * 1.02  Eng. Ayman Atiyeh  30/04/2005  - Adding ERROR_PAGE_DEBUG param and its
- *                                       related method.
- *
- * 1.03  Husdam A. Barham   08/05/2005  - add methods to read DebugUtil parameters
- *                                       from CONFIG_FILE
- * 
- * 1.10  Alaa Salem         17/12/2009  - Adding DNRD_PERSON_INFO_SERVICE_URL
- *                                        Constant.
- *                                      - Adding DNRD_LOOKUP_DATA_SERVICE_URL
- *                                        Constant.
- *                                      - Adding DNRD_PERSON_INFO_SOAP_ACTION
- *                                        Constatnt.
- *                                      - Adding DNRD_LOOKUP_DATA_SOAP_ACTION
- *                                        Constatnt.
- *                                      - Adding getDNRDPersonInfoServiceUrl()
- *                                        Getter Method.
- *                                      - Adding getDNRDLookupDataServiceUrl()
- *                                        Getter Method.
- *                                      - Adding getDNRDPersonInfoSoapAction()
- *                                        Getter Method.
- *                                      - Adding getDNRDLookupDataSoapAction()
- *                                        Getter Method.
- *                           
- * 1.11  Alaa Salem         29/12/2009  - Adding getDNRDPersonInfoSecurityId()
- *                                        Method.
- *                                      - Adding getDNRDLookupDataSecurityId()
- *                                        Method.
- *                                      - Adding DNRD_PERSON_INFO_SECURITY_ID
- *                                        Constatnt.
- *                                      - Adding DNRD_LOOKUP_DATA_SECURITY_ID
- *                                        Constatnt.
- *
- * 1.12  Eng. Ayman Atiyeh  11/01/2010  - Adding FedEx FSM server settings.
- *
- * 1.13  Alaa Salem         25/02/2010  - Adding Center Performance Auto-Refresh
- *                                        Setting.
- *                                       
- * 1.14  Alaa Salem         04/04/2010  - Adding isDEGPaymentActive() Method.
- * 
- * 1.15  Ai Abdel-Aziz      04/04/2010  - Adding getUserLocaleKey() method.
- * 
- * 1.16  Eng. Ayman Atiyeh  21/04/2012  - Add getJvmId() method.
- * 
- * 1.17  Mohammed Kabeel   26/07/2012  - Add getUTSReportsEndPointURL() method.
- * 
- * 1.18  Sami Abudayeh      30/7/2012   - Add getReportServerUserLogin()
- * 1.19  Mohammed Kabeel    09/08/2012  - Add getIssueNewLicenseMaxNoOfDays()
- * 
- * 1.20 Ahmad M.Adawi       10/10/2012  - Add Get Cancel Vehicle Center Code
- * 
- * 1.21 Bashar Alnemrawi    04/11/2012  - Adding getPOBoxCutoffDate()
- *                                        Method.
- *                                      - Adding getCenterIsFromAllowedChannelCode()
- *                                        Method.
- *                                      - Adding CUT_OFF_DATE_P_O_BOX
- *                                        Constatnt.
- *                                      - Adding ALLOWED_CHANNEL_FOR_P_O_BOX
- *                                        Constatnt.
- * 1.22 Ahmad Jaafar        28/04/2012  - Adding FEE_OF_DELAYED_PERIOD_FOR_HEAVY_VEHICLE
- *                                        Constant.
- *                                        
- * 1.23 Baha Naim                       - Adding getDefaultThermalPrinterName()
- *                                        method.
- *                                        
- * 1.24 Mahmoud Atiyeh      12/05/2013  - Added getMailDeliveryInformationTimeout() method.
- * 
- * 
- * 1.25 Baha Naim           09/05/2013  - Added getManualMaxAttachSize() method.
- * 
- * 1.26 Bashar Alnemrawi    05/05/2013  - Adding getNumberOfCanceledBlackPointsPerCourse() Method.
- * 
- * 1.27 Sami Abudayeh       15/06/2013  - Add getManipulationTicketServiceEndPoint method
- * 1.28 Mohamed Hamdi    04/06/2014  - Add isInspectionBeforeSalesTransaction method
- * 
- * 
- */
+
 
 package  com.dataObject;
 
@@ -108,6 +20,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.HomeBudget.Bus.PropertyHandler;
 import com.HomeBudget.common.GlobalUtilities;
 
 
@@ -118,24 +31,18 @@ import com.HomeBudget.common.GlobalUtilities;
  * @version 1.21 - 06/09/2004
  * @author Eng.  shehab.tarek
  */
-public class TrafficConfig implements java.io.Serializable {
+public class SmartHomeBudgetConfig implements java.io.Serializable {
     /*
      * Constants       
      */
     
     /** Class logger. */
-    private static final Logger logger = Logger.getLogger(TrafficConfig.class.getName());
+    private static final Logger logger = Logger.getLogger(SmartHomeBudgetConfig.class.getName());
 
     /** Configuration file name. */
     public static final String CONFIG_FILE = "trf";
     
-    private static final String PROPERTY_QUERY 
-    = " SELECT IS_STATIC,"
-    +        " DECODE(IS_ENCRYPTED, 2,"
-    +               " PKG_DB_ISM_APP_ENCRYPTION_OPER.F_DB_DECRYPT(VALUE, '"
-    +                     getEncryptionKey() + "'), VALUE) VALUE"
-    + " FROM TF_STP_TRAFFIC_PROPERTIES"
-    + " WHERE PROPERTY = ?";
+    
 
     /** Debugging mode */
     private static final String DEBUG = "ae.gov.dphq.traffic.util.debug";
@@ -442,9 +349,6 @@ public class TrafficConfig implements java.io.Serializable {
     private static final String MAX_SYNCHRONIZED_FINES_COUNT
     = "ae.rta.ffu.maxSynchronizedFinesCount";
     
-//    /** DEG Failure Transaction Cancelation Timeout (Minutes). */
-//    private static final String DEG_FAILURE_TRANSACTION_CANCELATION_TIMEOUT
-//        = "ae.rta.trs.bus.deg.transactionCancelationTimeout";
 
     /** Get Permit Details Service Endpoint */
     private static final String GET_PERMIT_DETAILS_SERVICE_ENDPOINT = 
@@ -1778,7 +1682,7 @@ public class TrafficConfig implements java.io.Serializable {
      */
 
     /** Configuration Map. */
-    private Map map = new HashMap();
+    private static Map map = new HashMap();
 
     /*
      * Constructors
@@ -1787,7 +1691,7 @@ public class TrafficConfig implements java.io.Serializable {
     /**
      * Create new Configuration object
      */
-    public TrafficConfig() {
+    public SmartHomeBudgetConfig() {
         // Empty implementation
     }
 
@@ -1796,7 +1700,7 @@ public class TrafficConfig implements java.io.Serializable {
      * 
      * @param configMap Configuration info to be added
      */
-    public TrafficConfig(Map configMap) {
+    public SmartHomeBudgetConfig(Map configMap) {
         // Add configMap parameters
         map.putAll(configMap);
         
@@ -1837,7 +1741,7 @@ public class TrafficConfig implements java.io.Serializable {
      * @return String representation of this object.
      */
     public String toString() {
-        StringBuffer buf = new StringBuffer("TrafficConfig [");
+        StringBuffer buf = new StringBuffer("SmartHomeBudgetConfig [");
         Iterator keys = map.keySet().iterator();
 
         while (keys.hasNext()) {
@@ -1848,6 +1752,7 @@ public class TrafficConfig implements java.io.Serializable {
         buf.append("\n]");
         return buf.toString();
     }
+    
 
     /**
      * Returns applictation property using its name.
@@ -1862,21 +1767,16 @@ public class TrafficConfig implements java.io.Serializable {
         }
 
         // Get property value from database
-        Map property = JdbcAdapter.execSingleRowQry(PROPERTY_QUERY, key);
-        if (property.isEmpty()) {
-            logger.warning(new StringBuffer("Traffic property not found: ")
+        PropertyHandler handler=new PropertyHandler();
+        String value=  handler.getByName(key);
+        
+        if (value==null) {
+            logger.warning(new StringBuffer("Smart Home Budget  property not found: ")
                   .append(key).toString());
             return null;
         }
-
-        String value = property.get("VALUE").toString();
-        String isStatic = property.get("IS_STATIC").toString();
-
         // If this is a static property, save it on the cach
-        if (isStatic.equals("2")) {
             map.put(key, value);
-        }
-        
         // Return property value
         return value;
     }

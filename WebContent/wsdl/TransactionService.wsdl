@@ -141,7 +141,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       <wsdl:port binding="impl:TransactionServiceSoapBinding" name="TransactionService">
 
-         <wsdlsoap:address location="http://localhost:8080/WebServices/services/TransactionService"/>
+         <wsdlsoap:address location="http://localhost:8085/WebServices/services/TransactionService"/>
 
       </wsdl:port>
 

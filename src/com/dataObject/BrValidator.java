@@ -1967,7 +1967,7 @@ public abstract class BrValidator {
 //                                //....accept EID in addition to residency (only one of they have to be valid) ..
 //                                java.util.Date emirateIdStartDate = null;
 //                                Date sysDate = GlobalUtilities.clearTime(new Date());
-//                                TrafficConfig config = ServiceLocator.getInstance().getConfig();
+//                                SmartHomeBudgetConfig config = ServiceLocator.getInstance().getConfig();
 //                                String emirateId = personVO.getPersonCIDId();
 //                                java.util.Date cidExpiryDate = null;
 //                                if (personVO.getPersonCIDExpiryDate() != null) {

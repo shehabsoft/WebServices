@@ -165,7 +165,7 @@ public class CategoryDAOImpl extends JPADataAccessObject implements CategoryDAO{
 			throw new BusinessException(e.toString());
 		}
 	}
-	public ArrayList<CategoryVO> getExpensesCategories(int monthlyBudgetId,int userId)
+	public ArrayList<CategoryVO> getExpensesCategories(int monthlyBudgetId,int userId,String year)
 	{
 		try
 		{
@@ -173,6 +173,8 @@ public class CategoryDAOImpl extends JPADataAccessObject implements CategoryDAO{
 		Query query = (Query) getEntitymanager().createNamedQuery("findExpensesCategories");
 		query.setParameter("id", monthlyBudgetId);
 		query.setParameter("userId", userId);
+		query.setParameter("year", year);
+	 
 	    List<Object> result = query.getResultList();
 	    Iterator itr = result.iterator();
 	    while(itr.hasNext()){

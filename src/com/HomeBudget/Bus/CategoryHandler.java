@@ -87,14 +87,17 @@ public class CategoryHandler extends BusinessObject {
 	public ArrayList<CategoryVO> getExpensesCategories(int monthlyBudgetId, int userId) {
 		CategoryDAO categoryDAO = null;
 		try {
-			categoryDAO = (CategoryDAO) DAOFactory.getDAO(CategoryDAO.class);
-			 ArrayList<CategoryVO> categoryVOs= categoryDAO.getExpensesCategories(monthlyBudgetId, userId);
+			 String year=(String)getConfig().get("endYear_of_ExpernsesHistory");
+			 categoryDAO = (CategoryDAO) DAOFactory.getDAO(CategoryDAO.class);
+			 ArrayList<CategoryVO> categoryVOs= categoryDAO.getExpensesCategories(monthlyBudgetId, userId,year);
 			 String actualValue="";
 			 monthlyBudgetHandler=new MonthlyBudgetHandler();
 			 String status_date="";
+			 String startYear=(String)getConfig().get("startYear_of_ExpernsesHistory");
+			 String endYear=(String)getConfig().get("endYear_of_ExpernsesHistory");
 			for(int i=0;i<categoryVOs.size();i++)
 			{
-			 List<MonthlyBudgetVO> monthlyBudgetVOs = monthlyBudgetHandler.getAllMonthlyBudgetByCategoryIdAndUserId(categoryVOs.get(i).getId(), userId,categoryDAO);
+			 List<MonthlyBudgetVO> monthlyBudgetVOs = monthlyBudgetHandler.getAllMonthlyBudgetByCategoryIdAndUserId(categoryVOs.get(i).getId(), userId,startYear,endYear,categoryDAO);
 			 for (int j = 0; j < monthlyBudgetVOs.size(); j++) {
 					if (j == monthlyBudgetVOs.size() - 1) {
 						actualValue += monthlyBudgetVOs.get(j).getActualValue();

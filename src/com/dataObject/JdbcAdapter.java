@@ -80,7 +80,7 @@ public abstract class JdbcAdapter {
      * @return JDBC connection.
      */
     public static Connection getConnection() {
-        return JdbcFactory.getConnection();
+        return null;
     }
 
     /**

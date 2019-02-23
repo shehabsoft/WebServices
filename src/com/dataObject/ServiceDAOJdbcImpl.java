@@ -926,7 +926,7 @@ public class ServiceDAOJdbcImpl extends JdbcDataAccessObject implements ServiceD
 //            }
 //            
 //            if (serviceVO.isCmlOnlineServices()) {
-//                TrafficConfig config = ServiceLocator.getInstance().getConfig();
+//                SmartHomeBudgetConfig config = ServiceLocator.getInstance().getConfig();
 //                String SDDIProductionServices = (String)config.get("cml.SDDIProductionServices");
 //                if (!isBlankOrNull(SDDIProductionServices)) {
 //                    query.appendWhereClause(" AND SVC.CODE IN  ( " + SDDIProductionServices + ")" );      

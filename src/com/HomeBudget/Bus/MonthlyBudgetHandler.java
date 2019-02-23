@@ -144,7 +144,7 @@ public class MonthlyBudgetHandler extends BusinessObject {
 		}
 	}
 
-	public List<MonthlyBudgetVO> getAllMonthlyBudgetByCategoryIdAndUserId(int categoryId, int userId,DataAccessObject1 parentDao) {
+	public List<MonthlyBudgetVO> getAllMonthlyBudgetByCategoryIdAndUserId(int categoryId, int userId,String startYear,String endYear,DataAccessObject1 parentDao) {
 		MonthlyBudgetDAO monthlyBudgetDAO = null;
 		if(parentDao!=null)
 		{
@@ -154,7 +154,9 @@ public class MonthlyBudgetHandler extends BusinessObject {
 		{
 			monthlyBudgetDAO = (MonthlyBudgetDAO) getDAO(MonthlyBudgetDAO.class);
 		}
-		return monthlyBudgetDAO.getAllMonthlyBudgetByCategoryIdAndUserId(categoryId, userId);
+	    
+	     
+		return monthlyBudgetDAO.getAllMonthlyBudgetByCategoryIdAndUserId(categoryId, userId,startYear,endYear);
 	}
 
 	public int getActiveMonthlyBudgetIdByUserId(int userId) {

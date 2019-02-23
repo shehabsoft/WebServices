@@ -44,19 +44,19 @@ public class HibernateDataAccessObject implements DataAccessObject {
      * open new hibernate transactional session.
      */
     public HibernateDataAccessObject() {
-        try {
-            // open new session
-            this.session = ServiceLocator.getInstance()
-                                         .getHibernateSessionFactory()
-                                         .openSession();
-                                         
-            this.session.beginTransaction();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new DataAccessException(
-                   "Failed to create HibernateDataAccessObject", ex);
-        }
+//        try {
+//            // open new session
+//            this.session = ServiceLocator.getInstance()
+//                                         .getHibernateSessionFactory()
+//                                         .openSession();
+//                                         
+//            this.session.beginTransaction();
+//
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            throw new DataAccessException(
+//                   "Failed to create HibernateDataAccessObject", ex);
+//        }
     }
 
     /**

@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entity-mappings version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd">
 	
+	
 	<named-query name="findAllCategoriesHistory">
 		<query>SELECT c FROM CategoryHistory  c where c.category.id=:id </query>
+	</named-query>
+	<named-query name="findPropertyByName">
+		<query>SELECT p.value FROM Property  p where  p.name=:name</query>
 	</named-query>
  
     <named-query name="validateApprovedPurchase">
@@ -64,7 +68,7 @@
 	</named-query>
 	
 	<named-query name="findExpensesCategories">
-		<query>SELECT c.id,c.arabicDescription,c.englishDescription,c.categoryTypeId,c.categoryStatus,mbc.actualValue,mbc.limitValue,mbc.planedValue FROM Category c  join c.monthlyBudgetCategories mbc on c.id=mbc.category.id  join mbc.monthlyBudget mob on mob.id=mbc.monthlyBudget.id where c.categoryTypeId=2 and c.categoryStatus=2 and mob.id=:id and mob.user.id=:userId </query>
+		<query>SELECT c.id,c.arabicDescription,c.englishDescription,c.categoryTypeId,c.categoryStatus,mbc.actualValue,mbc.limitValue,mbc.planedValue FROM Category c  join c.monthlyBudgetCategories mbc on c.id=mbc.category.id  join mbc.monthlyBudget mob on mob.id=mbc.monthlyBudget.id where c.categoryTypeId=2 and c.categoryStatus=2 and mob.id=:id and mob.user.id=:userId and SUBSTRING(mob.creationDate, 1, 4)=:year </query>
 	</named-query>
 	<named-query name="User.findAll">
 		<query>SELECT u FROM User u</query>
@@ -76,7 +80,7 @@
 		<query>SELECT c FROM Country c</query>
 	</named-query>
 	<named-query name="getAllMonthlyBudgetByUserId">
-		<query>SELECT m FROM MonthlyBudget m where m.user.id=:id and SUBSTRING(m.startDate, 1, 4)='2018'</query>
+		<query>SELECT m FROM MonthlyBudget m where m.user.id=:id and SUBSTRING(m.startDate, 1, 4)='2019'</query>
 	</named-query>
 	<named-query name="getActiveMonthlyBudgetByUserId">
 		<query>SELECT m FROM MonthlyBudget m where m.user.id=:id and m.status=2</query>

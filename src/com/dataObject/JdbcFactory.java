@@ -40,23 +40,8 @@ public abstract class JdbcFactory {
      * 
      * @return JDBC connection from connections pool.
      */
-    public static Connection getConnection() throws TrafficException {
-        try  {
-            // Get DataSource
-            DataSource ds = ServiceLocator.getInstance().getDataSource();
-
-            // Get JDBC connection from DataSource
-//            if (ds instanceof com.evermind.sql.OrionCMTDataSource) {
-//                return ((com.evermind.sql.OrionCMTDataSource) ds).getConnection();
-//            } else {
-//                return ds.getConnection();
-//            }
-            
-            return ds.getConnection();
-
-        } catch (SQLException sqlex) {
-            throw new TrafficException("Faild to get JDBC connction from DataSource", sqlex);
-        }
+    public static Connection getConnection() throws TrafficException, SQLException {
+        return null;
     }
 
 }

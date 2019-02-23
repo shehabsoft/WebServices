@@ -24,6 +24,7 @@ import com.dataObject.Constants;
 import com.dataObject.MonthlyBudgetCategoryVO;
 import com.dataObject.MonthlyBudgetVO;
 import com.dataObject.PurchaseVO;
+import com.dataObject.ServiceLocator;
 
 
 public class MonthlyBudgetDAOImpl  extends JPADataAccessObject implements MonthlyBudgetDAO {
@@ -485,10 +486,15 @@ public class MonthlyBudgetDAOImpl  extends JPADataAccessObject implements Monthl
 
 
 	@Override
-	public List<MonthlyBudgetVO> getAllMonthlyBudgetByCategoryIdAndUserId(int categoryId, int userId) {
+	public List<MonthlyBudgetVO> getAllMonthlyBudgetByCategoryIdAndUserId(int categoryId, int userId,String startYear,String endYear) {
 		try
 		{
-			Query query = (Query) getEntitymanager().createNativeQuery("SELECT MonthlyBudget_ID,categories_id,sum(m.limit_value) limitValue,sum(m.actual_value)actualValue,mb.creation_date as creation_date FROM monthly_budget_category m join category c join monthly_budget mb where  c.id=m.categories_ID and mb.id=m.MonthlyBudget_ID and mb.user_id="+userId+"  and categories_id="+categoryId+" group by categories_id,MonthlyBudget_ID");
+			 
+		     //startYear=  (String) ServiceLocator.getInstance().getConfig().get("startYear_of_ExpernsesHistory");
+			 // endYear= (String)ServiceLocator.getInstance().getConfig().get("endYear_of_ExpernsesHistory");
+			
+			
+			Query query = (Query) getEntitymanager().createNativeQuery("SELECT MonthlyBudget_ID,categories_id,sum(m.limit_value) limitValue,sum(m.actual_value)actualValue,mb.creation_date as creation_date FROM monthly_budget_category m join category c join monthly_budget mb where  c.id=m.categories_ID and mb.id=m.MonthlyBudget_ID and mb.user_id="+userId+"  and categories_id="+categoryId+" and Year(creation_date) between "+startYear+" and "+endYear+" group by categories_id,MonthlyBudget_ID ");
 			List<MonthlyBudgetVO> monthlyBudgetVOList=new ArrayList<MonthlyBudgetVO>();
 			List<Object> result = query.getResultList();
 			    Iterator itr = result.iterator();

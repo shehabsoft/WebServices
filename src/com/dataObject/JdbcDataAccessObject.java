@@ -100,10 +100,10 @@ public abstract class JdbcDataAccessObject implements DataAccessObject1 {
 
         try {
             // Get new connection
-            this.con = ServiceLocator.getInstance().getDataSource().getConnection();
-
-            // Set auto-commit mode to false
-            con.setAutoCommit(false);
+//            this.con = ServiceLocator.getInstance().getDataSource().getConnection();
+//
+//            // Set auto-commit mode to false
+//            con.setAutoCommit(false);
 
         } catch (Exception ex) {
             ex.printStackTrace();

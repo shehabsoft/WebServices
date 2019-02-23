@@ -27,7 +27,7 @@ public abstract class TrafficLogger {
      */
 
     /** Configuration object. */
-    private static final TrafficConfig config = ServiceLocator.getInstance().getConfig();
+    private static final SmartHomeBudgetConfig config = ServiceLocator.getInstance().getConfig();
 
     /*
      * Methods
