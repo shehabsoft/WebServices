@@ -8,6 +8,7 @@ public class CategoryVO {
 	private String actualValueStr;
 	private String statusDate;
 	private double percentageExpenses;
+	private Integer unApprovedPurchaseCount=0;
 	public String getStatusDate() {
 		return statusDate;
 	}
@@ -163,4 +164,12 @@ public class CategoryVO {
 	}
 
 	int categoryStatus;
+	public Integer getUnApprovedPurchaseCount() {
+		return unApprovedPurchaseCount;
+	}
+
+	public void setUnApprovedPurchaseCount(Integer unApprovedPurchaseCount) {
+		this.unApprovedPurchaseCount = unApprovedPurchaseCount;
+	}
+	
 }

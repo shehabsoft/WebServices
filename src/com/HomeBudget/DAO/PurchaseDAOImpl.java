@@ -11,6 +11,7 @@ import javax.persistence.Query;
 import com.HomeBudget.DAO.JPA.JPADataAccessObject;
 import com.dataObject.BusinessException;
 import com.dataObject.PurchaseVO;
+import com.entities.models.ApprovedPurchases;
 import com.entities.models.Category;
 import com.entities.models.Location;
 import com.entities.models.Purchase;
@@ -210,10 +211,10 @@ public class PurchaseDAOImpl extends JPADataAccessObject implements PurchaseDAO 
 	}
 
 	@Override
-	public List<PurchaseVO> getAllPurchasesByCategoryId(int categoryId) throws Exception {
+	public List<PurchaseVO> getUnApprovedPurchasesByCategoryId(int categoryId) throws Exception {
 		try {
 			ArrayList<PurchaseVO> purchases = new ArrayList<PurchaseVO>();
-			Query query = (Query) getEntitymanager().createNamedQuery("cleansing.findAllPurchasesByCategoryId");
+			Query query = (Query) getEntitymanager().createNamedQuery("cleansing.getUnApprovedPurchasesByCategoryId");
 			query.setParameter("categoryId", categoryId);
 			List<Purchase> purchaseList = query.getResultList();
 			for (Purchase purchase : purchaseList) {
@@ -248,6 +249,8 @@ public class PurchaseDAOImpl extends JPADataAccessObject implements PurchaseDAO 
 		try {
 			Purchase purchase = getEntitymanager().find(Purchase.class, purchaseVO.getId());
 			purchase.setStatus(2);
+			ApprovedPurchases approvedPurchase= getEntitymanager().find(ApprovedPurchases.class, purchaseVO.getApprovedPurchaseId());
+			purchase.setApprovedPurchas(approvedPurchase);
 			getEntitymanager().persist(purchase);
 		} catch (Exception e) {
 			throw new Exception(e);

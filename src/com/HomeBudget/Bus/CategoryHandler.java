@@ -108,10 +108,12 @@ public class CategoryHandler extends BusinessObject {
 						status_date+=monthlyBudgetVOs.get(j).getCreationDate()+ ",";
 						
 					}
+					 categoryVOs.get(i).setUnApprovedPurchaseCount(monthlyBudgetVOs.get(j).getUnApprovedPurchaseCount());
 					
 				}
 			 categoryVOs.get(i).setActualValueStr(actualValue);
 			 categoryVOs.get(i).setStatusDate(status_date);
+			
 			 actualValue="";
 			 status_date="";
 			}

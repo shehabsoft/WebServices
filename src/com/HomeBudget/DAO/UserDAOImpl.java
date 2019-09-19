@@ -17,6 +17,8 @@ import org.eclipse.persistence.descriptors.DescriptorEventManager;
 import com.entities.models.*;
 import com.DES;
 import com.HomeBudget.DAO.JPA.JPADataAccessObject;
+import com.HomeBudget.common.GlobalUtilities;
+import com.dataObject.BusinessException;
 import com.dataObject.CategoryVO;
 import com.dataObject.CountryVO;
 import com.dataObject.PurchaseVO;
@@ -65,18 +67,18 @@ public class UserDAOImpl extends JPADataAccessObject implements UserDAO {
 	    user.setCountry(country);
 	    user.setStatusId(userVo.getStatusId());
 	    user.setGenderId(userVo.getGenderId());
-	    user.setMobileNumber(Integer.parseInt(userVo.getMobileNumebr()));
+	    user.setMobileNumber(userVo.getMobileNumebr());
 	    if(country==null)
 	    {
 	    	throw new Exception("There is No Country with ID "+userVo.getCountryId());
 	    }else
 	    {
-					if(userVo.getName()!=null)
+					if(!GlobalUtilities.isBlankOrNull(userVo.getName()))
 					{
 						user.setName(userVo.getName());
 					}else
 					{
-						throw new Exception("Name Should not be Null");
+						throw new BusinessException("Name Should not be Null");
 					}
 					if(userVo.getCurrencyId()!=0)
 					{
@@ -84,30 +86,36 @@ public class UserDAOImpl extends JPADataAccessObject implements UserDAO {
 					  user.setCurrency(currency);
 					}else
 					{
-						throw new Exception("Currency  Should not be Null or 0");
+						throw new BusinessException("Currency  Should not be Null or 0");
 					}
-					if(userVo.getAddress()!=null)
+					if(!GlobalUtilities.isBlankOrNull(userVo.getAddress()))
 					{
 						user.setAddress(userVo.getAddress());
 					}else
 					{
-						throw new Exception("Purchase English Description Should not be Null");
+						throw new BusinessException("Purchase English Description Should not be Null");
 					}
-					if(userVo.getEmail()!=null)
+					if(!GlobalUtilities.isBlankOrNull(userVo.getEmail()))
 					{
+						if(!isExistkMail(userVo.getEmail()))
+						{
 						user.setEmail(userVo.getEmail());
+						}else
+						{
+							throw new BusinessException("This Mail Already Exist In System ");
+						}
 					}else
 					{
-						throw new Exception("Email Should not be Null");
+						throw new BusinessException("Email Should not be Null");
 					}
-					if(userVo.getPassword()!=null)
+					if(!GlobalUtilities.isBlankOrNull(userVo.getPassword()))
 					{
 						DES des=new DES();
 						//userVo.setPassword(new String(des.encrypt(userVo.getPassword().getBytes())));
 						user.setPassword(userVo.getPassword());
 					}else
 					{
-						throw new Exception("Password Should not be Null");
+					//	throw new Exception("Password Should not be Null");
 					}
 					user.setCreationDate(new Date());
 					getEntitymanager().persist(user);
@@ -119,6 +127,29 @@ public class UserDAOImpl extends JPADataAccessObject implements UserDAO {
 			throw new Exception(e);
 			
 		}
+	}
+	public boolean isExistkMail(String mail) throws Exception
+	{
+		try
+		{
+			Query query = (Query) getEntitymanager().createNamedQuery("User.checkMail");
+			query.setParameter("email", mail);
+			List<User> user=(List<User>)query.getResultList();
+			if(user.size()==0)
+			{
+				return false;
+			}else
+			{
+				return true;
+			}
+			
+			
+		}catch(Exception e)
+		{
+			throw new Exception(e);
+		}
+		
+	
 	}
 		public boolean checkMail(String mail) throws Exception
 		{

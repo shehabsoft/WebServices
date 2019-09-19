@@ -494,7 +494,7 @@ public class MonthlyBudgetDAOImpl  extends JPADataAccessObject implements Monthl
 			 // endYear= (String)ServiceLocator.getInstance().getConfig().get("endYear_of_ExpernsesHistory");
 			
 			
-			Query query = (Query) getEntitymanager().createNativeQuery("SELECT MonthlyBudget_ID,categories_id,sum(m.limit_value) limitValue,sum(m.actual_value)actualValue,mb.creation_date as creation_date FROM monthly_budget_category m join category c join monthly_budget mb where  c.id=m.categories_ID and mb.id=m.MonthlyBudget_ID and mb.user_id="+userId+"  and categories_id="+categoryId+" and Year(creation_date) between "+startYear+" and "+endYear+" group by categories_id,MonthlyBudget_ID ");
+			Query query = (Query) getEntitymanager().createNativeQuery("SELECT MonthlyBudget_ID,categories_id,sum(m.limit_value) limitValue,sum(m.actual_value)actualValue,mb.creation_date as creation_date,(select count(*) from purchase p where p.category_id=c.id and p.status=1)as count FROM monthly_budget_category m join category c join monthly_budget mb where  c.id=m.categories_ID and mb.id=m.MonthlyBudget_ID and mb.user_id="+userId+"  and categories_id="+categoryId+" and Year(creation_date) between "+startYear+" and "+endYear+" group by categories_id,MonthlyBudget_ID ");
 			List<MonthlyBudgetVO> monthlyBudgetVOList=new ArrayList<MonthlyBudgetVO>();
 			List<Object> result = query.getResultList();
 			    Iterator itr = result.iterator();
@@ -512,11 +512,21 @@ public class MonthlyBudgetDAOImpl  extends JPADataAccessObject implements Monthl
 			        {
 			        	 monthlyBudgetVO.setActualValue(0);
 			        }else
+			        	{
+			        	monthlyBudgetVO.setActualValue((Double)obj[3]);
+			        	} 
+			        
+			        if(obj[4]!=null)
+			        	
 			        {
-			        	   monthlyBudgetVO.setActualValue((Double)obj[3]);
+			        	  
 			        	   SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 						   String creationDate=sdf.format(obj[4]);
 			        	   monthlyBudgetVO.setCreationDate(creationDate);
+			        } 
+			        if(obj[5]!=null)
+			        {
+			        	monthlyBudgetVO.setUnApprovedPurchaseCount(((Long)obj[5]).intValue());
 			        }
 			     
 			        monthlyBudgetVOList.add(monthlyBudgetVO);

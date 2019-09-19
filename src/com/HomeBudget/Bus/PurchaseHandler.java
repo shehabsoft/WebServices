@@ -49,8 +49,9 @@ public class PurchaseHandler extends BusinessObject {
 			boolean flage=approvedPurchasesDAO.validateBeforeAdd(purchaseVO);
 			if(flage)
 			{
-			approvedPurchasesDAO.add(purchaseVO);
+			int approvedPurchaseId=approvedPurchasesDAO.add(purchaseVO);
 			purchaseDAO = (PurchaseDAO) getDAO(PurchaseDAO.class,approvedPurchasesDAO);
+			purchaseVO.setApprovedPurchaseId(approvedPurchaseId);
 			purchaseDAO.approvePurchase(purchaseVO);
 			purchaseDAO.commit();
 			}else
@@ -148,11 +149,11 @@ public class PurchaseHandler extends BusinessObject {
 			close(purchaseDAO);
 		}
 	}
-	public List<PurchaseVO> getAllPurchases(int categoryId) throws Exception {
+	public List<PurchaseVO> getUnApprovedPurchasesByCategoryId(int categoryId) throws Exception {
 		PurchaseDAO purchaseDAO = null;
 		try {
 			purchaseDAO = (PurchaseDAO) getDAO(PurchaseDAO.class);
-			return purchaseDAO.getAllPurchasesByCategoryId(categoryId);
+			return purchaseDAO.getUnApprovedPurchasesByCategoryId(categoryId);
 		} catch (DataAccessException ex) {
 			throw ex;
 		} catch (BusinessException ex) {

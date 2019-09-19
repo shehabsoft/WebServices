@@ -39,7 +39,7 @@ public class ApprovedPurchasesDAOImpl extends JPADataAccessObject implements App
 	}
 
 	
-	public void add(PurchaseVO purchaseVO) throws Exception
+	public Integer add(PurchaseVO purchaseVO) throws Exception
 	{
 		ApprovedPurchases approvedPurchas=new ApprovedPurchases();
 		if (purchaseVO.getArabicDescription() != null) {
@@ -54,8 +54,11 @@ public class ApprovedPurchasesDAOImpl extends JPADataAccessObject implements App
 		}
 		Category category=getEntitymanager().find(Category.class, purchaseVO.getCategoryId());
 		approvedPurchas.setCategory(category);
-		approvedPurchas.setId(Integer.parseInt(getNextKey().toString()));
+		Integer id=Integer.parseInt(getNextKey().toString());
+		approvedPurchas.setId(id);
 		getEntitymanager().persist(approvedPurchas);
+		return id;
+		
 		 
 	}
 	

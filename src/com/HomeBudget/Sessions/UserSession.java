@@ -71,7 +71,7 @@ public class UserSession extends SessionFactory{
 	    user.setCountry(country);
 	    user.setStatusId(userVo.getStatusId());
 	    user.setGenderId(userVo.getGenderId());
-	    user.setMobileNumber(Integer.parseInt(userVo.getMobileNumebr()));
+	    user.setMobileNumber(userVo.getMobileNumebr());
 	    if(country==null)
 	    {
 	    	throw new Exception("There is No Country with ID "+userVo.getCountryId());

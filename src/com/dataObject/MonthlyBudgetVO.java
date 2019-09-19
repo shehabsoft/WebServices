@@ -7,6 +7,10 @@ import com.entities.models.Category;
 
 public class MonthlyBudgetVO {
 	
+
+
+
+
 	private int Id;
 	
 	private String startDate;
@@ -20,6 +24,7 @@ public class MonthlyBudgetVO {
 	private double completedRatio;
 	private double limitValue;
 	private double actualValue;
+	private Integer unApprovedPurchaseCount=0;
 	public double getCompletedRatio() {
 		return completedRatio;
 	}
@@ -63,6 +68,15 @@ public class MonthlyBudgetVO {
 	public String getIncomeCategoriesId() {
 		return incomeCategoriesId;
 	}
+	public Integer getUnApprovedPurchaseCount() {
+		return unApprovedPurchaseCount;
+	}
+
+
+	public void setUnApprovedPurchaseCount(Integer unApprovedPurchaseCount) {
+		this.unApprovedPurchaseCount = unApprovedPurchaseCount;
+	}
+
 
 
 	public void setIncomeCategoriesId(String incomeCategoriesId) {

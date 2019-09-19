@@ -16,7 +16,7 @@ import com.dataObject.PurchaseVO;
  */
 public interface ApprovedPurchasesDAO extends DataAccessObject1 {
 	
-	public void add(PurchaseVO purchaseVO)throws Exception;
+	public Integer add(PurchaseVO purchaseVO)throws Exception;
 	public boolean validateBeforeAdd(PurchaseVO purchaseVO)throws Exception;
 	
 }

@@ -24,7 +24,7 @@
 	<named-query name="findAllPurchasesByCategoryId">
 		<query>SELECT p FROM Purchase  p join p.monthlyBudget mob on p.monthlyBudget.id=mob.id where mob.id=:id and p.category.id=:categoryId</query>
 	</named-query>
-	<named-query name="cleansing.findAllPurchasesByCategoryId">
+	<named-query name="cleansing.getUnApprovedPurchasesByCategoryId">
 		<query>SELECT p FROM Purchase p where  p.category.id=:categoryId and p.status=1</query>
 	</named-query>
 	<named-query name="getActiveUser">
